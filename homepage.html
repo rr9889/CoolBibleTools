@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cool Bible Tools</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+
+      rel="stylesheet">
     <style>
         body {
             background-color: #f4f4f8;
@@ -16,85 +18,178 @@
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+        nav {
+  background: linear-gradient(45deg, #1f4465, #4f8ec4, #1f4465);
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+  padding: 10px 20px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(45deg, #1f4465, #4f8ec4, #1f4465);
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+  padding: 10px 20px;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 2px solid white;
+  display: inline-block;
+}
+
+.nav-links a {
+  margin-left: 15px;
+}
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  margin-left: 15px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffeb3b; /* Bright yellow for contrast */
+  transform: scale(1.1);
+}
+
+
     </style>
-</head>
-<body class="font-sans antialiased">
+  </head>
+  <body class="font-sans antialiased">
+    <div style="text-align: left;">
+        <nav>
+          <a href="./homepage.html" class="logo">Cool Bible Tools</a>
+          <div class="nav-links">
+            <a href="https://rr9889.github.io/tr/">Thinkers Repository</a>
+            <a href="https://rr9889.github.io/ECR/">Christianity in Antiquity</a>
+          </div>
+        </nav>
+      </div>
+      
     <div class="container mx-auto px-4 py-12">
-        <h1 class="text-4xl font-bold text-center text-blue-800 mb-12">Cool Bible Tools</h1>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Bible Verse Search Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Verse Search</h2>
-                <p class="text-gray-600 mb-4">Quickly find and explore any Bible verse.</p>
-                <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition">Open Tool</button>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Bible Verse Search Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-blue-600"
 
-            <!-- Bible Translations Comparison Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h13M3 8h9m-9 4h6" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Translation Compare</h2>
-                <p class="text-gray-600 mb-4">Compare different Bible translations side by side.</p>
-                <button class="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition">Open Tool</button>
-            </div>
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 
-            <!-- Bible Study Planner Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 12l3-3 3 3 4-4M3 12l3-3 3 3 4-4M3 4h18M3 20h18" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Study Planner</h2>
-                <p class="text-gray-600 mb-4">Create and track your personal Bible study plan.</p>
-                <button class="bg-purple-500 text-white px-6 py-2 rounded-full hover:bg-purple-600 transition">Open Tool</button>
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg>
             </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Whiteboard</h2>
+          <p class="text-gray-600 mb-4">Explain concepts through a whiteboard,
+            tailored for biblical teachings.</p>
+          <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition">Open
+            Tool</button> </div>
+        <!-- Bible Translations Comparison Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-600"
 
-            <!-- Bible Timeline Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Bible Timeline</h2>
-                <p class="text-gray-600 mb-4">Explore historical events and biblical chronology.</p>
-                <button class="bg-indigo-500 text-white px-6 py-2 rounded-full hover:bg-indigo-600 transition">Open Tool</button>
-            </div>
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 
-            <!-- Bible Word Study Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Word Study</h2>
-                <p class="text-gray-600 mb-4">Deep dive into Biblical word meanings and origins.</p>
-                <button class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition">Open Tool</button>
-            </div>
+                d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h13M3 8h9m-9 4h6"></path> </svg>
+          </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Translation
+            Compare</h2>
+          <p class="text-gray-600 mb-4">Compare different Bible translations
+            side by side.</p>
+          <button class="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition">Open
+            Tool</button> </div>
+        <!-- Bible Study Planner Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-purple-600"
 
-            <!-- Bible Concordance Card -->
-            <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
-                <div class="mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 12l3-3 3 3 4-4M3 12l3-3 3 3 4-4M3 4h18M3 20h18" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Concordance</h2>
-                <p class="text-gray-600 mb-4">Find verses by keywords and themes.</p>
-                <button class="bg-yellow-500 text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition">Open Tool</button>
-            </div>
-        </div>
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+
+                d="M9 12l2 2 4-4M7 12l3-3 3 3 4-4M3 12l3-3 3 3 4-4M3 4h18M3 20h18"></path>
+            </svg> </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Study Planner</h2>
+          <p class="text-gray-600 mb-4">Create and track your personal Bible
+            study plan.</p>
+          <button class="bg-purple-500 text-white px-6 py-2 rounded-full hover:bg-purple-600 transition">Open
+            Tool</button> </div>
+        <!-- Bible Timeline Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-indigo-600"
+
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg> </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Bible Timeline</h2>
+          <p class="text-gray-600 mb-4">Explore historical events and biblical
+            chronology.</p>
+          <button class="bg-indigo-500 text-white px-6 py-2 rounded-full hover:bg-indigo-600 transition">Open
+            Tool</button> </div>
+        <!-- Bible Word Study Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-600"
+
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg> </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Word Study</h2>
+          <p class="text-gray-600 mb-4">Deep dive into Biblical word meanings
+            and origins.</p>
+          <button class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition">Open
+            Tool</button> </div>
+        <!-- Bible Concordance Card -->
+        <div class="tool-card bg-white rounded-xl shadow-lg p-6 text-center">
+          <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-yellow-600"
+
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+
+                d="M9 12l2 2 4-4M7 12l3-3 3 3 4-4M3 12l3-3 3 3 4-4M3 4h18M3 20h18"></path>
+            </svg> </div>
+          <h2 class="text-2xl font-semibold mb-4 text-gray-800">Concordance</h2>
+          <p class="text-gray-600 mb-4">Find verses by keywords and themes.</p>
+          <button class="bg-yellow-500 text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition">Open
+            Tool</button> </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
