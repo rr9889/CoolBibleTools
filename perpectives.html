@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive 1 Corinthians 11:2–16: Veiling Perspectives</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+  <style>/* Global Reset */
+/* Global Reset */
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Styles */
+body {
+  font-family: "Helvetica", "Times New Roman", Georgia, serif;
+  background-color: #ffffff;
+  color: #000000;
+  line-height: 1.6;
+}
+
+/* Container for Equal Split */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Main Content: Left Column */
+.main-content {
+  width: 50%;
+  padding: 20px;
+  overflow-y: auto;
+  background: #fdfdfd;
+  color: #000;
+}
+
+.main-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.verse {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+/* Underlined Clickable Elements */
+.clickable {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0056b3;
+}
+
+/* Sidebar: Right Column */
+.sidebar {
+  width: 50%;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f7f7f7;
+  border-left: 2px solid #ccc;
+}
+
+/* Sidebar Tabs */
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.sidebar-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #e0e0e0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar-tabs button.active {
+  background: #fff;
+  border-bottom: 2px solid #fff;
+  font-weight: bold;
+}
+
+/* Tab Panels */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* Optional Sidebar Toggle Button */
+#toggleSidebarBtn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+  color: #000000;
+}
+
+/* Responsive Adjustments: Stack Columns on Small Screens */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .main-content,
+  .sidebar {
+    width: 100%;
+  }
+  #toggleSidebarBtn {
+    display: none;
+  }
+}
+nav {
+  background: linear-gradient(45deg, #1f4465, #4f8ec4, #1f4465);
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+  padding: 10px 20px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 2px solid white;
+  display: inline-block;
+}
+
+  </style>
+  
+</head>
+<body>
+  <div style="text-align: left;">
+    <nav> <a href="./homepage.html" class="logo">C.B.T.</a> </nav>
+  </div>
+  <div class="container">
+  <!-- Sidebar Toggle Icon (Hamburger icon when hidden, X when visible) -->
+
+  <!-- Left Pane: NIV Text with Interactive Underlined Words -->
+  <div class="main-content" id="mainContent">
+    <h2>1 Corinthians 11:2–16 (NIV)</h2>
+      
+      <div class="verse" id="verse2">
+        <h1>2</h1>
+        <p>
+          I praise you for remembering me in everything and for holding to the 
+          <span class="clickable" data-comment-id="traditions">traditions</span> 
+          just as I passed them on to you.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse3">
+        <h1>3</h1>
+        <p>
+          But I want you to realize that the 
+          <span class="clickable" data-comment-id="head">head</span> 
+          of every man is 
+          <span class="clickable" data-comment-id="Christ">Christ</span>, and the head of the woman is man, and the head of Christ is God.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse4">
+        <h1>4</h1>
+        <p>
+          Every man who 
+          <span class="clickable" data-comment-id="prays">prays or prophesies</span> with his head covered dishonors his head.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse5">
+        <h1>5</h1>
+        <p>
+          But every woman who prays or prophesies with her 
+          <span class="clickable" data-comment-id="honor">head uncovered dishonors her head</span>.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse6">
+        <h1>6</h1>
+        <p>
+          It is the same as having her head shaved.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse7">
+        <h1>7</h1>
+        <p>
+          For a <span class="clickable" data-comment-id="mancover">man ought not to cover his head</span>, since he is the 
+          <span class="clickable" data-comment-id="image">image</span> and 
+          <span class="clickable" data-comment-id="glory">glory</span> of God; but a woman is the glory of man.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse8">
+        <h1>8</h1>
+        <p>
+          For man did not come from woman, but woman from man;
+        </p>
+      </div>
+      
+      <div class="verse" id="verse9">
+        <h1>9</h1>
+        <p>
+          Neither was man created for woman, but woman for man.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse10">
+        <h1>10</h1>
+        <p>
+          It is for this reason that a woman ought to have 
+          <span class="clickable" data-comment-id="authority">authority</span> over her own head, <span class="clickable" data-comment-id="angels">because of the angels.</span>
+        </p>
+      </div>
+      
+      <div class="verse" id="verse11">
+        <h1>11</h1>
+        <p>
+          Nevertheless, in the Lord <span class="clickable" data-comment-id="idp">woman is not independent of man,</span>
+        </p>
+      </div>
+      
+      <div class="verse" id="verse12">
+        <h1>12</h1>
+        <p>
+          nor is man independent of woman.
+        </p>
+      </div>
+      
+      <div class="verse" id="verse13">
+        <h1>13</h1>
+        <p>
+          Judge for yourselves: Is it proper for a woman to pray to God with her head uncovered?
+        </p>
+      </div>
+      
+      <div class="verse" id="verse14">
+        <h1>14</h1>
+        <p>
+          Does not the very <span class="clickable" data-comment-id="nature">nature of things</span> teach you that if a man has long hair, it is a disgrace to him,
+        </p>
+      </div>
+      
+      <div class="verse" id="verse15">
+        <h1>15</h1>
+        <p>
+          but that if a woman has long hair, it is her glory?
+        </p>
+      </div>
+      
+      <div class="verse" id="verse16">
+        <h1>16</h1>
+        <p>
+          <span class="clickable" data-comment-id="hair">or long hair is given to her as a covering.
+          </span>
+        </p>
+      </div>
+    </div>
+    
+    
+  
+  <!-- Right Pane: Sidebar with Two Tabs: Commentary and Reference List -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-tabs">
+      <button id="tab-commentary" class="active" onclick="switchSidebarTab('commentary')">Commentary</button>
+      <button id="tab-references" onclick="switchSidebarTab('references')">Reference List</button>
+    </div>
+    
+    <!-- Tab Panel: Commentary -->
+    <div id="panel-commentary" class="tab-panel active">
+      <h3>Commentary</h3>
+      <div id="commentary-content">
+        <p>Click on an underlined word for a detailed explanation.</p>
+      </div>
+    </div>
+
+    
+    <!-- Tab Panel: Reference List -->
+    <div id="panel-references" class="tab-panel">
+      <h3>Reference List</h3>
+      <ul class="reference-list">
+        <li>Ben Witherington III. (1995). <em>Conflict and Community in Corinth: A Socio‐Rhetorical Commentary on 1 and 2 Corinthians</em>. Wm. B. Eerdmans Publishing, pp. 235–38. ISBN 978-0-8028-0144-9.</li>
+        <li>Payne, P. B. (2015). <em>Man and Woman, One in Christ</em>. Zondervan Academic, pp. 52–53.</li>
+        <li>Sproul, R. C. (1977). <em>Knowing Scripture</em>. InterVarsity Press, p. 110.</li>
+        <li>Bercot, D. W. (1992). <em>Common Sense: A New Approach to Understanding Scripture</em>. Scroll Publishing Co., p. 66. ISBN 978-0-924722-06-6.</li>
+        <li>Irenaeus. (c. 130–202). <em>Against Heresies</em>, Book 1, 8:2. In A. Cleveland Cox (Ed.), <em>The Ante-Nicene Fathers</em> (Vol. 1, p. 327). (1885).</li>
+        <li>Tertullian. (c. 200 AD). <em>On the Veiling of Virgins</em>, Chapter 9.</li>
+        <li>Hippolytus. (c. 215). <em>The Apostolic Tradition</em>. Macmillan, p. 43.</li>
+        <li>Safran, L. (2014). <em>The Medieval Salento: Art and Identity in Southern Italy</em>. University of Pennsylvania Press, p. 112. ISBN 9780812245547.</li>
+        <li>Johnson, L. (1962). <em>The Wycliffe Bible Commentary</em>. Moody Press, pp. 1247–1248.</li>
+        <li>Barnes, A., &amp; Barnes, P. (1995). <em>Christian Apparel</em>. TEACH Services, p. 50. ISBN 978-1-57258-029-9.</li>
+        <li>Beetham, C. A. (Ed.). (2021). <em>The Concise New International Dictionary of New Testament Theology and Exegesis</em>. Zondervan Academic. ISBN 978-0-310-59848-0.</li>
+        <li>Marlowe, M. D. (2005). <em>The Woman's Headcovering</em>. Bible Research. Revised October 2008. Retrieved from https://www.bible-researcher.com/headcoverings3.html</li>
+        <li>Mounce, W. D. (2019). Greek for the rest of us: Learn Greek to study the New Testament with interlinears and Bible software (3rd ed.). Zondervan Academic.</li>
+        <li>Bercot, D. (n.d.). <em>Head Covering Through the Centuries</em>. Scroll Publishing. Retrieved April 28, 2016, from https://www.scrollpublishing.com/store/head-covering-history.html</li>
+        <li>Naselli, A. D. (2023). <em>Women and Head Coverings: Explaining and Applying 1 Corinthians 11:2–16</em>. Christ Over All. Retrieved from https://christoverall.com/article/concise/women-and-head-coverings-explaining-and-applying-1-corinthians-112-16/</li>
+        <li>Henry, M. (n.d.). <em>Matthew Henry Commentary on the Whole Bible (Concise): 1 Corinthians 11</em>. Bible Study Tools. Retrieved from https://www.biblestudytools.com/1-corinthians/11.html</li>
+        <li>Gill, J. (n.d.). <em>John Gill's Exposition of the Bible: 1 Corinthians 11 Introduction</em>. Bible Study Tools. Retrieved from https://www.biblestudytools.com/commentaries/gills-exposition-of-the-bible/1-corinthians-11-introduction.html</li>
+        <li>Krycho, C. (2013, May 10). <em>Head Coverings! – An Exegesis of 1 Corinthians 11:2–16</em>. Retrieved from https://v3.chriskrycho.com/theology/head-coverings-an-exegesis-of-1-corinthians-11_2-16/index.html</li>
+        <li>Ciampa, R. E., &amp; Rosner, B. S. (2020). <em>The First Letter to the Corinthians</em>. IVP. Retrieved from https://www.google.ca/books/edition/The_First_Letter_to_the_Corinthians/zmfnDwAAQBAJ</li>
+        <li>Johnson, A. F. (2010). <em>1 Corinthians</em> (Vol. 7). InterVarsity Press. https://doi.org/10.2307/j.ctt1b9x19b</li>
+        <li>Piper, J., &amp; Grudem, W. (Eds.). (2021). <em>Recovering Biblical Manhood and Womanhood: A Response to Evangelical Feminism</em> (Revised ed.). Crossway.</li>
+        <li>Phillips, J. (2001). <em>Exploring 1 Corinthians: An Expository Commentary</em> (pp. 232–242). Kregel Publications. Retrieved from https://www.google.com/books/edition/Exploring_1_Corinthians/WMNUxt</li>
+        <li>Schreiner, T. R. (2018). <em>1 Corinthians: An Introduction and Commentary</em>. InterVarsity Press.</li>
+        <li>Soards, M. L. (2011). <em>1 Corinthians (Understanding the Bible Commentary Series)</em>. Baker Publishing Group.</li>
+        <li>Marshall, J. E. (2019). <em>Uncovering Traditions in 1 Corinthians 11:2–16</em>. Novum Testamentum, 61(1), 70–87. https://doi.org/10.1163/15685365-12341617</li>
+        <li>Guest, D. (2018). <em>The Straight Mind in Corinth: Queer Readings across 1 Corinthians 11:2–16 by Gillian Townsley (Review)</em>. The Catholic Biblical Quarterly, 80(3), 540–541. https://doi.org/10.1353/cbq.2018.0113</li>
+        <li>Smith, R. S. (2025). <em>The Body God Gives: A Biblical Response to Transgender Theory</em> (pp. 20–22). Lexham Academic. Retrieved from https://www.google.ca/books/edition/The_Body_God_Gives/0-I-EQAAQBAJ</li>
+        <li>Heil, J. P. (2005). <em>The Rhetorical Role of Scripture in 1 Corinthians</em>. Society of Biblical Literature. https://doi.org/10.2307/j.ctt1b3t70r</li>
+        <li>Callon, C. (2024). <em>Authority Over Whose Head? Did Paul Instruct Wives or All Women to Cover Their Heads (1 Corinthians 11:2–16)?</em> The Harvard Theological Review, 117(4), 699–719. https://doi.org/10.2307/S0017816024000300</li>
+        <!-- Additional references
+         from Evidence 26-30 would be included here following the same APA7 format. -->
+      </ul>
+    </div>
+  </div>
+</div>
+  
+  <script>
+const commentaryData = {
+  "traditions": `
+    <p><strong>Traditions</strong></p>
+
+    <p>The Greek word paradosis (παράδοσις), translated as “tradition” or “teachings,” appears 13 times in the New Testament and refers to something delivered, handed over, or transmitted. In the New Testament context, it denotes authoritative teachings passed down, whether orally or in writing, particularly those from the apostles (1 Cor. 11:2; 2 Thess. 2:15; 3:6). Unlike man-made customs criticized in passages like Matthew 15:2–6, paradosis in Paul's usage refers to foundational doctrines meant to be preserved and practiced across all churches (Mounce, 2019).</p>
+
+    <p>⠀</p>
+
+
+<p>Historically, the church has revered the apostolic traditions—Paul’s included—as authoritative, whether recorded in Scripture or transmitted through established practice. Paul's mention of "traditions" explicitly references teachings and practices he handed down to churches, grounded firmly in divine authority (1 Cor. 11:2).</p>
+<p>⠀</p>
+  
+ <p> These apostolic traditions include the practice of head covering, emphasized not as local customs but as universally applicable instructions reflecting distinctively Christian theology and ethics (Sproul, 1977).</p>
+ <p>⠀</p>
+
+<p>Paul explicitly grounds these traditions in the authority of the Lord rather than cultural norms or societal conventions, asserting them as integral to the identity of Christian communities. The directive in 1 Corinthians 11 is not simply a cultural adaptation but is deeply rooted in the theological foundations of creation order and divine revelation (Witherington, 1995; Schreiner, 2018).
+  
+  <p>⠀</p>
+  <p>As Paul reiterates elsewhere, Christians are to "stand firm and hold to the traditions which you were taught, whether by word of mouth or by letter" (2 Thessalonians 2:15, New American Standard Bible, 1995).</p>
+<p>⠀</p>
+<p>Early Church Fathers like Tertullian and Hippolytus further reinforced this understanding, demonstrating broad early church agreement about the apostolic and theological nature of traditions such as head covering. They considered these traditions vital expressions of humility, submission, and reverence in worship, rather than cultural artifacts open to reinterpretation or dismissal (Bercot, 1992; Hippolytus, Apostolic Tradition).</p>
+    `,
+"head": `
+  <p><strong>Head</strong></p>
+
+  <p>The Greek word kephalē (κεφαλή), occurring 75 times in the New Testament, is commonly translated as “head.” It refers literally to the physical head (e.g., Matt. 5:36), the top or chief part of something (e.g., the cornerstone in Matt. 21:42), and metaphorically to a person in a position of authority or prominence. In theological contexts, such as 1 Corinthians 11:3 and Ephesians 1:22, kephalē denotes leadership or superiority—one who holds a primary or governing position over others (Mounce, 2019).</p>
+      <p>⠀</p>
+
+  <p>
+    The Greek term <em>kephalē</em> ("head") in 
+    <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A3&version=ESV" target="_blank">1 Corinthians 11:3</a> 
+    is central to Paul’s discussion of authority and order within the church. Paul writes: 
+    "the head of every man is Christ, the head of a woman is man, and the head of Christ is God." 
+    Early Christian interpreters saw this verse as establishing a relational hierarchy based on accountability. 
+    For instance, Ambrosiaster (4th century) emphasized that "man was uniquely made in the likeness of God; 
+    a woman is not. She is the likeness of God because of the man," implying a direct reflection of God's 
+    image and authority through the male (Ambrosiaster, Commentary on 
+    <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A7&version=ESV" target="_blank">1 Corinthians 11:7</a>).
+  </p>
+      <p>⠀</p>
+
+  <p>
+    However, other Church Fathers like John Chrysostom warned against overstating Paul's analogy. 
+    Chrysostom clarified that Paul did not intend absolute dominance, pointing out that if he had, 
+    he "would not have brought forward the instance of a wife, but rather of a slave and a master," 
+    stressing instead that a wife, though submissive, is "free" and "equal in honor" 
+    (Chrysostom, <em>Homilies on 1 Corinthians</em> 26). Thus, early Christian interpretation consistently 
+    portrayed the husband’s headship as genuine but marked by love, respect, and limited scope, analogous 
+    to how the Father’s headship over Christ is characterized by equality within the divine nature.
+  </p>
+      <p>⠀</p>
+
+  <p>
+    Modern scholars continue to debate the exact meaning of <em>kephalē</em>—whether it primarily conveys 
+    "authority over," "source/origin," or "preeminence in honor." Some propose Paul meant "source," emphasizing 
+    the creation narrative where Adam is the source of Eve, and God the Father is the source of Christ's incarnate 
+    mission. While this view highlights an ordered relationship without implying a strict hierarchy, the prevailing 
+    scholarly consensus recognizes that in Paul's historical and cultural context, "head" carried a clear nuance 
+    of leadership or authority. Even scholars who prefer the "source" interpretation acknowledge a connotation of 
+    preeminence or leadership.
+  </p>
+      <p>⠀</p>
+
+  <p>
+    Therefore, Paul likely uses "head" to indicate a guiding, governing role: Christ leads man, and man leads woman, 
+    yet always tempered by mutual honor and interdependence, as Paul himself underscores in 
+    <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A11-12&version=ESV" target="_blank">1 Corinthians 11:11–12</a>. 
+    Ultimately, the husband’s leadership is modeled on Christ’s sacrificial and nurturing headship, promoting harmony 
+    rather than domination within the church community.
+  </p>
+`,  
+
+  "idp": `
+    <p><strong>Mutuality</strong></p>
+
+<p>This verse is not meant to negate the earlier teaching about headship or creational order, but to supplement it with a vital truth about mutual dependence. The text explains that “neither is the man without the woman, neither the woman without the man, in the Lord,” emphasizing that while distinctions in roles exist, there is no room for individual autonomy or superiority. Men and women are mutually dependent—a reality grounded in creation and affirmed in the Lord. Woman came from man (creation of Eve), and man is now born of woman, reinforcing that neither sex is self-sufficient (Symbiotic Argument)​ (Schreiner, 2018).
+</p>
+<p>Additionally, proveil.txt explains that this principle affirms the good design of gender relationships in God’s creation. While head coverings represent theological truths about authority and order, the interdependence in verses 11–12 reminds readers that complementarity, not hierarchy alone, defines biblical gender relations​ (Naselli, 2023).
+</p>
+<p>In short, Paul’s statement highlights that though there is a divine order of headship, it is not a license for dominance or self-sufficiency. Rather, it affirms equality in value and interdependence in function, anchoring the gender distinctions in a relational and redemptive context "in the Lord"​.</p>
+    `,
+"Christ": `
+  <p><strong>Christ</strong></p>
+
+  <p>
+    Paul identifies Christ as "the head of every man" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A3&version=ESV" target="_blank">1 Cor 11:3</a>), 
+    situating Him clearly within a structured divine order: God – Christ – man – woman. Early Christian theologians carefully preserved Christ’s equality 
+    with God when interpreting the phrase "the head of Christ is God." They firmly rejected heretical (Arian) interpretations suggesting inferiority. 
+    Church Fathers like John Chrysostom clarified that this headship denotes relational order, not a hierarchy of nature, emphasizing Christ's voluntary submission within the unity 
+    of the Trinity. Chrysostom explains that Christ's obedience to the Father occurred "as the Son of God, <em>as God</em>"—affirming equality in essence while maintaining 
+    relational distinction (Chrysostom, <em>Homilies on 1 Corinthians</em>, 26; cf. 
+    <a href="https://www.biblegateway.com/passage/?search=Philippians%202%3A6-8&version=ESV" target="_blank">Phil 2:6–8</a>).
+  </p>
+    <p>⠀</p>
+  <p>
+    Thus, Christ's headship provides the ultimate example of loving and sacrificial leadership. Every man's accountability to Christ mirrors Christ's 
+    voluntary obedience to the Father, illustrating that authority does not imply inequality. Scholars commonly interpret "the head of Christ is God" 
+    as a functional, relational hierarchy within the Trinity, designed as a model for human relationships rather than implying intrinsic superiority or inferiority. 
+    Paul's language emphasizes a salvation-historical sequence (the Father sending the Son) rather than a strict command hierarchy. Practically, this passage 
+    serves as a reminder that human leadership, modeled after Christ, must be humble, loving, and respectful, reflecting Christ’s own submission to the Father.
+  </p>
+`,
+
+"authority": `
+  <p><strong>Authority</strong></p>
+
+  <p>
+    In <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A10&version=ESV" target="_blank">1 Corinthians 11:10</a>, Paul writes that “a woman ought to have authority (ἐξουσία, <em>exousia</em>) on her head, because of the angels.” Early Christian commentators interpreted this authority as a cloth veil (<em>kalumma</em>) symbolizing a woman’s submission to male headship. For example, Irenaeus explicitly described it as a physical covering worn by women during prayer as an acknowledgment of proper authority and modesty (<em>Against Heresies</em>, 1.8.2). Similarly, Tertullian emphasized that the veil visibly marked a woman's modesty and respect toward both angels and the gathered congregation, representing her recognition of the established spiritual order.
+  </p>
+    <p>⠀</p>
+  <p>
+Contemporary scholars propose alternative interpretations of "authority on her head" in 1 Corinthians 11:10. Morna Hooker (1963) argued it refers to a woman's own authority to actively participate in worship. Philip Barton Payne (2015) supports this view, suggesting head-covering was not customary in Greek religious settings, thus emphasizing women's rightful worship engagement.
+    <p>⠀</p>
+<p>Ben Witherington III (1995) argues Paul's instructions were countercultural, aiming for a distinct Christian identity rather than conforming to Greco-Roman norms. R.C. Sproul similarly sees head-covering as a distinctly Christian, theological command.
+
+Thomas Schreiner (2018) and Roy E. Ciampa and Brian S. Rosner (2020) acknowledge complexity, indicating the authority symbolizes both women's dignity and divine order. Contemporary consensus increasingly views the phrase as affirming women's participation in worship while respecting established divine order and cultural modesty.
+
+
+  </p>
+`,  
+"prays": `
+  <p><strong>Prays</strong></p>
+
+  <p>
+    The phrase "every man who prays or prophesies…" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A4-5&version=ESV" target="_blank">1 Corinthians 11:4–5</a>) explicitly addresses public, audible prayer during corporate worship. Paul's instructions clearly assume active participation by both men and women. He emphasizes decorum: women praying with uncovered heads dishonor their "head," indicating that women were indeed expected and permitted to pray publicly. Early Christian worship notably included women in vocal prayer from its inception (cf. <a href="https://www.biblegateway.com/passage/?search=Acts%201%3A14&version=ESV" target="_blank">Acts 1:14</a>). Church Fathers like Tertullian strongly reinforced this principle, criticizing women who attended worship unveiled, suggesting such actions represented vanity rather than piety (Tertullian, <em>On the Veiling of Virgins</em>, 9).
+        <p>⠀</p>
+  </p>
+    <p><strong>Prophesies</strong></p>
+
+  <p>
+    To "prophesy" in the New Testament context means speaking a divinely inspired message for the community’s edification (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2014%3A3&version=ESV" target="_blank">1 Cor 14:3</a>). In <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A5&version=ESV" target="_blank">1 Corinthians 11:5</a>, Paul explicitly recognizes that women in Corinth were actively prophesying, stating "every woman who prays or prophesies...". This aligns with Joel’s prophecy, echoed in Acts 2:17–18, declaring that both men and women would receive the Spirit and prophesy. The New Testament records instances of women prophets, such as Philip’s four daughters (<a href="https://www.biblegateway.com/passage/?search=Acts%2021%3A9&version=ESV" target="_blank">Acts 21:9</a>). Early Christian tradition respected prophecy as a spiritual gift granted without gender distinction (cf. <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2012%3A28&version=ESV" target="_blank">1 Cor 12:28</a>). Paul’s sole requirement was modest attire, specifically head coverings, signifying appropriate decorum and respect for created order.
+  </p>
+    <p>⠀</p>
+  <p>
+    Historical evidence further supports women's prophetic roles. For example, the late 2nd-century Montanist movement prominently featured female prophets like Priscilla and Maximilla. Although viewed with caution by mainstream church leaders, Montanism highlights that female prophecy was a recognized phenomenon in early Christianity. Paul, notably, does not prohibit women’s prophetic ministry but rather prescribes its decorum. Scholars like Antoinette Wire (1990) suggest Paul’s insistence on head coverings aimed at managing potentially disruptive or assertive behavior among Corinthian prophetesses, reflecting underlying tensions within the community (cf. 1 Cor 14:33–35). Others, including Craig Keener (1992), emphasize that Paul’s primary concern was maintaining humility, order, and visible respect for male headship, not suppressing women's spiritual contributions. 
+        <p>⠀</p>
+
+   <p>Ultimately, 1 Corinthians 11:5 affirms that prophecy was a legitimate ministry for women, regulated by symbolic head coverings to integrate women's spiritual gifts into orderly worship practice.
+  </p>
+`, 
+
+
+"honor": `
+<p>
+      <p><strong>Cultural Honors?</strong></p>
+
+      <p>While adherence to social norms in an honor-shame cultural context might prevent embarrassment or dishonor, Paul's instruction regarding head coverings is presented not merely as culturally relative but as universally binding for all churches, transcending local customs. This is evident in the beginning of Paul's letter "...those sanctified in Christ Jesus" and "...everywhere who call on the name of our Lord Jesus" (1 Corinthians 1-2)</p>
+            
+            <p>Rather than reflecting cultural conformity, Paul's directive establishes a distinctively Christian practice rooted in theological principles of creation order and spiritual realities, intended to promote reverence, modesty, and orderly worship universally (1 Corinthians 11:16; Marlowe, 2005; Sproul, 1977).
+  </p>
+`,
+
+
+"x": `
+  <p><strong>Prophesies</strong></p>
+
+  <p>
+    To "prophesy" in the New Testament context means speaking a divinely inspired message for the community’s edification (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2014%3A3&version=ESV" target="_blank">1 Cor 14:3</a>). In <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A5&version=ESV" target="_blank">1 Corinthians 11:5</a>, Paul explicitly recognizes that women in Corinth were actively prophesying, stating "every woman who prays or prophesies...". This aligns with Joel’s prophecy, echoed in Acts 2:17–18, declaring that both men and women would receive the Spirit and prophesy. The New Testament records instances of women prophets, such as Philip’s four daughters (<a href="https://www.biblegateway.com/passage/?search=Acts%2021%3A9&version=ESV" target="_blank">Acts 21:9</a>). Early Christian tradition respected prophecy as a spiritual gift granted without gender distinction (cf. <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2012%3A28&version=ESV" target="_blank">1 Cor 12:28</a>). Paul’s sole requirement was modest attire, specifically head coverings, signifying appropriate decorum and respect for created order.
+  </p>
+
+  <p>
+    Historical evidence further supports women's prophetic roles. For example, the late 2nd-century Montanist movement prominently featured female prophets like Priscilla and Maximilla. Although viewed with caution by mainstream church leaders, Montanism highlights that female prophecy was a recognized phenomenon in early Christianity. Paul, notably, does not prohibit women’s prophetic ministry but rather prescribes its decorum. Scholars like Antoinette Wire (1990) suggest Paul’s insistence on head coverings aimed at managing potentially disruptive or assertive behavior among Corinthian prophetesses, reflecting underlying tensions within the community (cf. 1 Cor 14:33–35). Others, including Craig Keener (1992), emphasize that Paul’s primary concern was maintaining humility, order, and visible respect for male headship, not suppressing women's spiritual contributions. Ultimately, 1 Corinthians 11:5 affirms that prophecy was a legitimate ministry for women, regulated by symbolic head coverings to integrate women's spiritual gifts into orderly worship practice.
+  </p>
+`,
+"image": `
+  <p><strong>Image</strong></p>
+
+  <p>
+    Paul declares that man "is the image…of God" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A7&version=ESV" target="_blank">1 Cor 11:7</a>), directly alluding to humanity’s original creation in the divine image (<a href="https://www.biblegateway.com/passage/?search=Genesis%201%3A27&version=ESV" target="_blank">Gen 1:27</a>). However, Paul does not explicitly state that woman is God’s image here; instead, he describes woman as the "glory of man." Early interpreters like Ambrosiaster (4th century) saw this omission as significant, asserting that man alone fully reflects God’s image directly, whereas woman reflects God’s likeness indirectly through her relationship with man. Ambrosiaster stated: "A man is formed in the likeness of God and a woman is not. She is the likeness of God because of the man" (Ambrosiaster, <em>Commentary on 1 Corinthians 11:7</em>). Such views historically reinforced hierarchical assumptions about gender roles.
+  </p>
+
+  <p>
+    Conversely, other Church Fathers clarified that Paul was not denying women’s status as image-bearers. Augustine, for example, explicitly affirmed that both men and women equally reflect God's image through rationality and spiritual capacity, even if Paul emphasizes man's chronological primacy in creation (Augustine, <em>On the Trinity</em>, 12.7). 
+        <p>⠀</p>
+        <p>Modern scholarship widely supports Augustine’s inclusive view, emphasizing Genesis 1:27 ("male and female" created in God’s image). Scholars generally interpret Paul’s emphasis on man as God’s image in 1 Corinthians 11 as a functional distinction for the sake of honor in corporate worship rather than ontological inferiority. 
+          
+          
+          <p>⠀</p>
+          <p>Paul's point is practical rather than theological exclusion: man, created directly by God, visibly represents God’s glory through his uncovered head, whereas woman, originating from man (as noted in <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A8&version=ESV" target="_blank">1 Cor 11:8</a>), demonstrates honor and modesty by covering her head. Significantly, Paul balances this distinction by affirming mutual interdependence between men and women "in the Lord" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A11-12&version=ESV" target="_blank">1 Cor 11:11–12</a>). Thus, Paul's intention is to maintain orderly worship through symbolic representation, not to diminish women's equal dignity as image-bearers of God.
+  </p>
+`,
+
+"glory": `
+  <p><strong>Glory</strong></p>
+
+  <p>
+    In 1 Corinthians 11, Paul employs the term "glory" (Greek: <em>doxa</em>) to convey honor, excellence, or reflection. He specifically states that man "is the image and glory of God, but woman is the glory of man" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A7&version=ESV" target="_blank">1 Cor 11:7</a>). To call someone another’s "glory" indicates that person reflects the other's honor or dignity. Therefore, describing woman as "the glory of man" implies that a woman's behavior, particularly a wife's, reflects upon her husband's honor. This aligns with Old Testament wisdom literature, such as Proverbs 12:4, which states, "An excellent wife is the crown of her husband," symbolizing how a wife's virtue contributes directly to her husband’s reputation and honor.
+</p>
+    <p>⠀</p>
+  <p>
+    Early Christian commentators similarly interpreted "woman is the glory of man" as highlighting the social and moral responsibility women bore toward their husbands or fathers. Women’s actions, especially in worship, could either honor or shame their male counterparts. If a Corinthian woman prayed or prophesied publicly without a head covering, she would disgrace her "head" (her husband or father), failing to appropriately represent him (cf. early commentary traditions emphasizing decorum and modesty).
+  </p>
+    <p>⠀</p>
+  <p>Conversely, Paul describes man as "the glory of God," directly reflecting God’s honor and glory in creation. Thus, during public worship, Paul instructs men to keep their heads uncovered as a visible representation of God’s glory. Women, representing man’s glory, are instructed to cover their heads, ensuring attention remains centered on God rather than humanity. Some theologians interpret the veil symbolically, suggesting it covers the woman's glory (representing man's glory), thereby reserving ultimate visibility and honor exclusively for God during worship. Regardless of these nuances, Paul's underlying instruction aims to preserve the proper relational order and honor: men honoring Christ with uncovered heads, women honoring men with covered heads, and ultimately all honoring God, who is the source of honor itself (cf. <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A12&version=ESV" target="_blank">1 Cor 11:12</a>).
+  </p>
+      <p>⠀</p>
+
+  <p>
+    Importantly, Paul does not imply that woman is made in the "image" of man, only that she is man's glory. Both man and woman equally bear God’s image (Gen 1:27). Paul later reinforces mutual interdependence, reminding readers, "all things come from God" (11:12), thereby moderating any overly rigid hierarchical interpretations. His primary goal is practical—ensuring worship reflects proper honor and order within the community.
+  </p>
+`,
+"longHair": `
+  <p><strong>Long Hair</strong></p>
+
+  <p>
+    In concluding his instructions, Paul references "nature" to underline appropriate gender distinctions regarding hair length: "Does not even nature itself teach you that if a man has long hair, it is a dishonor to him, but if a woman has long hair, it is her glory?" (<a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2011%3A14-15&version=ESV" target="_blank">1 Cor 11:14–15</a>). Within Paul's Greco-Roman context, men typically wore their hair short, as long hair was commonly viewed as effeminate or disgraceful. Conversely, a woman’s long hair was culturally celebrated as a sign of beauty, dignity, and honor.
+  </p>
+
+  <p>
+    Early Christian writings echo Paul’s cultural assumptions. Clement of Alexandria, for example, instructed men to maintain short hair, avoiding elaborate styles, whereas women should carefully nurture and maintain their long hair as an adornment symbolizing modesty and femininity (Clement, <em>Paedagogus</em> 3.11). Thus, the early church consistently emphasized distinct hair lengths as a reflection of gender propriety and modesty.
+  </p>
+
+  <p>
+    Paul's appeal to "nature" (<em>physis</em>) is generally understood to refer to an innate sense of social propriety, supported by observable biological differences: women typically can grow and sustain longer hair without balding, reinforcing the cultural norm of women’s long hair as naturally appropriate and honorable.
+  </p>
+`,
+"hair": `
+  <p><strong>Is long hair the covering?</strong></p>
+
+  <p>
+    Paul asserts in 1 Corinthians 11:15 that a woman’s long hair is “given to her” anti peribolaion, meaning “instead of a covering.” This phrase has generated extensive scholarly debate. Some interpreters argue that Paul considers long hair alone sufficient, thereby removing the need for an additional cloth veil. Garland (2003) and Fee (1987) represent this view, suggesting that in the cultural context of Corinth, long hair already signified modesty and propriety, making a physical veil unnecessary.
+  </p>
+
+  <p>
+However, the historical and theological tradition largely opposes this interpretation. Early Church Fathers such as Tertullian explicitly rejected the idea that long hair fulfilled Paul’s command. In On the Veiling of Virgins, Tertullian mocked the notion that hair alone constituted a covering, insisting that Paul required a distinct, material veil during worship (as cited in Bercot, 1992). Hippolytus likewise affirmed the necessity of a substantial veil, further underscoring early church consensus on the matter (as cited in Bercot, 1992). These witnesses demonstrate that the earliest Christians understood Paul’s instructions as a theological ordinance rooted in creation order, not as culturally flexible advice.  </p>
+
+  <p>
+Linguistically, Paul uses different Greek words to make his point. In verses 4–6, he employs katakalyptō, which clearly refers to a cloth covering. In contrast, in verse 15, he uses peribolaion to describe long hair as something nature gives—suggesting that hair is not a substitute but a parallel that supports the principle of modesty (Mounce, 2019). This distinction underlines that Paul is using hair as a natural analogy to reinforce, not replace, the need for a veil.  </p>
+  <p>
+Even scholars like Fee (1987) and Garland (2003), who argue for cultural specificity, admit the complexity of Paul’s language and acknowledge the potential ambiguity in verse 15. They view Paul’s reasoning as rooted in societal decorum, yet concede that his appeal to nature (physis) and creation order carries theological weight (Garland, 2003; Fee, 1987).  </p>
+
+ <p>Taken together, the linguistic distinctions, early church practice, and theological context suggest that Paul viewed long hair as a symbolic foundation that supports—but does not replace—the use of a physical head covering in worship.</p>
+`,
+"angels": `
+  <p><strong>Because of the Angels</strong></p>
+<p>Regarding the phrase "because of the angels" in 1 Corinthians 11:8-10, interpretations historically and presently vary significantly. Early Church Fathers such as Origen suggested that angels were observers of worship, emphasizing the importance of maintaining proper decorum due to the angels' presence (Origen, On Prayer 27). Tertullian similarly argued that substantial coverings were crucial for modesty and proper decorum in worship (Tertullian, On the Veiling of Virgins, Chapter 9, c. 200 AD, as cited in Bercot, 1992). Hippolytus further reinforced this notion, stating explicitly that women must use substantial, opaque coverings to maintain modesty and spiritual decorum (Hippolytus, Apostolic Tradition, Chapter 18, as cited in Bercot, 1992).</p>
+    <p>⠀</p>
+<p>Modern scholarship continues this discourse with diverse interpretations. Naselli argues that head coverings symbolize modesty and submission, particularly in the presence of angels, thereby underscoring the spiritual significance of proper order and submission during worship (Naselli, 2023). Similarly, Schreiner highlights that Paul's reference to angels adds a spiritual dimension, implying that head coverings transcend cultural context and align with divine order (Schreiner, 2018).</p>
+    <p>⠀</p>
+<p>Conversely, Fee (1987) and Garland (2003) suggest that Paul's directive is culturally specific, intended primarily to maintain social decorum and honor within the Corinthian context rather than enforce universal mandates. They posit that the presence of angels could signify respect and dignity rather than strict hierarchical observance (Garland, 2003; Fee, 1987).<p>`,
+
+    "mancover": `
+  <p><strong>Man uncovered?</strong></p>
+
+<p>Covering the head would symbolically dishonor Christ, who is man's spiritual head, suggesting misplaced allegiance to an earthly authority instead (Lipscomb & Shepherd, as cited in Williams, 2005). This teaching marks a shift from Old Testament practices, where priests wore head coverings, to a New Covenant reality in which men have direct access to Christ and no longer require intermediaries.<p>`,
+"nature": `
+  <p><strong>Nature</strong></p>
+
+<p>The Greek word physis (φύσις), appearing 14 times in the New Testament, is typically translated as “nature” and refers to a being’s inherent qualities, native condition, or the natural order of things. It can signify essence (Gal. 4:8), birth or identity (Rom. 2:27; Gal. 2:15; Eph. 2:3), instinct (Rom. 2:14; 1 Cor. 11:14), species (Jas. 3:7), or even the divine nature shared by believers (2 Pet. 1:4). Overall, physis conveys what is perceived as natural, whether biologically, socially, or theologically defined (Mounce, 2019).<p>
+      <p>⠀</p>
+  <p>In 1 Corinthians 11:14, Paul appeals to physis—likely referring to natural instinct or cultural perception—as a guide to what is proper, asserting that even nature teaches it is disgraceful for a man to have long hair.<p>`
+
+};
+
+
+
+    // Attach click events to each underlined (clickable) word.
+    const clickableElements = document.getElementsByClassName("clickable");
+    for (let elem of clickableElements) {
+      elem.addEventListener("click", function() {
+        const commentId = this.getAttribute("data-comment-id");
+        const commentText = commentaryData[commentId] || "No commentary available for this term.";
+        document.getElementById("commentary-content").innerHTML = `<p>${commentText}</p>`;
+        switchSidebarTab('commentary');
+      });
+    }
+
+    // Function to switch between sidebar tabs (Commentary and Reference List)
+    function switchSidebarTab(tab) {
+      const tabs = ["commentary", "references"];
+      tabs.forEach(id => {
+        document.getElementById("tab-" + id).classList.remove("active");
+        document.getElementById("panel-" + id).classList.remove("active");
+      });
+      document.getElementById("tab-" + tab).classList.add("active");
+      document.getElementById("panel-" + tab).classList.add("active");
+    }
+
+    // Function to toggle the sidebar using the icon button.
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const mainContent = document.getElementById("mainContent");
+      const toggleBtn = document.getElementById("toggleSidebarBtn");
+      if (sidebar.style.display === "none") {
+        sidebar.style.display = "block";
+        mainContent.style.width = "60%";
+        toggleBtn.innerHTML = "&#10006;"; // X icon
+      } else {
+        sidebar.style.display = "none";
+        mainContent.style.width = "100%";
+        toggleBtn.innerHTML = "&#9776;"; // Hamburger icon
+      }
+    }
+  </script>
+</body>
+</html>
