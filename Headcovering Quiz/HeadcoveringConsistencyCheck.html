@@ -6,7 +6,7 @@
     <title>Headcovering Consistency Check</title>
   <style>
         /* Reset default margins and ensure full width */
-        * {
+       * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -15,21 +15,21 @@
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
-            margin: 20px auto; /* Keeps quiz content centered */
+            margin: 20px auto;
             padding: 20px;
             background-color: #f5f5f5;
         }
 
         nav {
-            position: fixed; /* Sticks to top of viewport */
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%; /* Full width across the page */
+            width: 100%;
             background: linear-gradient(45deg, #252525, #4a4a4a, #252525);
             background-size: 400% 400%;
             animation: gradientShift 10s ease infinite;
             padding: 5px 10px;
-            z-index: 1000; /* Ensures it stays above other content */
+            z-index: 1000;
         }
 
         @keyframes gradientShift {
@@ -53,23 +53,24 @@
             display: inline-block;
         }
 
-        /* Add padding to body content to avoid overlap with fixed nav */
         .content-wrapper {
-            margin-top: 60px; /* Adjust based on nav height */
+            margin-top: 60px;
         }
 
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px; /* Increased spacing below title */
         }
 
         p {
             text-align: center;
+            margin-bottom: 30px; /* Increased spacing below subtitle */
         }
 
         .question {
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 30px; /* More space between questions */
+            padding: 20px; /* Increased internal padding */
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -80,14 +81,24 @@
             display: block;
         }
 
+        .question p {
+            margin-bottom: 15px; /* Space between question text and options */
+            text-align: left; /* Align question text left for readability */
+        }
+
         label {
             display: block;
-            margin: 5px 0;
+            margin: 10px 0; /* Increased spacing between radio options */
+            padding-left: 25px; /* Space for radio button */
+        }
+
+        input[type="radio"] {
+            margin-right: 10px; /* Space between radio button and text */
         }
 
         .button-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px; /* More space above buttons */
         }
 
         button {
@@ -120,8 +131,8 @@
         #result {
             text-align: left;
             font-size: 18px;
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 30px; /* More space above results */
+            padding: 20px; /* Increased padding */
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -130,6 +141,7 @@
 
         #result h2 {
             margin-top: 0;
+            margin-bottom: 15px; /* Space below results header */
         }
     </style>
 </head>
