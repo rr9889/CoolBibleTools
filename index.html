@@ -1,605 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Draggable Whiteboard with Resizable Icon Menus</title>
-  <style>
-    /* Global Layout & Dark Theme */
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      background-color: #1e1e1e;
-      color: #ccc;
-    }
-    #container {
-      display: flex;
-      height: 100vh;
-    }
-    /* Left Menu (Photoshop-like dark style) */
-    #leftMenu {
-      background-color: #2d2d30;
-      width: 250px;
-      transition: width 0.3s;
-      position: relative;
-      border-right: 1px solid #555;
-    }
-    #leftMenu.minimized {
-      width: 30px;
-    }
-    /* Right Menu */
-    #rightMenu {
-      background-color: #2d2d30;
-      width: 250px;
-      transition: width 0.3s;
-      position: relative;
-      border-left: 1px solid #555;
-    }
-    #rightMenu.minimized {
-      width: 30px;
-    }
-    /* Toggle Buttons for Side Menus */
-    .toggle-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      width: 30px;
-      height: 30px;
-      color: #ccc;
-    }
-    /* The menu content wrapper: hidden when minimized */
-    .menu-content {
-      padding: 10px;
-      overflow-y: auto;
-      height: calc(100% - 40px);
-    }
-    /* Resize Handle for Side Menus */
-    .resize-handle {
-      position: absolute;
-      top: 0;
-      width: 5px;
-      height: 100%;
-      cursor: ew-resize;
-      background-color: rgba(255,255,255,0.1);
-      z-index: 10;
-    }
-    /* Left menu: handle on right edge */
-    #leftResizeHandle {
-      right: 0;
-    }
-    /* Right menu: handle on left edge */
-    #rightResizeHandle {
-      left: 0;
-    }
-    /* Main Area */
-    #mainArea {
-      flex: 1;
-      position: relative;
-      overflow: auto;
-      background: #444;
-    }
-    /* Whiteboard (larger draggable area) */
-    #whiteboard {
-      position: relative;
-      width: 2000px;
-      height: 1500px;
-      background-color: #fff;
-      border: 2px solid #000;
-      margin: 20px;
-    }
-    /* Drawing canvas (overlay) */
-    #drawCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-    /* Resize handle for whiteboard */
-    #resizeHandle {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      bottom: 0;
-      right: 0;
-      background-color: gray;
-      cursor: se-resize;
-      z-index: 4;
-    }
-    /* Draggable text boxes */
-    .draggable {
-      position: absolute;
-      cursor: move;
-      user-select: none;
-      border: 1px solid #ccc;
-      padding: 5px;
-      background-color: rgba(255, 255, 255, 0.8);
-      color: #000;
-      max-width: 300px;
-      word-wrap: break-word;
-      z-index: 2;
-    }
-    .draggable .word { background-color: transparent; }
-    .selectedBox { border: 3px dashed red; }
-    /* Inputs & Buttons in Menus */
-    input[type="text"], input[type="color"], input[type="range"] {
-      width: 100%;
-      padding: 5px;
-      margin: 5px 0;
-      font-size: 16px;
-      background-color: #3f3f46;
-      color: #ccc;
-      border: 1px solid #555;
-    }
-    button.menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 5px 0;
-      padding: 5px;
-      color: #ccc;
-    }
-    /* Color Palette */
-    #colorPalette .color-swatch {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      margin: 0 5px 5px 0;
-      border: 2px solid transparent;
-      cursor: pointer;
-    }
-    #colorPalette .color-swatch.selected { border-color: #fff; }
-    /* Pen Controls styling */
-    #penControls label { margin-right: 5px; }
-    /* Research iframe */
-    #researchFrame {
-      width: 100%;
-      height: 300px;
-      border: 1px solid #555;
-      margin-top: 10px;
-      background: #fff;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub HTML File Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        #searchBar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .file-item:hover {
+            background: #e0e0e0;
+        }
+    </style>
 </head>
 <body>
-  <div id="container">
-    <!-- Left Sidebar: Main Controls -->
-    <div id="leftMenu">
-      <button id="toggleLeftMenu" class="toggle-btn" title="Toggle Menu">
-        <svg id="toggleLeftIcon" width="20" height="20" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M9 6l-6 6 6 6V6z"/>
-        </svg>
-      </button>
-      <div id="leftContent" class="menu-content">
-        <!-- Free Text Insertion & Color Palette -->
-        <input type="text" id="textInput" placeholder="Enter text">
-        <div id="colorPalette"></div>
-        <button id="insertButton" class="menu-btn" title="Insert Text">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M5 4v3h5.5v12h3V7H19V4z"/>
-          </svg>
-        </button>
-        <!-- Bible Verse Search -->
-        <input type="text" id="bibleRefInput" placeholder="Bible ref (e.g., John 3:16)">
-        <button id="searchVerseButton" class="menu-btn" title="Bible Verse">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M19 2H10a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM9 20a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h.07A4 4 0 0 0 5 6v12a4 4 0 0 0 4 4H9zm7 0h-5V3h5v17z"/>
-          </svg>
-        </button>
-        <!-- All Clear -->
-        <button id="clearButton" class="menu-btn" title="All Clear">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M3 6h18v2H3zm2 3h14v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9zm5 2v8h2v-8H10zm4 0v8h2v-8h-2z"/>
-          </svg>
-        </button>
-        <!-- Pen, Eraser & Highlighter Controls -->
-        <div id="penControls">
-          <button id="penModeButton" class="menu-btn" title="Pen Mode">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M3 17.25V21h3.75l11.02-11.02-3.75-3.75L3 17.25zM20.71 7.04a1.001 1.001 0 0 0 0-1.41l-2.34-2.34a1.001 1.001 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            </svg>
-          </button>
-          <button id="eraserModeButton" class="menu-btn" title="Eraser Mode">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M16.24 3.94c-.39-.39-1.02-.39-1.41 0l-2.34 2.34 3.75 3.75 2.34-2.34c.39-.39.39-1.02 0-1.41l-2.34-2.34zM3 17.25V21h3.75l11.02-11.02-3.75-3.75L3 17.25z"/>
-            </svg>
-          </button>
-          <button id="highlighterModeButton" class="menu-btn" title="Highlighter Mode">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M6 2l12 12-2 2L4 4l2-2zm14 10l-4-4 2-2c.39-.39 1.02-.39 1.41 0l.59.59c.39.39.39 1.02 0 1.41l-2 2z"/>
-            </svg>
-          </button>
-          <label for="penThickness">Thickness:</label>
-          <input type="range" id="penThickness" min="1" max="10" value="3">
-          <label for="penColor">Pen Color:</label>
-          <input type="color" id="penColor" value="#000000">
-          <label for="highlighterColor">Highlighter:</label>
-          <input type="color" id="highlighterColor" value="#ffff00">
-        </div>
-      </div>
-      <!-- Left Resize Handle -->
-      <div id="leftResizeHandle" class="resize-handle"></div>
-    </div>
+    <h1>GitHub HTML File Search</h1>
+    <input type="text" id="searchBar" placeholder="Search HTML files...">
+    <ul id="fileList" class="file-list"></ul>
 
-    <!-- Main Area: Whiteboard -->
-    <div id="mainArea">
-      <div id="whiteboard">
-        <canvas id="drawCanvas"></canvas>
-        <div id="eraserPreview"></div>
-        <div id="resizeHandle"></div>
-      </div>
-    </div>
+    <script>
+        // Replace with your GitHub username and repository name
+        const username = 'YOUR_USERNAME';
+        const repo = 'YOUR_REPOSITORY';
+        const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
 
-    <!-- Right Sidebar: Research Menu -->
-    <div id="rightMenu">
-      <button id="toggleRightMenu" class="toggle-btn" title="Toggle Menu">
-        <svg id="toggleRightIcon" width="20" height="20" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M15 6l6 6-6 6V6z"/>
-        </svg>
-      </button>
-      <div id="rightContent" class="menu-content">
-        <input type="text" id="researchInput" placeholder="Enter research query">
-        <button id="researchButton" class="menu-btn" title="Research">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-        </button>
-        <iframe id="researchFrame" src="about:blank"></iframe>
-      </div>
-      <!-- Right Resize Handle -->
-      <div id="rightResizeHandle" class="resize-handle"></div>
-    </div>
-  </div>
+        let allFiles = [];
 
-  <script>
-    /* ===== Sidebar Toggle Functions ===== */
-    const leftMenu = document.getElementById("leftMenu");
-    const leftContent = document.getElementById("leftContent");
-    const toggleLeftMenu = document.getElementById("toggleLeftMenu");
-    const toggleLeftIcon = document.getElementById("toggleLeftIcon");
-    
-    toggleLeftMenu.addEventListener("click", () => {
-      leftMenu.classList.toggle("minimized");
-      leftContent.style.display = leftMenu.classList.contains("minimized") ? "none" : "block";
-      // Change icon accordingly
-      toggleLeftIcon.innerHTML = leftMenu.classList.contains("minimized")
-        ? `<path fill="currentColor" d="M15 6l6 6-6 6V6z"/>`
-        : `<path fill="currentColor" d="M9 6l-6 6 6 6V6z"/>`;
-    });
-    
-    const rightMenu = document.getElementById("rightMenu");
-    const rightContent = document.getElementById("rightContent");
-    const toggleRightMenu = document.getElementById("toggleRightMenu");
-    const toggleRightIcon = document.getElementById("toggleRightIcon");
-    
-    toggleRightMenu.addEventListener("click", () => {
-      rightMenu.classList.toggle("minimized");
-      rightContent.style.display = rightMenu.classList.contains("minimized") ? "none" : "block";
-      toggleRightIcon.innerHTML = rightMenu.classList.contains("minimized")
-        ? `<path fill="currentColor" d="M9 6l-6 6 6 6V6z"/>`
-        : `<path fill="currentColor" d="M15 6l6 6-6 6V6z"/>`;
-    });
-    
-    /* ===== Sidebar Resizing ===== */
-    // Left Menu Resize
-    const leftResizeHandle = document.getElementById("leftResizeHandle");
-    leftResizeHandle.addEventListener("mousedown", e => {
-      // Ensure the menu is expanded
-      leftMenu.classList.remove("minimized");
-      leftContent.style.display = "block";
-      const startX = e.clientX;
-      const startWidth = leftMenu.offsetWidth;
-      function onMouseMove(e) {
-        const newWidth = Math.max(50, startWidth + (e.clientX - startX));
-        leftMenu.style.width = newWidth + "px";
-      }
-      function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      }
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-    
-    // Right Menu Resize
-    const rightResizeHandle = document.getElementById("rightResizeHandle");
-    rightResizeHandle.addEventListener("mousedown", e => {
-      rightMenu.classList.remove("minimized");
-      rightContent.style.display = "block";
-      const startX = e.clientX;
-      const startWidth = rightMenu.offsetWidth;
-      function onMouseMove(e) {
-        const newWidth = Math.max(50, startWidth - (e.clientX - startX));
-        rightMenu.style.width = newWidth + "px";
-      }
-      function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      }
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-    
-    /* ===== Color Palette & Text Insertion ===== */
-    const paletteColors = [
-      "#ffcccc", "#ffe5cc", "#ffffcc",
-      "#e6ffe6", "#cce5ff", "#f2e6ff", "#f0f0f0"
-    ];
-    let selectedColor = paletteColors[0];
-    const colorPalette = document.getElementById("colorPalette");
-    paletteColors.forEach((color, index) => {
-      const swatch = document.createElement("div");
-      swatch.className = "color-swatch";
-      swatch.style.backgroundColor = color;
-      if(index === 0) swatch.classList.add("selected");
-      swatch.addEventListener("click", () => {
-        selectedColor = color;
-        document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
-        swatch.classList.add("selected");
-      });
-      colorPalette.appendChild(swatch);
-    });
-    
-    const insertButton = document.getElementById("insertButton");
-    const textInput = document.getElementById("textInput");
-    const whiteboard = document.getElementById("whiteboard");
-    let currentSelected = null;
-    function clearSelection() {
-      document.querySelectorAll(".draggable").forEach(elem => {
-        elem.classList.remove("selectedBox");
-      });
-      currentSelected = null;
-    }
-    function insertTextElement(text) {
-      const textElem = document.createElement("div");
-      const words = text.split(" ");
-      textElem.innerHTML = words.map(word => `<span class="word">${word}</span>`).join(" ");
-      textElem.style.backgroundColor = selectedColor;
-      textElem.className = "draggable";
-      textElem.style.left = "10px";
-      textElem.style.top = "10px";
-    
-      // Highlighter toggling on each word
-      textElem.querySelectorAll(".word").forEach(span => {
-        span.addEventListener("click", function(e) {
-          if(highlighterModeActive) {
-            span.style.backgroundColor = (span.style.backgroundColor === highlighterColorInput.value)
-              ? "transparent" : highlighterColorInput.value;
-            e.stopPropagation();
-          }
+        // Fetch files from GitHub repository
+        async function fetchFiles(url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        // Optional: Add GitHub token if rate-limited
+                        // 'Authorization': 'token YOUR_PERSONAL_ACCESS_TOKEN'
+                    }
+                });
+                const data = await response.json();
+                
+                // Filter for HTML files and recurse directories
+                for (const item of data) {
+                    if (item.type === 'file' && item.name.endsWith('.html')) {
+                        allFiles.push({
+                            name: item.name,
+                            url: item.html_url
+                        });
+                    } else if (item.type === 'dir') {
+                        await fetchFiles(item.url);
+                    }
+                }
+                displayFiles(allFiles);
+            } catch (error) {
+                console.error('Error fetching files:', error);
+                fileList.innerHTML = '<li>Error loading files</li>';
+            }
+        }
+
+        // Display files in the list
+        function displayFiles(files) {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const li = document.createElement('li');
+                li.className = 'file-item';
+                li.textContent = file.name;
+                li.addEventListener('click', () => {
+                    window.open(file.url, '_blank');
+                });
+                fileList.appendChild(li);
+            });
+        }
+
+        // Search functionality
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredFiles = allFiles.filter(file => 
+                file.name.toLowerCase().includes(searchTerm)
+            );
+            displayFiles(filteredFiles);
         });
-      });
-      // Select for dragging
-      textElem.addEventListener("click", function(e) {
-        if(highlighterModeActive) { e.stopPropagation(); return; }
-        e.stopPropagation();
-        clearSelection();
-        textElem.classList.add("selectedBox");
-        currentSelected = textElem;
-      });
-      let offsetX, offsetY;
-      textElem.addEventListener("mousedown", function(e) {
-        if(highlighterModeActive) return;
-        clearSelection();
-        textElem.classList.add("selectedBox");
-        currentSelected = textElem;
-        offsetX = e.clientX - textElem.getBoundingClientRect().left;
-        offsetY = e.clientY - textElem.getBoundingClientRect().top;
-        function mouseMoveHandler(e) {
-          const boardRect = whiteboard.getBoundingClientRect();
-          let newLeft = e.clientX - boardRect.left - offsetX;
-          let newTop = e.clientY - boardRect.top - offsetY;
-          newLeft = Math.max(0, Math.min(newLeft, boardRect.width - textElem.offsetWidth));
-          newTop = Math.max(0, Math.min(newTop, boardRect.height - textElem.offsetHeight));
-          textElem.style.left = newLeft + "px";
-          textElem.style.top = newTop + "px";
-        }
-        function mouseUpHandler() {
-          document.removeEventListener("mousemove", mouseMoveHandler);
-          document.removeEventListener("mouseup", mouseUpHandler);
-        }
-        document.addEventListener("mousemove", mouseMoveHandler);
-        document.addEventListener("mouseup", mouseUpHandler);
-      });
-      whiteboard.appendChild(textElem);
-    }
-    insertButton.addEventListener("click", () => {
-      const textValue = textInput.value.trim();
-      if(textValue === "") return;
-      insertTextElement(textValue);
-      textInput.value = "";
-    });
-    
-    /* ===== Bible Verse Search (NIV Translation) ===== */
-    const bibleRefInput = document.getElementById("bibleRefInput");
-    const searchVerseButton = document.getElementById("searchVerseButton");
-    searchVerseButton.addEventListener("click", () => {
-      const ref = bibleRefInput.value.trim();
-      if(ref === "") return;
-      const formattedRef = encodeURIComponent(ref);
-      // Changed translation parameter to 'niv'
-      const apiUrl = `https://bible-api.com/${formattedRef}?translation=kjv`;
-      fetch(apiUrl)
-        .then(response => {
-          if(!response.ok) throw new Error("Verse not found or API error.");
-          return response.json();
-        })
-        .then(data => {
-          const verseText = `${data.reference} - ${data.text}`;
-          insertTextElement(verseText);
-        })
-        .catch(error => alert(error.message));
-      bibleRefInput.value = "";
-    });
-    
-    /* ===== All Clear ===== */
-    const clearButton = document.getElementById("clearButton");
-    clearButton.addEventListener("click", () => {
-      document.querySelectorAll(".draggable").forEach(elem => elem.remove());
-      ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-      currentSelected = null;
-    });
-    document.addEventListener("keydown", e => {
-      if(e.key === "Delete" && currentSelected) {
-        currentSelected.remove();
-        currentSelected = null;
-      }
-    });
-    whiteboard.addEventListener("click", () => {
-      clearSelection();
-    });
-    
-    /* ===== Drawing Setup (Pen, Eraser, Highlighter) ===== */
-    const penModeButton = document.getElementById("penModeButton");
-    const eraserModeButton = document.getElementById("eraserModeButton");
-    const highlighterModeButton = document.getElementById("highlighterModeButton");
-    const highlighterColorInput = document.getElementById("highlighterColor");
-    const penThicknessInput = document.getElementById("penThickness");
-    const penColorInput = document.getElementById("penColor");
-    let penModeActive = false, eraserModeActive = false, highlighterModeActive = false;
-    
-    // Drawing canvas resize
-    const drawCanvas = document.getElementById("drawCanvas");
-    function resizeCanvas() {
-      drawCanvas.width = whiteboard.clientWidth;
-      drawCanvas.height = whiteboard.clientHeight;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-    const ctx = drawCanvas.getContext("2d");
-    // Set smoother drawing properties
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    let isDrawing = false, lastX = 0, lastY = 0;
-    
-    // Pen Mode
-    penModeButton.addEventListener("click", () => {
-      penModeActive = !penModeActive;
-      if(penModeActive) {
-        eraserModeActive = false;
-        highlighterModeActive = false;
-        whiteboard.style.cursor = "crosshair";
-      } else {
-        whiteboard.style.cursor = "default";
-      }
-      drawCanvas.style.pointerEvents = (penModeActive || eraserModeActive) ? "auto" : "none";
-    });
-    
-    // Eraser Mode
-    eraserModeButton.addEventListener("click", () => {
-      eraserModeActive = !eraserModeActive;
-      if(eraserModeActive) {
-        penModeActive = false;
-        highlighterModeActive = false;
-        whiteboard.style.cursor = "none";
-        eraserPreview.style.display = "block";
-      } else {
-        eraserPreview.style.display = "none";
-        whiteboard.style.cursor = "default";
-      }
-      drawCanvas.style.pointerEvents = (penModeActive || eraserModeActive) ? "auto" : "none";
-    });
-    
-    // Highlighter Mode
-    highlighterModeButton.addEventListener("click", () => {
-      highlighterModeActive = !highlighterModeActive;
-      if(highlighterModeActive) {
-        penModeActive = false;
-        eraserModeActive = false;
-        whiteboard.style.cursor = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"4\" height=\"4\"><circle cx=\"2\" cy=\"2\" r=\"2\" fill=\"black\"/></svg>') 2 2, auto";
-      } else {
-        whiteboard.style.cursor = "default";
-      }
-      drawCanvas.style.pointerEvents = (penModeActive || eraserModeActive) ? "auto" : "none";
-    });
-    
-    // Eraser preview indicator
-    const eraserPreview = document.getElementById("eraserPreview");
-    function updateEraserPreviewSize() {
-      const thickness = penThicknessInput.value;
-      eraserPreview.style.width = thickness + "px";
-      eraserPreview.style.height = thickness + "px";
-    }
-    penThicknessInput.addEventListener("input", updateEraserPreviewSize);
-    updateEraserPreviewSize();
-    
-    // Drawing events
-    drawCanvas.addEventListener("mousedown", e => {
-      if(!(penModeActive || eraserModeActive)) return;
-      isDrawing = true;
-      const rect = drawCanvas.getBoundingClientRect();
-      lastX = e.clientX - rect.left;
-      lastY = e.clientY - rect.top;
-    });
-    drawCanvas.addEventListener("mousemove", e => {
-      if(!isDrawing || !(penModeActive || eraserModeActive)) return;
-      const rect = drawCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.strokeStyle = eraserModeActive ? "#ffffff" : penColorInput.value;
-      ctx.lineWidth = penThicknessInput.value;
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      lastX = x;
-      lastY = y;
-    });
-    drawCanvas.addEventListener("mouseup", () => isDrawing = false);
-    drawCanvas.addEventListener("mouseout", () => isDrawing = false);
-    
-    // Eraser preview follows mouse
-    whiteboard.addEventListener("mousemove", e => {
-      if(eraserModeActive) {
-        const rect = whiteboard.getBoundingClientRect();
-        const thickness = penThicknessInput.value;
-        eraserPreview.style.left = (e.clientX - rect.left - thickness/2) + "px";
-        eraserPreview.style.top = (e.clientY - rect.top - thickness/2) + "px";
-      }
-    });
-    whiteboard.addEventListener("mouseleave", () => {
-      if(eraserModeActive) eraserPreview.style.display = "none";
-    });
-    whiteboard.addEventListener("mouseenter", () => {
-      if(eraserModeActive) eraserPreview.style.display = "block";
-    });
-    
-    /* ===== Research Sidebar (Bing Search) ===== */
-    const researchInput = document.getElementById("researchInput");
-    const researchButton = document.getElementById("researchButton");
-    const researchFrame = document.getElementById("researchFrame");
-    researchButton.addEventListener("click", () => {
-      const query = researchInput.value.trim();
-      if(query === "") return;
-      const url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
-      researchFrame.src = url;
-    });
-    
-    /* ===== Whiteboard Resize Handle ===== */
-    const resizeHandle = document.getElementById("resizeHandle");
-    resizeHandle.addEventListener("mousedown", e => {
-      e.preventDefault();
-      e.stopPropagation();
-      const startX = e.clientX;
-      const startY = e.clientY;
-      const startWidth = whiteboard.offsetWidth;
-      const startHeight = whiteboard.offsetHeight;
-      function onMouseMove(e) {
-        const newWidth = startWidth + (e.clientX - startX);
-        const newHeight = startHeight + (e.clientY - startY);
-        whiteboard.style.width = newWidth + "px";
-        whiteboard.style.height = newHeight + "px";
-        resizeCanvas();
-      }
-      function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      }
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-  </script>
+
+        // Initial fetch
+        fetchFiles(apiUrl);
+    </script>
 </body>
 </html>
