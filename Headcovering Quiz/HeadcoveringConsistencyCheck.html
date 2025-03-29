@@ -5,20 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Headcovering Consistency Check</title>
   <style>
+        /* Reset default margins and ensure full width */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
-            margin: 20px auto;
+            margin: 20px auto; /* Keeps quiz content centered */
             padding: 20px;
             background-color: #f5f5f5;
         }
 
         nav {
+            position: fixed; /* Sticks to top of viewport */
+            top: 0;
+            left: 0;
+            width: 100%; /* Full width across the page */
             background: linear-gradient(45deg, #252525, #4a4a4a, #252525);
             background-size: 400% 400%;
             animation: gradientShift 10s ease infinite;
             padding: 5px 10px;
-            margin-bottom: 20px; /* Added spacing below nav */
+            z-index: 1000; /* Ensures it stays above other content */
         }
 
         @keyframes gradientShift {
@@ -40,6 +51,11 @@
             padding: 5px 10px;
             border: 2px solid white;
             display: inline-block;
+        }
+
+        /* Add padding to body content to avoid overlap with fixed nav */
+        .content-wrapper {
+            margin-top: 60px; /* Adjust based on nav height */
         }
 
         h1 {
