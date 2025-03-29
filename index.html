@@ -43,7 +43,7 @@
         const username = 'rr9889';
         const repo = 'CoolBibleTools';
         const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-        const baseUrl = `https://${username}.github.io/${repo}/`; // Base URL for published pages
+        const baseUrl = `https://${username}.github.io/${repo}/`;
 
         let allFiles = [];
 
@@ -67,12 +67,14 @@
                     throw new Error('Unexpected API response: data is not an array');
                 }
 
-                // Filter for HTML files and recurse directories
+                // Process each item
                 for (const item of data) {
                     if (item.type === 'file' && item.name.endsWith('.html')) {
+                        const title = await fetchTitle(item.download_url);
                         allFiles.push({
-                            name: item.name,
-                            url: `${baseUrl}${path}${item.name}` // Construct published URL
+                            name: title || item.name, // Use title if available, fallback to filename
+                            url: `${baseUrl}${path}${item.name}`,
+                            filename: item.name // Store filename for search
                         });
                     } else if (item.type === 'dir') {
                         await fetchFiles(item.url, `${path}${item.name}/`);
@@ -83,6 +85,20 @@
                 console.error('Error fetching files:', error);
                 const fileList = document.getElementById('fileList');
                 fileList.innerHTML = `<li>Error: ${error.message}</li>`;
+            }
+        }
+
+        // Fetch the <title> from an HTML file
+        async function fetchTitle(downloadUrl) {
+            try {
+                const response = await fetch(downloadUrl);
+                if (!response.ok) return null;
+                const html = await response.text();
+                const match = html.match(/<title>(.*?)<\/title>/i);
+                return match ? match[1] : null;
+            } catch (error) {
+                console.error('Error fetching title:', error);
+                return null;
             }
         }
 
@@ -106,7 +122,8 @@
         searchBar.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
             const filteredFiles = allFiles.filter(file => 
-                file.name.toLowerCase().includes(searchTerm)
+                file.name.toLowerCase().includes(searchTerm) ||
+                file.filename.toLowerCase().includes(searchTerm)
             );
             displayFiles(filteredFiles);
         });
