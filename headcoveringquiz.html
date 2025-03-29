@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pauline Consistency Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .question.active {
+            display: block;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #prevBtn {
+            background-color: #6c757d;
+        }
+        #prevBtn:hover {
+            background-color: #5a6268;
+        }
+        #submitBtn, #redoBtn {
+            display: none;
+        }
+        #result {
+            text-align: left;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        #result h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pauline Consistency Check</h1>
+    <p style="text-align: center;">How steady is your stance on Paul’s teachings?</p>
+
+    <form id="quizForm">
+        <div id="q1" class="question active">
+            <p>1. Is the Bible’s authority timeless, beyond human trends?</p>
+            <label><input type="radio" name="q1" value="1"> Yes</label>
+            <label><input type="radio" name="q1" value="0"> No</label>
+        </div>
+
+        <div id="q1a" class="question">
+            <p>1a. Is head covering a cultural practice or an apostolic teaching?</p>
+            <label><input type="radio" name="q1a" value="0"> Cultural</label>
+            <label><input type="radio" name="q1a" value="1"> Apostolic</label>
+        </div>
+
+        <div id="q2" class="question">
+            <p>2. Is the headship order (God → Christ → man → woman) a permanent truth?</p>
+            <label><input type="radio" name="q2" value="1"> Yes</label>
+            <label><input type="radio" name="q2" value="0"> No</label>
+        </div>
+
+        <div id="q2a" class="question">
+            <p>2a. Does head covering reflect this headship order?</p>
+            <label><input type="radio" name="q2a" value="1"> Yes</label>
+            <label><input type="radio" name="q2a" value="0"> No</label>
+        </div>
+
+        <div id="q3" class="question">
+            <p>3. Does dishonoring authority reflect a spiritual failing?</p>
+            <label><input type="radio" name="q3" value="1"> Yes</label>
+            <label><input type="radio" name="q3" value="0"> No</label>
+        </div>
+
+        <div id="q3a" class="question">
+            <p>3a. Is head covering tied to honoring authority?</p>
+            <label><input type="radio" name="q3a" value="1"> Yes</label>
+            <label><input type="radio" name="q3a" value="0"> No</label>
+        </div>
+
+        <div id="q4" class="question">
+            <p>4. Should scripture’s plain meaning guide us over personal comfort?</p>
+            <label><input type="radio" name="q4" value="1"> Yes</label>
+            <label><input type="radio" name="q4" value="0"> No</label>
+        </div>
+
+        <div id="q4a" class="question">
+            <p>4a. Is head covering a plain scriptural instruction?</p>
+            <label><input type="radio" name="q4a" value="1"> Yes</label>
+            <label><input type="radio" name="q4a" value="0"> No</label>
+        </div>
+
+        <div id="q5" class="question">
+            <p>5. Do you weigh some Bible commands as less important than others?</p>
+            <label><input type="radio" name="q5" value="1"> Yes</label>
+            <label><input type="radio" name="q5" value="0"> No</label>
+        </div>
+
+        <div class="button-container">
+            <button type="button" id="prevBtn" onclick="prevQuestion()" style="display: none;">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button type="button" id="submitBtn" onclick="calculateResult()">See Your Results</button>
+            <button type="button" id="redoBtn" onclick="redoQuiz()">Redo Quiz</button>
+        </div>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        let currentQuestion = 'q1';
+        let baseScore = 0;
+        let apostolicScore = 0;
+        let answers = {};
+        let questionOrder = ['q1'];
+
+        function nextQuestion() {
+            const form = document.getElementById('quizForm');
+            const current = document.getElementById(currentQuestion);
+            const selected = form.querySelector(`input[name="${currentQuestion}"]:checked`);
+
+            if (!selected) {
+                alert('Please answer the question!');
+                return;
+            }
+
+            answers[currentQuestion] = selected.value;
+
+            if (['q1', 'q2', 'q3', 'q4', 'q5'].includes(currentQuestion)) {
+                baseScore += parseInt(selected.value);
+            } else if (['q1a', 'q2a', 'q3a', 'q4a'].includes(currentQuestion) && selected.value === '1') {
+                apostolicScore += 1;
+            }
+
+            current.classList.remove('active');
+
+            let nextQ;
+            if (currentQuestion === 'q1' && selected.value === '1') {
+                nextQ = 'q1a';
+            } else if (currentQuestion === 'q1a') {
+                nextQ = 'q2';
+            } else if (currentQuestion === 'q2' && selected.value === '1') {
+                nextQ = 'q2a';
+            } else if (currentQuestion === 'q2a') {
+                nextQ = 'q3';
+            } else if (currentQuestion === 'q3' && selected.value === '1') {
+                nextQ = 'q3a';
+            } else if (currentQuestion === 'q3a') {
+                nextQ = 'q4';
+            } else if (currentQuestion === 'q4' && selected.value === '1') {
+                nextQ = 'q4a';
+            } else if (currentQuestion === 'q4a') {
+                nextQ = 'q5';
+            } else if (currentQuestion === 'q5') {
+                document.getElementById('submitBtn').style.display = 'inline-block';
+                document.getElementById('nextBtn').style.display = 'none';
+                return;
+            } else {
+                nextQ = { 'q1': 'q2', 'q2': 'q3', 'q3': 'q4', 'q4': 'q5' }[currentQuestion] || 'q5';
+            }
+
+            currentQuestion = nextQ;
+            questionOrder.push(nextQ);
+            document.getElementById(nextQ).classList.add('active');
+            document.getElementById('prevBtn').style.display = 'inline-block';
+        }
+
+        function prevQuestion() {
+            if (questionOrder.length <= 1) return;
+
+            const current = document.getElementById(currentQuestion);
+            current.classList.remove('active');
+
+            if (['q1', 'q2', 'q3', 'q4', 'q5'].includes(currentQuestion)) {
+                baseScore -= parseInt(answers[currentQuestion]);
+            } else if (['q1a', 'q2a', 'q3a', 'q4a'].includes(currentQuestion) && answers[currentQuestion] === '1') {
+                apostolicScore -= 1;
+            }
+
+            delete answers[currentQuestion];
+            questionOrder.pop();
+            currentQuestion = questionOrder[questionOrder.length - 1];
+            document.getElementById(currentQuestion).classList.add('active');
+
+            if (questionOrder.length === 1) {
+                document.getElementById('prevBtn').style.display = 'none';
+            }
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('redoBtn').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function calculateResult() {
+            const resultDiv = document.getElementById('result');
+            let diagnosis, conclusion, suggestion, verse;
+
+            let culturalScore = (answers.q1a === '0') ? 1 : 0;
+
+            // Diagnosis and conclusions
+            if (baseScore <= 1 || (baseScore === 2 && culturalScore)) {
+                diagnosis = "Detached: You see little weight in Paul’s logic or lean cultural. Consistent, but distant.";
+                conclusion = "You likely view scripture, including head coverings, as flexible or culturally bound, not fully authoritative.";
+                suggestion = "Consider if dismissing Paul’s teachings risks missing God’s design. Reflect on 2 Timothy 3:16—‘All Scripture is God-breathed and useful for teaching.’";
+                verse = "2 Timothy 3:16";
+            } else if (baseScore <= 3 && !answers.q5) {
+                diagnosis = "Steady Skeptic: You partly align with Paul and don’t pick and choose. No hypocrisy here.";
+                conclusion = "You accept some of Paul’s logic (e.g., headship or authority) but not its full implications, like head coverings, without inconsistency.";
+                suggestion = "Explore if partial alignment fully honors scripture. See 1 Corinthians 11:3—headship’s order might call for deeper study.";
+                verse = "1 Corinthians 11:3";
+            } else if (baseScore <= 3 && answers.q5 === '1') {
+                diagnosis = "Mixed Signals: You see some of Paul’s grounds but admit selectivity. Convenience over duty?";
+                conclusion = "You recognize parts of Paul’s theology but choose which commands matter, possibly sidelining head coverings.";
+                suggestion = "Reassess selective obedience—James 4:17 warns, ‘If anyone knows the good they ought to do and doesn’t, it is sin.’";
+                verse = "James 4:17";
+            } else if (baseScore === 4 && answers.q5 === '0' && apostolicScore >= 3) {
+                diagnosis = "Aligned: You affirm Paul’s apostolic teaching and follow through. Solid ground.";
+                conclusion = "You consistently uphold Paul’s theology, likely including head coverings as apostolic, not cultural.";
+                suggestion = "Keep standing firm—Ephesians 6:13 says, ‘Put on the full armor of God, so you can stand your ground.’";
+                verse = "Ephesians 6:13";
+            } else if (baseScore >= 4 && apostolicScore >= 2 && answers.q5 === '1') {
+                diagnosis = "Teetering Disconnect: You buy Paul’s apostolic logic—headship, signs—but pick and choose. James 4:17 knocks.";
+                conclusion = "You strongly agree with Paul’s framework (e.g., headship, authority) and see head coverings as apostolic, yet admit to selective obedience.";
+                suggestion = "Align actions with belief—1 John 2:3 urges, ‘We know we have come to know Him if we keep His commands.’";
+                verse = "1 John 2:3";
+            } else {
+                diagnosis = "Unmasked Hypocrisy: You embrace Paul’s framework but dismiss its commands—or dodge with ‘cultural.’ Hypocrisy shines.";
+                conclusion = "You affirm Paul’s theology but either reject head coverings’ apostolic weight or ignore them despite agreement, showing a gap.";
+                suggestion = "Face the mirror—Matthew 7:21 says, ‘Not everyone who says “Lord, Lord” will enter the kingdom, but only the one who does the will of my Father.’";
+                verse = "Matthew 7:21";
+            }
+
+            // Detailed result
+            resultDiv.innerHTML = `
+                <h2>Results</h2>
+                <p><strong>Score:</strong> Base Score: ${baseScore}/5 (Apostolic: ${apostolicScore}) - ${diagnosis}</p>
+                <p><strong>Conclusions from Your Answers:</strong> ${conclusion}</p>
+                <p><strong>How to Better Follow Scripture:</strong> ${suggestion} <em>(${verse})</em></p>
+            `;
+            resultDiv.style.display = 'block';
+            document.getElementById('redoBtn').style.display = 'inline-block';
+        }
+
+        function redoQuiz() {
+            const form = document.getElementById('quizForm');
+            form.reset();
+            baseScore = 0;
+            apostolicScore = 0;
+            answers = {};
+            questionOrder = ['q1'];
+            currentQuestion = 'q1';
+
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.getElementById('q1').classList.add('active');
+            document.getElementById('prevBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('redoBtn').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
