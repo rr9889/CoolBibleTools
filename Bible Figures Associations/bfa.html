@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblical Relationship Visualizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #canvas {
+            width: 100vw;
+            height: 100vh;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            pointer-events: none;
+            display: none;
+            font-size: 12px;
+            max-width: 280px;
+            white-space: pre-wrap;
+            z-index: 10;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        #controls h4 {
+            margin: 8px 0 4px;
+            font-size: 16px;
+        }
+        #controls label {
+            display: block;
+            margin: 2px 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="tooltip" class="tooltip"></div>
+    <div id="controls">
+        <h3>Filters</h3>
+        <h4>Testament</h4>
+        <label><input type="checkbox" data-filter="testament" data-value="Old Testament" checked> Old Testament</label>
+        <label><input type="checkbox" data-filter="testament" data-value="New Testament" checked> New Testament</label>
+        <h4>Gender</h4>
+        <label><input type="checkbox" data-filter="gender" data-value="Male" checked> Male</label>
+        <label><input type="checkbox" data-filter="gender" data-value="Female" checked> Female</label>
+        <h4>Tribe</h4>
+        <label><input type="checkbox" data-filter="tribe" data-value="Judah" checked> Judah</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="Benjamin" checked> Benjamin</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="Levi" checked> Levi</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="Ephraim" checked> Ephraim</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="Naphtali" checked> Naphtali</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="Kenite" checked> Kenite</label>
+        <label><input type="checkbox" data-filter="tribe" data-value="None" checked> None</label>
+        <h4>Era</h4>
+        <label><input type="checkbox" data-filter="era" data-value="Patriarchal" checked> Patriarchal</label>
+        <label><input type="checkbox" data-filter="era" data-value="Exodus" checked> Exodus</label>
+        <label><input type="checkbox" data-filter="era" data-value="Judges" checked> Judges</label>
+        <label><input type="checkbox" data-filter="era" data-value="United Kingdom" checked> United Kingdom</label>
+        <label><input type="checkbox" data-filter="era" data-value="Divided Kingdom" checked> Divided Kingdom</label>
+        <label><input type="checkbox" data-filter="era" data-value="Exilic" checked> Exilic</label>
+        <label><input type="checkbox" data-filter="era" data-value="Post-Exilic" checked> Post-Exilic</label>
+        <label><input type="checkbox" data-filter="era" data-value="Intertestamental" checked> Intertestamental</label>
+        <label><input type="checkbox" data-filter="era" data-value="Gospel" checked> Gospel</label>
+        <label><input type="checkbox" data-filter="era" data-value="Apostolic" checked> Apostolic</label>
+        <h4>Occupation</h4>
+        <label><input type="checkbox" data-filter="occupation" data-value="Prophet" checked> Prophet</label>
+        <label><input type="checkbox" data-filter="occupation" data-value="King" checked> King</label>
+        <label><input type="checkbox" data-filter="occupation" data-value="Teacher" checked> Teacher</label>
+        <label><input type="checkbox" data-filter="occupation" data-value="Judge" checked> Judge</label>
+        <label><input type="checkbox" data-filter="occupation" data-value="Military Commander" checked> Military Commander</label>
+        <label><input type="checkbox" data-filter="occupation" data-value="Housewife" checked> Housewife</label>
+        <h4>Connections</h4>
+        <label><input type="checkbox" data-filter="connections" data-value="family" checked> Family</label>
+        <label><input type="checkbox" data-filter="connections" data-value="occupation"> Occupation</label>
+        <label><input type="checkbox" data-filter="connections" data-value="era"> Era</label>
+        <label><input type="checkbox" data-filter="connections" data-value="tribe"> Tribe</label>
+    </div>
+
+    <script type="application/json" id="networkData">
+        [
+        {"id": 1, "Name": "Deborah", "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Book_of_Judges_Chapter_4-3_%28Bible_Illustrations_by_Sweet_Media%29_%28cropped%29.jpg", "Testament": "Old Testament", "ScripturalReferences": ["Judges 4-5"], "RegionOfAssociation": "Israel", "Occupation": ["Judge", "Prophetess"], "Importance": "The only female judge of Israel who led her people to victory against oppression.", "Gender": "Female", "Family": {}, "Tribe": "Ephraim", "Era": "Judges"},
+        {"id": 2, "Name": "Barak", "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/2/23/Book_of_Judges_Chapter_5-1_%28Bible_Illustrations_by_Sweet_Media%29_%28cropped%29.jpg", "Testament": "Old Testament", "ScripturalReferences": ["Judges 4-5"], "RegionOfAssociation": "Israel", "Occupation": ["Military Commander"], "Importance": "Led Israel's army under Deborah's direction.", "Gender": "Male", "Family": {}, "Tribe": "Naphtali", "Era": "Judges"},
+        {"id": 3, "Name": "Jael", "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/3/30/Jael_IMG_28061.JPG", "Testament": "Old Testament", "ScripturalReferences": ["Judges 4-5"], "RegionOfAssociation": "Israel", "Occupation": ["Housewife"], "Importance": "Killed Sisera, the enemy commander, with a tent peg.", "Gender": "Female", "Family": {}, "Tribe": "Kenite", "Era": "Judges"},
+        {"id": 4, "Name": "Moses", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Exodus 1-40", "Numbers 1-36", "Deuteronomy 1-34"], "RegionOfAssociation": "Egypt/Israel", "Occupation": ["Prophet", "Leader"], "Importance": "Led the Israelites out of Egypt and delivered God's law.", "Gender": "Male", "Family": {"Brother": 5, "Sister": 6, "Spouse": 7}, "Tribe": "Levi", "Era": "Exodus"},
+        {"id": 5, "Name": "Aaron", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Exodus 1-40", "Leviticus 1-27", "Numbers 1-36"], "RegionOfAssociation": "Egypt/Israel", "Occupation": ["Priest"], "Importance": "Brother of Moses and first high priest of Israel.", "Gender": "Male", "Family": {"Brother": 4, "Sister": 6}, "Tribe": "Levi", "Era": "Exodus"},
+        {"id": 6, "Name": "Miriam", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Exodus 15", "Numbers 12"], "RegionOfAssociation": "Egypt/Israel", "Occupation": ["Prophetess"], "Importance": "Sister of Moses and Aaron, celebrated Israel's deliverance.", "Gender": "Female", "Family": {"Brothers": [4, 5]}, "Tribe": "Levi", "Era": "Exodus"},
+        {"id": 7, "Name": "Zipporah", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Exodus 2"], "RegionOfAssociation": "Midian", "Occupation": ["Housewife"], "Importance": "Wife of Moses, played a critical role in preserving his life.", "Gender": "Female", "Family": {"Spouse": 4}, "Tribe": "None", "Era": "Exodus"},
+        {"id": 8, "Name": "David", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["1 Samuel 16-31", "2 Samuel 1-24", "Psalms 1-150"], "RegionOfAssociation": "Judah/Israel", "Occupation": ["Shepherd", "King", "Psalmist"], "Importance": "King of Israel, ancestor of Jesus, authored many Psalms.", "Gender": "Male", "Family": {"Father": 9, "Children": [10]}, "Tribe": "Judah", "Era": "United Kingdom"},
+        {"id": 9, "Name": "Jesse", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["1 Samuel 16"], "RegionOfAssociation": "Bethlehem", "Occupation": ["Farmer"], "Importance": "Father of King David.", "Gender": "Male", "Family": {"Children": [8]}, "Tribe": "Judah", "Era": "United Kingdom"},
+        {"id": 10, "Name": "Solomon", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["1 Kings 1-11", "Proverbs 1-31", "Ecclesiastes 1-12"], "RegionOfAssociation": "Israel", "Occupation": ["King", "Teacher"], "Importance": "Son of David, renowned for his wisdom and building the first temple.", "Gender": "Male", "Family": {"Father": 8}, "Tribe": "Judah", "Era": "United Kingdom"},
+        {"id": 11, "Name": "Abraham", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Genesis 12-25"], "RegionOfAssociation": "Canaan", "Occupation": ["Patriarch"], "Importance": "Father of many nations, received God's covenant.", "Gender": "Male", "Family": {"Children": [12, 14]}, "Tribe": "None", "Era": "Patriarchal"},
+        {"id": 12, "Name": "Isaac", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Genesis 21-35"], "RegionOfAssociation": "Canaan", "Occupation": ["Patriarch"], "Importance": "Son of Abraham, part of the covenant lineage.", "Gender": "Male", "Family": {"Father": 11, "Children": [13]}, "Tribe": "None", "Era": "Patriarchal"},
+        {"id": 13, "Name": "Jacob", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Genesis 25-50"], "RegionOfAssociation": "Canaan", "Occupation": ["Patriarch"], "Importance": "Father of the twelve tribes of Israel.", "Gender": "Male", "Family": {"Father": 12, "Children": [14]}, "Tribe": "None", "Era": "Patriarchal"},
+        {"id": 14, "Name": "Joseph", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Genesis 37-50"], "RegionOfAssociation": "Egypt", "Occupation": ["Leader"], "Importance": "Saved his family during famine, rose to power in Egypt.", "Gender": "Male", "Family": {"Father": 13}, "Tribe": "Manasseh", "Era": "Patriarchal"},
+        {"id": 15, "Name": "Joshua", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Joshua 1-24"], "RegionOfAssociation": "Canaan", "Occupation": ["Military Commander", "Leader"], "Importance": "Led the Israelites into the Promised Land.", "Gender": "Male", "Family": {}, "Tribe": "Ephraim", "Era": "Exodus"},
+        {"id": 16, "Name": "Samuel", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["1 Samuel 1-28"], "RegionOfAssociation": "Israel", "Occupation": ["Prophet", "Judge"], "Importance": "Last judge, anointed Saul and David as kings.", "Gender": "Male", "Family": {}, "Tribe": "Levi", "Era": "Judges"},
+        {"id": 17, "Name": "Elijah", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["1 Kings 17-22", "2 Kings 1-2"], "RegionOfAssociation": "Israel", "Occupation": ["Prophet"], "Importance": "Confronted idolatry, performed miracles.", "Gender": "Male", "Family": {}, "Tribe": "None", "Era": "Divided Kingdom"},
+        {"id": 18, "Name": "Elisha", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["2 Kings 2-13"], "RegionOfAssociation": "Israel", "Occupation": ["Prophet"], "Importance": "Successor to Elijah, known for miracles.", "Gender": "Male", "Family": {}, "Tribe": "None", "Era": "Divided Kingdom"},
+        {"id": 19, "Name": "Isaiah", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Isaiah 1-66"], "RegionOfAssociation": "Judah", "Occupation": ["Prophet"], "Importance": "Prophesied about the Messiah.", "Gender": "Male", "Family": {}, "Tribe": "Judah", "Era": "Divided Kingdom"},
+        {"id": 20, "Name": "Jeremiah", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Jeremiah 1-52"], "RegionOfAssociation": "Judah", "Occupation": ["Prophet"], "Importance": "Warned of Jerusalem's destruction.", "Gender": "Male", "Family": {}, "Tribe": "Benjamin", "Era": "Exilic"},
+        {"id": 21, "Name": "Daniel", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Daniel 1-12"], "RegionOfAssociation": "Babylon", "Occupation": ["Prophet", "Leader"], "Importance": "Interpreted dreams, survived the lions' den.", "Gender": "Male", "Family": {}, "Tribe": "Judah", "Era": "Exilic"},
+        {"id": 22, "Name": "Esther", "ImageURL": "https://via.placeholder.com/60", "Testament": "Old Testament", "ScripturalReferences": ["Esther 1-10"], "RegionOfAssociation": "Persia", "Occupation": ["Queen"], "Importance": "Saved the Jews from genocide.", "Gender": "Female", "Family": {}, "Tribe": "Benjamin", "Era": "Post-Exilic"},
+        {"id": 23, "Name": "Jesus", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 1-28", "Mark 1-16", "Luke 1-24", "John 1-21"], "RegionOfAssociation": "Galilee/Judea", "Occupation": ["Teacher", "Prophet"], "Importance": "Central figure of Christianity, Son of God.", "Gender": "Male", "Family": {"Mother": 24, "Father": 25}, "Tribe": "Judah", "Era": "Gospel"},
+        {"id": 24, "Name": "Mary", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 1-2", "Luke 1-2"], "RegionOfAssociation": "Galilee/Judea", "Occupation": ["Housewife"], "Importance": "Mother of Jesus.", "Gender": "Female", "Family": {"Spouse": 25, "Children": [23]}, "Tribe": "Judah", "Era": "Gospel"},
+        {"id": 25, "Name": "Joseph (NT)", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 1-2", "Luke 1-2"], "RegionOfAssociation": "Galilee/Judea", "Occupation": ["Carpenter"], "Importance": "Husband of Mary, earthly father of Jesus.", "Gender": "Male", "Family": {"Spouse": 24, "Children": [23]}, "Tribe": "Judah", "Era": "Gospel"},
+        {"id": 26, "Name": "John the Baptist", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 3", "Mark 1", "Luke 1-3", "John 1"], "RegionOfAssociation": "Judea", "Occupation": ["Prophet"], "Importance": "Forerunner of Jesus, baptized Him.", "Gender": "Male", "Family": {"Father": 27, "Mother": 28}, "Tribe": "Levi", "Era": "Gospel"},
+        {"id": 27, "Name": "Zechariah", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Luke 1"], "RegionOfAssociation": "Judea", "Occupation": ["Priest"], "Importance": "Father of John the Baptist.", "Gender": "Male", "Family": {"Spouse": 28, "Children": [26]}, "Tribe": "Levi", "Era": "Gospel"},
+        {"id": 28, "Name": "Elizabeth", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Luke 1"], "RegionOfAssociation": "Judea", "Occupation": ["Housewife"], "Importance": "Mother of John the Baptist.", "Gender": "Female", "Family": {"Spouse": 27, "Children": [26]}, "Tribe": "Levi", "Era": "Gospel"},
+        {"id": 29, "Name": "Peter", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 4-28", "Acts 1-15"], "RegionOfAssociation": "Galilee/Judea", "Occupation": ["Apostle", "Fisherman"], "Importance": "Leader of the apostles, first pope in tradition.", "Gender": "Male", "Family": {}, "Tribe": "None", "Era": "Apostolic"},
+        {"id": 30, "Name": "Paul", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Acts 9-28", "Romans 1-16"], "RegionOfAssociation": "Asia Minor/Rome", "Occupation": ["Apostle", "Teacher"], "Importance": "Missionary to the Gentiles, wrote many epistles.", "Gender": "Male", "Family": {}, "Tribe": "Benjamin", "Era": "Apostolic"},
+        {"id": 31, "Name": "Mary Magdalene", "ImageURL": "https://via.placeholder.com/60", "Testament": "New Testament", "ScripturalReferences": ["Matthew 27-28", "John 20"], "RegionOfAssociation": "Galilee/Judea", "Occupation": ["Disciple"], "Importance": "Witness to Jesus' resurrection.", "Gender": "Female", "Family": {}, "Tribe": "None", "Era": "Gospel"}
+    ]
+    </script>
+
+    <script>
+        class NetworkVisualizer {
+            constructor(canvas, networkData) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.nodes = [];
+                this.images = {};
+                this.scale = 1;
+                this.offsetX = 0;
+                this.offsetY = 0;
+                this.isDragging = false;
+                this.lastX = 0;
+                this.lastY = 0;
+                this.tooltip = document.getElementById('tooltip');
+                this.networkData = networkData;
+
+                this.filters = {
+                    testament: {"Old Testament": true, "New Testament": true},
+                    gender: {"Male": true, "Female": true},
+                    tribe: {"Judah": true, "Benjamin": true, "Levi": true, "Ephraim": true, "Naphtali": true, "Kenite": true, "None": true},
+                    era: {"Patriarchal": true, "Exodus": true, "Judges": true, "United Kingdom": true, "Divided Kingdom": true, "Exilic": true, "Post-Exilic": true, "Intertestamental": true, "Gospel": true, "Apostolic": true},
+                    occupation: {"Prophet": true, "King": true, "Teacher": true, "Judge": true, "Military Commander": true, "Housewife": true},
+                    connections: {"family": true, "occupation": false, "era": false, "tribe": false}
+                };
+
+                this.init();
+                this.setupEventListeners();
+                this.loadImages();
+            }
+
+            init() {
+                this.resizeCanvas();
+                this.loadNodes();
+                this.render();
+            }
+
+            loadImages() {
+                this.networkData.forEach(person => {
+                    if (person.ImageURL) {
+                        const img = new Image();
+                        img.crossOrigin = "Anonymous";
+                        img.src = person.ImageURL;
+                        img.onload = () => { this.images[person.id] = img; this.render(); };
+                        img.onerror = () => console.log(`Failed to load image for ${person.Name}`);
+                    }
+                });
+            }
+
+            loadNodes() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const radius = Math.min(this.canvas.width, this.canvas.height) / 3;
+                const angleStep = (2 * Math.PI) / this.networkData.length;
+
+                this.nodes = this.networkData.map((person, index) => {
+                    const angle = index * angleStep;
+                    return {
+                        x: centerX + radius * Math.cos(angle),
+                        y: centerY + radius * Math.sin(angle),
+                        data: person,
+                        radius: 30,
+                        dragging: false
+                    };
+                });
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            setupEventListeners() {
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                    this.loadNodes();
+                    this.render();
+                });
+
+                this.canvas.addEventListener('wheel', e => {
+                    e.preventDefault();
+                    this.scale *= e.deltaY > 0 ? 0.9 : 1.1;
+                    this.render();
+                });
+
+                this.canvas.addEventListener('mousedown', e => this.handleMouseDown(e));
+                this.canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
+                this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+
+                document.querySelectorAll('#controls input[type="checkbox"]').forEach(input => {
+                    input.addEventListener('change', () => {
+                        const category = input.dataset.filter;
+                        const value = input.dataset.value;
+                        this.filters[category][value] = input.checked;
+                        this.render();
+                    });
+                });
+            }
+
+            handleMouseDown(e) {
+                const { mouseX, mouseY } = this.getMousePos(e);
+                const clickedNode = this.getNodeAt(mouseX, mouseY);
+
+                if (clickedNode) {
+                    clickedNode.dragging = true;
+                } else {
+                    this.isDragging = true;
+                    this.lastX = e.clientX;
+                    this.lastY = e.clientY;
+                }
+                this.render();
+            }
+
+            handleMouseMove(e) {
+                const { mouseX, mouseY } = this.getMousePos(e);
+
+                if (this.isDragging) {
+                    this.offsetX += e.clientX - this.lastX;
+                    this.offsetY += e.clientY - this.lastY;
+                    this.lastX = e.clientX;
+                    this.lastY = e.clientY;
+                    this.render();
+                }
+
+                this.nodes.forEach(node => {
+                    if (node.dragging) {
+                        node.x = mouseX;
+                        node.y = mouseY;
+                        this.handleCollisions(node);
+                        this.render();
+                    }
+                });
+
+                const hoveredNode = this.getNodeAt(mouseX, mouseY);
+                if (hoveredNode) {
+                    this.showTooltip(e.clientX, e.clientY, hoveredNode.data);
+                } else {
+                    this.hideTooltip();
+                }
+            }
+
+            handleMouseUp() {
+                this.isDragging = false;
+                this.nodes.forEach(node => node.dragging = false);
+            }
+
+            getMousePos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                return {
+                    mouseX: (e.clientX - rect.left - this.offsetX) / this.scale,
+                    mouseY: (e.clientY - rect.top - this.offsetY) / this.scale
+                };
+            }
+
+            getNodeAt(x, y) {
+                return this.nodes.find(node => {
+                    if (!this.isNodeVisible(node)) return false;
+                    const dx = x - node.x;
+                    const dy = y - node.y;
+                    return Math.sqrt(dx * dx + dy * dy) < node.radius;
+                });
+            }
+
+            handleCollisions(movedNode) {
+                this.nodes.forEach(otherNode => {
+                    if (movedNode !== otherNode && this.isNodeVisible(otherNode)) {
+                        const dx = otherNode.x - movedNode.x;
+                        const dy = otherNode.y - movedNode.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDistance = movedNode.radius + otherNode.radius;
+
+                        if (distance < minDistance) {
+                            const angle = Math.atan2(dy, dx);
+                            const overlap = minDistance - distance;
+                            movedNode.x -= Math.cos(angle) * overlap * 0.5;
+                            movedNode.y -= Math.sin(angle) * overlap * 0.5;
+                            otherNode.x += Math.cos(angle) * overlap * 0.5;
+                            otherNode.y += Math.sin(angle) * overlap * 0.5;
+                        }
+                    }
+                });
+            }
+
+            showTooltip(x, y, data) {
+                const formattedData = [
+                    `ID: ${data.id}`,
+                    `Name: ${data.Name}`,
+                    `Testament: ${data.Testament}`,
+                    `Gender: ${data.Gender}`,
+                    `Tribe: ${data.Tribe}`,
+                    `Era: ${data.Era}`,
+                    `Occupation: ${data.Occupation.join(", ")}`,
+                    `Region: ${data.RegionOfAssociation}`,
+                    `Scriptural References: ${data.ScripturalReferences.join(", ")}`,
+                    `Importance: ${data.Importance}`,
+                    `Family: ${Object.entries(data.Family).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`).join(", ") || "None"}`
+                ].join("\n");
+                this.tooltip.textContent = formattedData;
+                this.tooltip.style.left = `${x + 10}px`;
+                this.tooltip.style.top = `${y + 10}px`;
+                this.tooltip.style.display = 'block';
+            }
+
+            hideTooltip() {
+                this.tooltip.style.display = 'none';
+            }
+
+            isNodeVisible(node) {
+                const data = node.data;
+                return (
+                    this.filters.testament[data.Testament] &&
+                    this.filters.gender[data.Gender] &&
+                    this.filters.tribe[data.Tribe] &&
+                    this.filters.era[data.Era] &&
+                    data.Occupation.some(occ => this.filters.occupation[occ])
+                );
+            }
+
+            getConnections(node) {
+                const connections = new Set();
+                const data = node.data;
+
+                if (this.filters.connections.family) {
+                    Object.values(data.Family).flat().forEach(id => connections.add(id));
+                }
+
+                if (this.filters.connections.occupation) {
+                    this.nodes.forEach(other => {
+                        if (other !== node && this.isNodeVisible(other) && 
+                            other.data.Occupation.some(occ => data.Occupation.includes(occ))) {
+                            connections.add(other.data.id);
+                        }
+                    });
+                }
+
+                if (this.filters.connections.era) {
+                    this.nodes.forEach(other => {
+                        if (other !== node && this.isNodeVisible(other) && other.data.Era === data.Era) {
+                            connections.add(other.data.id);
+                        }
+                    });
+                }
+
+                if (this.filters.connections.tribe) {
+                    this.nodes.forEach(other => {
+                        if (other !== node && this.isNodeVisible(other) && other.data.Tribe === data.Tribe) {
+                            connections.add(other.data.id);
+                        }
+                    });
+                }
+
+                return Array.from(connections);
+            }
+
+            render() {
+                this.ctx.save();
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.translate(this.offsetX, this.offsetY);
+                this.ctx.scale(this.scale, this.scale);
+
+                this.nodes.forEach(node => {
+                    if (!this.isNodeVisible(node)) return;
+                    const connections = this.getConnections(node);
+                    connections.forEach(targetId => {
+                        const target = this.nodes.find(n => n.data.id === targetId);
+                        if (target && this.isNodeVisible(target)) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(node.x, node.y);
+                            this.ctx.lineTo(target.x, target.y);
+                            this.ctx.strokeStyle = '#666';
+                            this.ctx.lineWidth = 1 / this.scale;
+                            this.ctx.stroke();
+                        }
+                    });
+                });
+
+                this.nodes.forEach(node => {
+                    if (!this.isNodeVisible(node)) return;
+                    const img = this.images[node.data.id];
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+
+                    if (img) {
+                        this.ctx.save();
+                        this.ctx.clip();
+                        this.ctx.drawImage(img, node.x - node.radius, node.y - node.radius, node.radius * 2, node.radius * 2);
+                        this.ctx.restore();
+                    } else {
+                        this.ctx.fillStyle = '#3498db';
+                        this.ctx.fill();
+                        this.ctx.strokeStyle = '#2980b9';
+                        this.ctx.lineWidth = 1 / this.scale;
+                        this.ctx.stroke();
+                    }
+
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.font = `${14 / this.scale}px Arial`;
+                    this.ctx.fillText(node.data.Name, node.x, node.y + node.radius + 15 / this.scale);
+                });
+
+                this.ctx.restore();
+            }
+        }
+
+        const jsonElement = document.getElementById('networkData');
+        const networkData = JSON.parse(jsonElement.textContent);
+        const canvas = document.getElementById('canvas');
+        new NetworkVisualizer(canvas, networkData);
+    </script>
+</body>
+</html>
