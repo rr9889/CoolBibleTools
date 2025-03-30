@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblical Word Cloud (NIV)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow: auto;
+        }
+        #filters {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #filters label {
+            margin-right: 10px;
+        }
+        #filters input, #filters select {
+            margin: 5px;
+            padding: 5px;
+        }
+        #filters button {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #filters button:hover {
+            background-color: #0056b3;
+        }
+        #tabs {
+            margin-bottom: 20px;
+        }
+        #tabs button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+        #tabs button.active {
+            background-color: #007BFF;
+            color: white;
+        }
+        #word-cloud {
+            text-align: center;
+            max-width: 90%;
+            flex-wrap: wrap;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .word {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s;
+            padding: 5px;
+            white-space: nowrap;
+        }
+        .word:hover {
+            transform: scale(1.1);
+            color: #007BFF;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #333;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 400px;
+            text-align: left;
+        }
+        #popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        #error-message {
+            color: red;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="filters">
+        <label for="testament-select">Testament:</label>
+        <select id="testament-select">
+            <option value="all">All</option>
+            <option value="old">Old Testament</option>
+            <option value="new">New Testament</option>
+        </select>
+        <br>
+        <label for="item-count">Number of Items:</label>
+        <input type="number" id="item-count" min="1" value="50" style="width: 60px;">
+        <br>
+        <label for="include-items">Include Items (comma-separated):</label>
+        <input type="text" id="include-items" placeholder="e.g., jesus, jerusalem">
+        <br>
+        <label for="exclude-items">Exclude Items (comma-separated):</label>
+        <input type="text" id="exclude-items" placeholder="e.g., day, time">
+        <br>
+        <button id="apply-filters">Apply Filters</button>
+    </div>
+    <div id="tabs">
+        <button id="tab-words" class="active">Words</button>
+        <button id="tab-phrases">Phrases</button>
+        <button id="tab-names">Names</button>
+        <button id="tab-locations">Locations</button>
+        <button id="tab-terms">Religious Terms</button>
+    </div>
+    <div id="overlay"></div>
+    <div id="word-cloud"></div>
+    <div id="popup">
+        <span id="popup-close">×</span>
+        <h2 id="popup-title"></h2>
+        <p id="popup-content"></p>
+    </div>
+
+    <script>
+        // Fetch NIV Bible JSON from GitHub
+        async function fetchBibleData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/jadenzaleski/BibleTranslations/master/NIV/NIV_bible.json');
+                if (!response.ok) throw new Error('Failed to fetch NIV Bible JSON');
+                return await response.json();
+            } catch (e) {
+                throw new Error('Could not load Bible data: ' + e.message);
+            }
+        }
+
+        // Define Old and New Testament books
+        const oldTestamentBooks = new Set([
+            "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
+            "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
+            "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs",
+            "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
+            "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+        ]);
+        const newTestamentBooks = new Set([
+            "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians",
+            "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
+            "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter",
+            "1 John", "2 John", "3 John", "Jude", "Revelation"
+        ]);
+
+        // Process Bible JSON based on section type and testament
+        function processBibleData(bibleData, itemLimit, includeItems, excludeItems, section, testament) {
+            // Split glossary into categories
+            const names = new Set([
+                "jesus", "moses", "abraham", "david", "solomon", "joseph", "mary", "paul", "peter", "john",
+                "isaac", "jacob", "sarah", "noah", "samuel", "elijah", "elisha", "daniel", "jonah", "adam",
+                "eve", "cain", "abel", "esau", "ruth", "esther", "job", "isaiah", "jeremiah", "ezekiel"
+            ]);
+            const locations = new Set([
+                "jerusalem", "egypt", "israel", "judah", "babylon", "canaan", "bethlehem", "nazareth", "galilee",
+                "samaria", "sinai", "jordan", "zion", "gilead", "moab", "edom", "philistia", "syria", "assyria",
+                "persia", "gaza", "hebron", "damascus", "capernaum", "bethel", "joppa", "tyre", "sidon"
+            ]);
+            const religiousTerms = new Set([
+                "god", "lord", "spirit", "covenant", "sin", "grace", "faith", "salvation", "kingdom", "heaven",
+                "hell", "priest", "prophet", "king", "temple", "altar", "sacrifice", "law", "mercy", "judgment",
+                "peace", "love", "hope", "truth", "righteousness", "blessing", "curse", "sabbath", "church"
+            ]);
+
+            // Custom filters
+            const includeSet = includeItems ? new Set(includeItems.split(',').map(i => i.trim().toLowerCase())) : null;
+            const excludeSet = excludeItems ? new Set(excludeItems.split(',').map(i => i.trim().toLowerCase())) : new Set();
+
+            let text = "";
+            for (const book in bibleData) {
+                // Filter by testament
+                if (testament === 'all' || 
+                    (testament === 'old' && oldTestamentBooks.has(book)) || 
+                    (testament === 'new' && newTestamentBooks.has(book))) {
+                    const chapters = bibleData[book];
+                    for (const chapter in chapters) {
+                        const verses = chapters[chapter];
+                        for (const verse in verses) {
+                            text += verses[verse] + " ";
+                        }
+                    }
+                }
+            }
+
+            const words = text.toLowerCase()
+                .replace(/[^\w\s]/g, '')
+                .split(/\s+/)
+                .filter(word => word.length > 2);
+
+            let items = [];
+            let totalItems = 0;
+
+            if (section === 'phrases') {
+                // Two-word phrases
+                for (let i = 0; i < words.length - 1; i++) {
+                    const phrase = `${words[i]} ${words[i + 1]}`;
+                    const phraseWords = phrase.split(' ');
+                    const relevantSets = [names, locations, religiousTerms];
+                    if (phraseWords.some(word => relevantSets.some(set => set.has(word))) || (includeSet && includeSet.has(phrase))) {
+                        if (!excludeSet.has(phrase)) {
+                            items.push(phrase);
+                        }
+                    }
+                }
+                totalItems = items.length;
+                const phraseCount = {};
+                items.forEach(item => {
+                    phraseCount[item] = (phraseCount[item] || 0) + 1;
+                });
+                items = Object.entries(phraseCount)
+                    .map(([phrase, count]) => ({ item: phrase, count }))
+                    .sort((a, b) => b.count - a.count);
+            } else {
+                // Single words
+                let filterSet;
+                switch (section) {
+                    case 'words':
+                        filterSet = null; // All words
+                        break;
+                    case 'names':
+                        filterSet = names;
+                        break;
+                    case 'locations':
+                        filterSet = locations;
+                        break;
+                    case 'terms':
+                        filterSet = religiousTerms;
+                        break;
+                }
+                items = words.filter(word => (!filterSet || filterSet.has(word) || (includeSet && includeSet.has(word))) && !excludeSet.has(word));
+                totalItems = items.length;
+                const wordCount = {};
+                items.forEach(item => {
+                    wordCount[item] = (wordCount[item] || 0) + 1;
+                });
+                items = Object.entries(wordCount)
+                    .map(([word, count]) => ({ item: word, count }))
+                    .sort((a, b) => b.count - a.count);
+            }
+
+            return {
+                itemData: items.slice(0, itemLimit || 50),
+                totalItems: totalItems
+            };
+        }
+
+        // Fetch and process data with filters
+        async function fetchItemData(bibleData, itemLimit, includeItems, excludeItems, section, testament) {
+            return processBibleData(bibleData, itemLimit, includeItems, excludeItems, section, testament);
+        }
+
+        // Display items
+        async function displayItems(bibleData, section, testament) {
+            const wordCloud = document.getElementById('word-cloud');
+            const itemLimit = parseInt(document.getElementById('item-count').value) || 50;
+            const includeItems = document.getElementById('include-items').value;
+            const excludeItems = document.getElementById('exclude-items').value;
+
+            try {
+                const { itemData, totalItems } = await fetchItemData(bibleData, itemLimit, includeItems, excludeItems, section, testament);
+                window.itemData = itemData; // Store globally for popup access
+                const maxCount = Math.max(...itemData.map(i => i.count));
+
+                wordCloud.innerHTML = ""; // Clear previous content
+                itemData.forEach(item => {
+                    const span = document.createElement('span');
+                    span.className = 'word';
+                    span.textContent = item.item;
+                    const fontSize = (item.count / maxCount) * 60 + 10;
+                    span.style.fontSize = `${fontSize}px`;
+                    span.addEventListener('click', () => showPopup(item, totalItems));
+                    wordCloud.appendChild(span);
+                });
+            } catch (e) {
+                console.error(e);
+                wordCloud.innerHTML = `<div id="error-message">${e.message}</div>`;
+            }
+        }
+
+        // Show popup with stats
+        function showPopup(item, totalItems) {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
+            const title = document.getElementById('popup-title');
+            const content = document.getElementById('popup-content');
+
+            title.textContent = item.item;
+            content.innerHTML = `
+                <strong>Occurrences:</strong> ${item.count} times<br>
+                <strong>Percentage:</strong> ${(item.count / totalItems * 100).toFixed(2)}%<br>
+                <strong>Rank:</strong> ${window.itemData.findIndex(i => i.item === item.item) + 1}
+            `;
+
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        // Close popup
+        document.getElementById('popup-close').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+
+        // Initialize and set up tabs/filters
+        async function initialize() {
+            const bibleData = await fetchBibleData();
+            let currentSection = 'words';
+            let currentTestament = 'all';
+
+            // Initial display
+            displayItems(bibleData, currentSection, currentTestament);
+
+            // Tab switching
+            const tabs = document.querySelectorAll('#tabs button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentSection = tab.id.replace('tab-', '');
+                    displayItems(bibleData, currentSection, currentTestament);
+                });
+            });
+
+            // Testament filter
+            document.getElementById('testament-select').addEventListener('change', (e) => {
+                currentTestament = e.target.value;
+                displayItems(bibleData, currentSection, currentTestament);
+            });
+
+            // Apply filters
+            document.getElementById('apply-filters').addEventListener('click', () => displayItems(bibleData, currentSection, currentTestament));
+        }
+
+        initialize();
+    </script>
+</body>
+</html>
