@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div id="filters">
+    <div id="toggle-controls">
+        <button id="toggle-controls-btn">Hide Filters & Tabs</button>
+    </div>
+    <div id="filters" class="visible">
         <label for="testament-select">Testament:</label>
         <select id="testament-select">
             <option value="all">All</option>
@@ -31,7 +34,7 @@
         <br>
         <button id="apply-filters">Apply Filters</button>
     </div>
-    <div id="tabs">
+    <div id="tabs" class="visible">
         <button id="tab-words" class="active">Words</button>
         <button id="tab-phrases">Phrases</button>
         <button id="tab-names">Names</button>
