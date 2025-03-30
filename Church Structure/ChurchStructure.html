@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Structure Comparison</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Structure Type Switcher -->
+    <div class="structure-switcher">
+        <button id="nt-btn" class="structure-btn active">New Testament</button>
+        <button id="rc-btn" class="structure-btn">Roman Catholic</button>
+        <button id="baptist-btn" class="structure-btn">Baptist</button>
+    </div>
+
+    <div class="container">
+        <div class="org-chart" id="org-chart">
+            <!-- New Testament Structure -->
+            <div class="chart-content" id="nt-structure">
+                <div class="box" id="christ" role="button" tabindex="0" aria-label="Christ: Click for more information">Christ</div>
+                <div class="connector" id="conn1">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="apostles" role="button" tabindex="0" aria-label="Apostles: Click for more information">Apostles</div>
+                <div class="box" id="prophets" role="button" tabindex="0" aria-label="Prophets: Click for more information">Prophets</div>
+                <div class="connector" id="conn2">
+                    <div class="line horizontal"></div>
+                </div>
+                <div class="connector" id="conn3">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="local-church" role="button" tabindex="0" aria-label="Local Assembly: Click for more information">Local Assembly</div>
+                <div class="connector" id="conn4">
+                    <div class="line horizontal"></div>
+                </div>
+                <div class="connector" id="conn5">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="connector" id="conn6">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="connector" id="conn7">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="connector" id="conn8">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="connector" id="conn9">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="elders" role="button" tabindex="0" aria-label="Elders: Click for more information">Elders</div>
+                <div class="box" id="evangelists" role="button" tabindex="0" aria-label="Evangelists: Click for more information">Evangelists</div>
+                <div class="box" id="pastors" role="button" tabindex="0" aria-label="Pastors: Click for more information">Pastors</div>
+                <div class="box" id="teachers" role="button" tabindex="0" aria-label="Teachers: Click for more information">Teachers</div>
+                <div class="box" id="members" role="button" tabindex="0" aria-label="Members: Click for more information">Members</div>
+                <div class="connector" id="conn10">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="connector" id="conn11">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
+                <div class="box" id="widows" role="button" tabindex="0" aria-label="Widows: Click for more information">Widows</div>
+
+                <!-- Pop-ups -->
+                <div class="popup" id="popup-christ">
+                    <p><strong>Christ:</strong> The divine head and ultimate authority of the church, whose leadership is inherent and eternal. His role as the foundation of all spiritual governance is attested in Ephesians 1:22 and Colossians 1:18.</p>
+                </div>
+                <div class="popup" id="popup-apostles">
+                    <p><strong>Apostles:</strong> The foundational leaders directly commissioned by Jesus Christ. Tasked with establishing the church and spreading the gospel, their unique mission and authority are detailed in Ephesians 2:20 and Acts 1:2-26. The title of Apostle is currently defunct since death of John in 100 AD.</p>
+                </div>
+                <div class="popup" id="popup-prophets">
+                    <p><strong>Prophets:</strong> Those divinely called to receive and communicate God’s revelations. They offer guidance, correction, and insight to the church, as referenced in 1 Corinthians 12:28 and Ephesians 4:11.</p>
+                </div>
+                <div class="popup" id="popup-local-church">
+                    <p><strong>Local Church:</strong> An autonomous assembly of believers formed under the guidance of the Holy Spirit. Its self-governing structure reflects the early church model found in Acts 14:23.</p>
+                </div>
+                <div class="popup" id="popup-elders">
+                    <p><strong>Elders:</strong> Mature, spiritually seasoned leaders responsible for governing, teaching, and shepherding the local assembly. Their qualifications and roles are outlined in 1 Timothy 3:1-7 and Titus 1:5-9.</p>
+                </div>
+                <div class="popup" id="popup-evangelists">
+                    <p><strong>Evangelists:</strong> Ministers gifted in proclaiming the gospel and nurturing faith through public witness. Their calling and work are affirmed in Ephesians 4:11 and Acts 21:8.</p>
+                </div>
+                <div class="popup" id="popup-pastors">
+                    <p><strong>Pastors:</strong> Spiritual shepherds tasked with caring for, guiding, and instructing the congregation. Their role in protecting and nurturing the flock is highlighted in Ephesians 4:11 and 1 Peter 5:2.</p>
+                </div>
+                <div class="popup" id="popup-teachers">
+                    <p><strong>Teachers:</strong> Instructors dedicated to elucidating biblical doctrine and practical Christian living, thereby fostering spiritual growth. Their contribution is recognized in Ephesians 4:11 and Acts 13:1.</p>
+                </div>
+                <div class="popup" id="popup-deacons">
+                    <p><strong>Deacons:</strong> Leaders appointed to manage the practical and administrative needs of the church, ensuring effective service and support for the community. This role is outlined in 1 Timothy 3:8-13 and Acts 6:1-6.</p>
+                </div>
+                <div class="popup" id="popup-widows">
+                    <p><strong>Widows:</strong> Members who receive special support from the church and contribute through acts of care and hospitality, reflecting the community’s commitment to compassion as noted in 1 Timothy 5:9-10.</p>
+                </div>
+                <div class="popup" id="popup-members">
+                    <p><strong>Members:</strong> All baptized believers actively participating in the life and mission of the church, contributing their unique gifts to the body of Christ as described in 1 Corinthians 12.</p>
+                </div>
+            </div>
+
+            <!-- Roman Catholic Structure -->
+            <div class="chart-content hidden" id="rc-structure">
+                <div class="box" id="pope" role="button" tabindex="0" aria-label="Pope: Click for more information">Pope</div>
+                <div class="connector" id="rc-conn1">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="cardinals" role="button" tabindex="0" aria-label="Cardinals: Click for more information">Cardinals</div>
+                <div class="connector" id="rc-conn2">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="archbishops" role="button" tabindex="0" aria-label="Archbishops: Click for more information">Archbishops</div>
+                <div class="connector" id="rc-conn3">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="bishops" role="button" tabindex="0" aria-label="Bishops: Click for more information">Bishops</div>
+                <div class="connector" id="rc-conn4">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="priests" role="button" tabindex="0" aria-label="Priests: Click for more information">Priests</div>
+                <div class="connector" id="rc-conn5">
+                    <div class="line horizontal"></div>
+                </div>
+                <div class="connector" id="rc-conn6">
+                    <div class="line vertical" id="rc-line6a"></div>
+                    <div class="line vertical" id="rc-line6b"></div>
+                </div>
+                <div class="box" id="rc-deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
+                <div class="box" id="religious-orders" role="button" tabindex="0" aria-label="Religious Orders: Click for more information">Religious Orders</div>
+                <div class="connector" id="rc-conn7">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="laity" role="button" tabindex="0" aria-label="Laity: Click for more information">Laity</div>
+
+                <!-- Pop-ups -->
+                <div class="popup" id="popup-pope">
+                    <p><strong>Pope:</strong> The Bishop of Rome, successor of Saint Peter, and supreme Pontiff of the universal Church. Appointed: Elected by the College of Cardinals in conclave. Authority Source: CCC 882–884, Code of Canon Law (Can. 331).</p>
+                </div>
+                <div class="popup" id="popup-cardinals">
+                    <p><strong>Cardinals:</strong> Senior church leaders who assist the Pope by providing counsel, governing the Church alongside him, and electing his successor in conclave.<br>Appointed: Personally chosen and appointed by the Pope, often from among bishops worldwide.<br>Authority Source: Catechism of the Catholic Church (CCC 874, 877), Code of Canon Law (Can. 349–359).</p>
+                </div>
+                <div class="popup" id="popup-archbishops">
+                    <p><strong>Archbishops:</strong> Successors to the Apostles who oversee provinces and manage multiple dioceses.<br>Appointed: Appointed by the Pope following a discernment process.<br>Authority Source: Catechism of the Catholic Church (CCC 877, 886), Code of Canon Law (Can. 375–411).</p>
+                </div>
+                <div class="popup" id="popup-bishops">
+                    <p><strong>Bishops:</strong> Successors to the Apostles who are responsible for teaching doctrine, governing Catholics within their dioceses, sanctifying the faithful through sacraments, and ordaining new priests and deacons.<br>Appointed: Appointed by the Pope following a discernment process.<br>Authority Source: Catechism of the Catholic Church (CCC 877, 886, 1555–1561), Code of Canon Law (Can. 375–411).</p>
+                </div>
+                <div class="popup" id="popup-priests">
+                    <p><strong>Priests:</strong> Ordained ministers who administer the sacraments, preach the gospel, provide pastoral care, and lead parish communities under the bishop’s authority.<br>Appointed: Ordained by bishops after appropriate theological formation.<br>Authority Source: Catechism of the Catholic Church (CCC 1562–1568, 1592), Code of Canon Law (Can. 515–552).</p>
+                </div>
+                <div class="popup" id="popup-rc-deacons">
+                    <p><strong>Deacons:</strong> Ordained ministers who assist bishops and priests, proclaim the Gospel, preach homilies, administer baptism, witness marriages, and perform charitable works.<br>Appointed: Ordained by bishops after appropriate formation.<br>Authority Source: Catechism of the Catholic Church (CCC 1569–1571, 1596), Code of Canon Law (Can. 1008–1009).</p>
+                </div>
+                <div class="popup" id="popup-religious-orders">
+                    <p><strong>Religious Orders:</strong> Communities of men and women living according to specific spiritual charisms and vows (poverty, chastity, obedience), contributing uniquely to the Church's mission through prayer, education, healthcare, and evangelization.<br>Appointed: Members voluntarily profess vows after a period of formation.<br>Authority Source: Catechism of the Catholic Church (CCC 914–933), Code of Canon Law (Can. 573–746).</p>
+                </div>
+                <div class="popup" id="popup-laity">
+                    <p><strong>Laity:</strong> Baptized Catholics who participate actively in the Church’s mission primarily in secular contexts, bearing witness to Christ in family life, society, and professional environments. They are neither ordained nor members of religious communities.<br>Appointed: Incorporated through baptism and confirmation.<br>Authority Source: Catechism of the Catholic Church (CCC 897–913), Code of Canon Law (Can. 204–231).</p>
+                </div>
+            </div>
+
+            <!-- Baptist Structure -->
+            <div class="chart-content hidden" id="baptist-structure">
+                <div class="box" id="baptist-christ" role="button" tabindex="0" aria-label="Christ: Click for more information">Christ</div>
+                <div class="connector" id="baptist-conn1">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="bible" role="button" tabindex="0" aria-label="Bible: Click for more information">Bible</div>
+                <div class="connector" id="baptist-conn2">
+                    <div class="line vertical"></div>
+                </div>
+                <div class="box" id="congregation" role="button" tabindex="0" aria-label="Congregation: Click for more information">Congregation</div>
+                <div class="connector" id="baptist-conn3">
+                    <div class="line horizontal" id="baptist-line3"></div>
+                </div>
+                <div class="connector" id="baptist-conn4">
+                    <div class="line vertical" id="baptist-line4a"></div>
+                    <div class="line vertical" id="baptist-line4b"></div>
+                </div>
+                <div class="box special-line" id="pastor" role="button" tabindex="0" aria-label="Pastor: Click for more information">Pastor</div>
+                <div class="box special-line" id="baptist-deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
+                <div class="connector" id="baptist-conn5">
+                    <div class="line horizontal dotted" id="baptist-line5"></div>
+                    <div class="line vertical" id="baptist-line5a"></div>
+                    <div class="line vertical" id="baptist-line5b"></div>
+                </div>
+                <div class="box" id="committees" role="button" tabindex="0" aria-label="Committees: Click for more information">Committees</div>
+                <div class="box" id="baptist-members" role="button" tabindex="0" aria-label="Members: Click for more information">Members</div>
+                <div class="box dashed-border" id="association" role="button" tabindex="0" aria-label="Association: Click for more information">Association</div>
+                <div class="connector" id="baptist-conn6">
+                    <div class="line vertical dashed"></div>
+                </div>
+                <div class="box dashed-border" id="convention" role="button" tabindex="0" aria-label="Convention: Click for more information">Convention</div>
+
+                <!-- Pop-ups -->
+                <div class="popup" id="popup-baptist-christ">
+                    <p><strong>Christ:</strong> The sole and supreme head of the church, recognized as having absolute spiritual authority over the community of believers. (Colossians 1:18)</p>
+                </div>
+                <div class="popup" id="popup-bible">
+                    <p><strong>Bible:</strong> The inspired Word of God and the ultimate authority guiding all matters of faith, practice, and church governance, central to Baptist life and identity. (2 Timothy 3:16-17)</p>
+                </div>
+                <div class="popup" id="popup-congregation">
+                    <p><strong>Congregation:</strong> The local body of believers who govern the church democratically, with each member having an equal voice in decisions. (Acts 6:3-5)</p>
+                </div>
+                <div class="popup" id="popup-pastor">
+                    <p><strong>Pastor:</strong> In the Baptist tradition, the pastor is a spiritual leader called by the local congregation to preach, teach, provide pastoral care, and guide the church in mission and spiritual growth. The pastor serves under the congregation's authority and oversight, embodying the principle of the priesthood of all believers.</p>
+                </div>
+                <div class="popup" id="popup-baptist-deacons">
+                    <p><strong>Deacons:</strong> Servant-leaders assisting the pastor and congregation in practical ministry and service roles. (Acts 6:1-6)</p>
+                </div>
+                <div class="popup" id="popup-committees">
+                    <p><strong>Committees:</strong> Groups established by the congregation to manage specific responsibilities such as finances, missions, education, worship, and community engagement, enabling organized and effective church operations. This structure reflects the Baptist emphasis on congregational governance and the priesthood of all believers.</p>
+                </div>
+                <div class="popup" id="popup-baptist-members">
+                    <p><strong>Members:</strong> All baptized believers with equal voice in church decisions, actively participating in the church’s life and mission. (1 Corinthians 12:12-27)</p>
+                </div>
+                <div class="popup" id="popup-association">
+                    <p><strong>Association:</strong> Voluntary regional fellowship of Baptist churches for mutual support and cooperation. (No binding authority over local churches)</p>
+                </div>
+                <div class="popup" id="popup-convention">
+                    <p><strong>Convention:</strong> Larger cooperative body for missions and education with no authority over local churches, reflecting Baptist autonomy. (Voluntary participation)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zoom Buttons -->
+    <div class="zoom-controls">
+        <button id="zoom-in" aria-label="Zoom in" class="control-button">+</button>
+        <button id="zoom-out" aria-label="Zoom out" class="control-button">−</button>
+        <button id="reset-view" aria-label="Reset view" class="control-button">↺</button>
+    </div>
+
+    <!-- Recall Button -->
+    <button id="recall-btn" class="recall-btn control-button">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3-9h-2V8h-2v3H9l3 3 3-3z"/>
+        </svg>
+        Center
+    </button>
+
+    <!-- Legend -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-line"></div>
+            <span>Direct Authority</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line dashed"></div>
+            <span>Cooperative Relationship</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line dotted"></div>
+            <span>Mutual Accountability</span>
+        </div>
+    </div>
+
+    <!-- Explanation Button -->
+    <button class="help-btn control-button" id="help-btn" aria-label="Help">?</button>
+    <div class="popup explanation" id="explanation">
+        <h3 id="explanation-title">New Testament Church Structure</h3>
+        <div id="nt-explanation">
+            <p>This chart reflects the biblical model where <strong>Christ</strong> is the head (Ephesians 1:22). <strong>Apostles</strong> and <strong>Prophets</strong> are foundational, equipping the early church (Ephesians 2:20, 4:11).</p>
+            <p>Each <strong>Local Assembly</strong> is autonomous (Acts 14:23), led by <strong>Elders</strong> (1 Timothy 3:1-7) who oversee and teach, often including <strong>Pastors</strong> (1 Peter 5:2).</p>
+            <p><strong>Evangelists</strong> spread the gospel (Acts 21:8), and <strong>Teachers</strong> instruct (Acts 13:1). <strong>Deacons</strong> serve practical needs (Acts 6:1-6), and <strong>Widows</strong> are supported while serving (1 Timothy 5:9-10).</p>
+            <p><strong>Members</strong> are all believers, active in the body (1 Corinthians 12). This community-focused structure emphasizes service under Christ's authority.</p>
+        </div>
+        <div id="rc-explanation" class="hidden">
+            <p>The Roman Catholic Church follows a hierarchical structure with the <strong>Pope</strong> as the supreme head, successor to St. Peter.</p>
+            <p><strong>Cardinals</strong> serve as the Pope's principal counselors and elect new Popes. <strong>Archbishops</strong> oversee provinces and <strong>Bishops</strong> lead dioceses.</p>
+            <p><strong>Priests</strong> administer sacraments and lead parishes, assisted by <strong>Deacons</strong>.</p>
+            <p><strong>Religious Orders</strong> form communities dedicated to specific charisms and ministries. The <strong>Laity</strong> comprises all baptized members who aren't ordained clergy.</p>
+        </div>
+        <div id="baptist-explanation" class="hidden">
+            <p>Baptist churches emphasize <strong>Christ</strong> as head and the <strong>Bible</strong> as the primary authority, with a distinctive congregational polity.</p>
+            <p>The <strong>Congregation</strong> governs democratically with each member having an equal vote. The <strong>Pastor</strong> leads and teaches while <strong>Deacons</strong> serve as ministry leaders.</p>
+            <p><strong>Committees</strong> handle specific functions within the church. <strong>Associations</strong> and <strong>Conventions</strong> are voluntary fellowships with no authority over local churches.</p>
+            <p>Baptist churches emphasize local church autonomy, priesthood of all believers, and voluntary cooperation.</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
