@@ -1,5 +1,5 @@
-  // Fetch NIV Bible JSON from GitHub
-  async function fetchBibleData() {
+// Fetch NIV Bible JSON from GitHub
+async function fetchBibleData() {
     try {
         const response = await fetch('https://raw.githubusercontent.com/jadenzaleski/BibleTranslations/master/NIV/NIV_bible.json');
         if (!response.ok) throw new Error('Failed to fetch NIV Bible JSON');
@@ -9,19 +9,35 @@
     }
 }
 
-// Define Old and New Testament books
+// Define Old and New Testament books in traditional Protestant canonical order
 const oldTestamentBooks = new Set([
-    "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
-    "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
-    "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs",
-    "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
-    "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
+    // Pentateuch (Law)
+    "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+    // Historical Books
+    "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", 
+    "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther",
+    // Wisdom/Poetry
+    "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs",
+    // Major Prophets
+    "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
+    // Minor Prophets (The Twelve)
+    "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", 
+    "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"
 ]);
+
 const newTestamentBooks = new Set([
-    "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians",
-    "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
-    "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter",
-    "1 John", "2 John", "3 John", "Jude", "Revelation"
+    // Gospels
+    "Matthew", "Mark", "Luke", "John",
+    // History
+    "Acts",
+    // Pauline Epistles
+    "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", 
+    "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", 
+    "1 Timothy", "2 Timothy", "Titus", "Philemon",
+    // General Epistles
+    "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude",
+    // Apocalyptic
+    "Revelation"
 ]);
 
 // Precompute statistics for all words and phrases
@@ -116,32 +132,19 @@ function processBibleData(bibleData, stats, itemLimit, includeItems, excludeItem
             stat.books.forEach(b => books.add(b));
             stat.chapters.forEach(c => chapters.add(c));
             stat.verses.forEach(v => verses.add(v));
-        } else if (testament === 'old' && (bookFilter === 'all' || bookFilter === item.split(':')[0])) {
-            otCount = stat.ot;
-            count = otCount;
-            stat.books.forEach(b => { if (oldTestamentBooks.has(b)) books.add(b); });
-            stat.chapters.forEach(c => { if (oldTestamentBooks.has(c.split(':')[0])) chapters.add(c); });
-            stat.verses.forEach(v => { if (oldTestamentBooks.has(v.split(':')[0])) verses.add(v); });
-            if (bookFilter !== 'all') {
-                count = stat.books.has(bookFilter) ? count : 0;
-                books.clear(); if (stat.books.has(bookFilter)) books.add(bookFilter);
-                chapters.clear(); stat.chapters.forEach(c => { if (c.startsWith(bookFilter + ':')) chapters.add(c); });
-                verses.clear(); stat.verses.forEach(v => { if (v.startsWith(bookFilter + ':')) verses.add(v); });
-                count = verses.size; // Recalculate count based on verses in this book
-            }
-        } else if (testament === 'new' && (bookFilter === 'all' || bookFilter === item.split(':')[0])) {
-            ntCount = stat.nt;
-            count = ntCount;
-            stat.books.forEach(b => { if (newTestamentBooks.has(b)) books.add(b); });
-            stat.chapters.forEach(c => { if (newTestamentBooks.has(c.split(':')[0])) chapters.add(c); });
-            stat.verses.forEach(v => { if (newTestamentBooks.has(v.split(':')[0])) verses.add(v); });
-            if (bookFilter !== 'all') {
-                count = stat.books.has(bookFilter) ? count : 0;
-                books.clear(); if (stat.books.has(bookFilter)) books.add(bookFilter);
-                chapters.clear(); stat.chapters.forEach(c => { if (c.startsWith(bookFilter + ':')) chapters.add(c); });
-                verses.clear(); stat.verses.forEach(v => { if (v.startsWith(bookFilter + ':')) verses.add(v); });
-                count = verses.size; // Recalculate count based on verses in this book
-            }
+        } else {
+            const bookSet = testament === 'old' ? oldTestamentBooks : newTestamentBooks;
+            stat.verses.forEach(v => {
+                const [book] = v.split(':');
+                if (bookSet.has(book) && (bookFilter === 'all' || book === bookFilter)) {
+                    verses.add(v);
+                    chapters.add(v.substring(0, v.lastIndexOf(':')));
+                    books.add(book);
+                    count++;
+                    if (oldTestamentBooks.has(book)) otCount++;
+                    else if (newTestamentBooks.has(book)) ntCount++;
+                }
+            });
         }
 
         if (count > 0) {
@@ -272,6 +275,22 @@ function populateBookDropdown(testament) {
         });
     }
 }
+
+// Toggle filters visibility
+document.getElementById('toggle-filters-btn').addEventListener('click', () => {
+    const filtersDiv = document.getElementById('filters');
+    const toggleBtn = document.getElementById('toggle-filters-btn');
+
+    if (filtersDiv.classList.contains('visible')) {
+        filtersDiv.classList.remove('visible');
+        filtersDiv.classList.add('hidden');
+        toggleBtn.textContent = 'Show Filters';
+    } else {
+        filtersDiv.classList.remove('hidden');
+        filtersDiv.classList.add('visible');
+        toggleBtn.textContent = 'Hide Filters';
+    }
+});
 
 // Initialize and set up tabs/filters
 async function initialize() {
