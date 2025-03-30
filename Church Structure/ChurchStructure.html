@@ -4,7 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Church Structure Comparison</title>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+        :root {
+            --primary-color: #3a5a78;
+            --secondary-color: #e8f0f8;
+            --text-color: #333;
+            --border-color: #91b3c9;
+            --hover-color: #dae5ee;
+            --line-color: #91b3c9;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            
+            /* Catholic colors */
+            --catholic-primary: #8C2318;
+            --catholic-secondary: #F2D0A9;
+            --catholic-line: #BF5B3A;
+            
+            /* Baptist colors */
+            --baptist-primary: #1E5631;
+            --baptist-secondary: #D1E8D0;
+            --baptist-line: #538D56;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--secondary-color);
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: auto;
+        }
+
+        /* Structure Switcher */
+        .structure-switcher {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 20;
+            display: flex;
+            gap: 10px;
+        }
+
+        .structure-btn {
+            padding: 8px 16px;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .structure-btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        .structure-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        #rc-btn.active {
+            background-color: var(--catholic-primary);
+            border-color: var(--catholic-primary);
+        }
+
+        #baptist-btn.active {
+            background-color: var(--baptist-primary);
+            border-color: var(--baptist-primary);
+        }
+
+        /* SVG Elements */
+        .chart-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+        .hidden {
+            display: none;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+            min-width: 800px;
+            min-height: 600px;
+        }
+
+        .box {
+            fill: white;
+            stroke-width: 2px;
+            rx: 10;
+            ry: 10;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+
+        .dashed-box {
+            stroke-dasharray: 5, 5;
+        }
+
+        .nt-box {
+            stroke: var(--primary-color);
+        }
+
+        .rc-box {
+            stroke: var(--catholic-primary);
+        }
+
+        .baptist-box {
+            stroke: var(--baptist-primary);
+        }
+
+        .nt-line {
+            stroke: var(--line-color);
+            stroke-width: 3;
+        }
+
+        .rc-line {
+            stroke: var(--catholic-line);
+            stroke-width: 3;
+        }
+
+        .baptist-line {
+            stroke: var(--baptist-line);
+            stroke-width: 3;
+        }
+
+        .dashed-line {
+            stroke-dasharray: 5, 5;
+        }
+
+        .dotted-line {
+            stroke-dasharray: 2, 2;
+        }
+
+        .special-box {
+            fill: var(--primary-color);
+            color: white;
+        }
+
+        .box-text {
+            text-anchor: middle;
+            dominant-baseline: middle;
+            font-size: 14px;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .special-text {
+            fill: white;
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .control-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .control-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        /* Recall button */
+        .recall-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: auto;
+            height: 40px;
+            padding: 0 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            z-index: 20;
+        }
+
+        .recall-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-color);
+        }
+
+        /* Help button */
+        .help-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-weight: bold;
+            z-index: 20;
+        }
+
+        /* Legend */
+        .legend {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 8px 12px;
+            box-shadow: var(--box-shadow);
+            z-index: 20;
+            display: flex;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .legend-line {
+            width: 20px;
+            height: 2px;
+            background-color: var(--line-color);
+        }
+
+        .legend-line.dashed {
+            background-color: transparent;
+            border-top: 2px dashed var(--line-color);
+            height: 0;
+        }
+
+        .legend-line.dotted {
+            background-color: transparent;
+            border-top: 2px dotted var(--line-color);
+            height: 0;
+        }
+
+        /* Popups */
+        .popup {
+            position: absolute;
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            max-width: 250px;
+            box-shadow: var(--box-shadow);
+            z-index: 10;
+            display: none;
+            text-align: left;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .explanation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 500px;
+            width: 80%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 30;
+        }
+
+        .explanation h3 {
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .explanation p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <!-- Structure Type Switcher -->
@@ -15,212 +322,190 @@
     </div>
 
     <div class="container">
-        <div class="org-chart" id="org-chart">
-            <!-- New Testament Structure -->
-            <div class="chart-content" id="nt-structure">
-                <div class="box" id="christ" role="button" tabindex="0" aria-label="Christ: Click for more information">Christ</div>
-                <div class="connector" id="conn1">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="apostles" role="button" tabindex="0" aria-label="Apostles: Click for more information">Apostles</div>
-                <div class="box" id="prophets" role="button" tabindex="0" aria-label="Prophets: Click for more information">Prophets</div>
-                <div class="connector" id="conn2">
-                    <div class="line horizontal"></div>
-                </div>
-                <div class="connector" id="conn3">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="local-church" role="button" tabindex="0" aria-label="Local Assembly: Click for more information">Local Assembly</div>
-                <div class="connector" id="conn4">
-                    <div class="line horizontal"></div>
-                </div>
-                <div class="connector" id="conn5">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="connector" id="conn6">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="connector" id="conn7">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="connector" id="conn8">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="connector" id="conn9">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="elders" role="button" tabindex="0" aria-label="Elders: Click for more information">Elders</div>
-                <div class="box" id="evangelists" role="button" tabindex="0" aria-label="Evangelists: Click for more information">Evangelists</div>
-                <div class="box" id="pastors" role="button" tabindex="0" aria-label="Pastors: Click for more information">Pastors</div>
-                <div class="box" id="teachers" role="button" tabindex="0" aria-label="Teachers: Click for more information">Teachers</div>
-                <div class="box" id="members" role="button" tabindex="0" aria-label="Members: Click for more information">Members</div>
-                <div class="connector" id="conn10">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="connector" id="conn11">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
-                <div class="box" id="widows" role="button" tabindex="0" aria-label="Widows: Click for more information">Widows</div>
+        <!-- New Testament Structure -->
+        <div class="chart-content" id="nt-structure">
+            <svg viewBox="0 0 800 600" class="chart-svg">
+                <!-- Christ -->
+                <rect x="350" y="30" width="100" height="40" class="box nt-box special-box" id="christ" />
+                <text x="400" y="50" class="box-text special-text">Christ</text>
+                
+                <!-- Vertical line from Christ -->
+                <line x1="400" y1="70" x2="400" y2="120" class="nt-line" />
+                
+                <!-- Apostles and Prophets -->
+                <rect x="250" y="120" width="100" height="40" class="box nt-box" id="apostles" />
+                <text x="300" y="140" class="box-text">Apostles</text>
+                
+                <rect x="450" y="120" width="100" height="40" class="box nt-box" id="prophets" />
+                <text x="500" y="140" class="box-text">Prophets</text>
+                
+                <!-- Horizontal line connecting Apostles and Prophets -->
+                <line x1="350" y1="140" x2="450" y2="140" class="nt-line" />
+                
+                <!-- Vertical line down to Local Assembly -->
+                <line x1="400" y1="140" x2="400" y2="190" class="nt-line" />
+                
+                <!-- Local Assembly -->
+                <rect x="330" y="190" width="140" height="40" class="box nt-box" id="local-church" />
+                <text x="400" y="210" class="box-text">Local Assembly</text>
+                
+                <!-- Horizontal line connecting all roles -->
+                <line x1="150" y1="260" x2="650" y2="260" class="nt-line" />
+                
+                <!-- Vertical lines to roles -->
+                <line x1="150" y1="260" x2="150" y2="310" class="nt-line" />
+                <line x1="250" y1="260" x2="250" y2="310" class="nt-line" />
+                <line x1="350" y1="260" x2="350" y2="310" class="nt-line" />
+                <line x1="450" y1="260" x2="450" y2="310" class="nt-line" />
+                <line x1="550" y1="260" x2="550" y2="310" class="nt-line" />
+                
+                <!-- The five roles -->
+                <rect x="100" y="310" width="100" height="40" class="box nt-box" id="elders" />
+                <text x="150" y="330" class="box-text">Elders</text>
+                
+                <rect x="200" y="310" width="100" height="40" class="box nt-box" id="evangelists" />
+                <text x="250" y="330" class="box-text">Evangelists</text>
+                
+                <rect x="300" y="310" width="100" height="40" class="box nt-box" id="pastors" />
+                <text x="350" y="330" class="box-text">Pastors</text>
+                
+                <rect x="400" y="310" width="100" height="40" class="box nt-box" id="teachers" />
+                <text x="450" y="330" class="box-text">Teachers</text>
+                
+                <rect x="500" y="310" width="100" height="40" class="box nt-box" id="members" />
+                <text x="550" y="330" class="box-text">Members</text>
+                
+                <!-- Vertical lines to Deacons and Widows -->
+                <line x1="150" y1="350" x2="150" y2="400" class="nt-line" />
+                <line x1="350" y1="350" x2="350" y2="400" class="nt-line" />
+                
+                <!-- Deacons and Widows -->
+                <rect x="100" y="400" width="100" height="40" class="box nt-box" id="deacons" />
+                <text x="150" y="420" class="box-text">Deacons</text>
+                
+                <rect x="300" y="400" width="100" height="40" class="box nt-box" id="widows" />
+                <text x="350" y="420" class="box-text">Widows</text>
+            </svg>
+        </div>
 
-                <!-- Pop-ups -->
-                <div class="popup" id="popup-christ">
-                    <p><strong>Christ:</strong> The divine head and ultimate authority of the church, whose leadership is inherent and eternal. His role as the foundation of all spiritual governance is attested in Ephesians 1:22 and Colossians 1:18.</p>
-                </div>
-                <div class="popup" id="popup-apostles">
-                    <p><strong>Apostles:</strong> The foundational leaders directly commissioned by Jesus Christ. Tasked with establishing the church and spreading the gospel, their unique mission and authority are detailed in Ephesians 2:20 and Acts 1:2-26. The title of Apostle is currently defunct since death of John in 100 AD.</p>
-                </div>
-                <div class="popup" id="popup-prophets">
-                    <p><strong>Prophets:</strong> Those divinely called to receive and communicate God’s revelations. They offer guidance, correction, and insight to the church, as referenced in 1 Corinthians 12:28 and Ephesians 4:11.</p>
-                </div>
-                <div class="popup" id="popup-local-church">
-                    <p><strong>Local Church:</strong> An autonomous assembly of believers formed under the guidance of the Holy Spirit. Its self-governing structure reflects the early church model found in Acts 14:23.</p>
-                </div>
-                <div class="popup" id="popup-elders">
-                    <p><strong>Elders:</strong> Mature, spiritually seasoned leaders responsible for governing, teaching, and shepherding the local assembly. Their qualifications and roles are outlined in 1 Timothy 3:1-7 and Titus 1:5-9.</p>
-                </div>
-                <div class="popup" id="popup-evangelists">
-                    <p><strong>Evangelists:</strong> Ministers gifted in proclaiming the gospel and nurturing faith through public witness. Their calling and work are affirmed in Ephesians 4:11 and Acts 21:8.</p>
-                </div>
-                <div class="popup" id="popup-pastors">
-                    <p><strong>Pastors:</strong> Spiritual shepherds tasked with caring for, guiding, and instructing the congregation. Their role in protecting and nurturing the flock is highlighted in Ephesians 4:11 and 1 Peter 5:2.</p>
-                </div>
-                <div class="popup" id="popup-teachers">
-                    <p><strong>Teachers:</strong> Instructors dedicated to elucidating biblical doctrine and practical Christian living, thereby fostering spiritual growth. Their contribution is recognized in Ephesians 4:11 and Acts 13:1.</p>
-                </div>
-                <div class="popup" id="popup-deacons">
-                    <p><strong>Deacons:</strong> Leaders appointed to manage the practical and administrative needs of the church, ensuring effective service and support for the community. This role is outlined in 1 Timothy 3:8-13 and Acts 6:1-6.</p>
-                </div>
-                <div class="popup" id="popup-widows">
-                    <p><strong>Widows:</strong> Members who receive special support from the church and contribute through acts of care and hospitality, reflecting the community’s commitment to compassion as noted in 1 Timothy 5:9-10.</p>
-                </div>
-                <div class="popup" id="popup-members">
-                    <p><strong>Members:</strong> All baptized believers actively participating in the life and mission of the church, contributing their unique gifts to the body of Christ as described in 1 Corinthians 12.</p>
-                </div>
-            </div>
+        <!-- Roman Catholic Structure -->
+        <div class="chart-content hidden" id="rc-structure">
+            <svg viewBox="0 0 800 600" class="chart-svg">
+                <!-- Pope -->
+                <rect x="350" y="30" width="100" height="40" class="box rc-box" id="pope" style="fill: var(--catholic-primary);" />
+                <text x="400" y="50" class="box-text" style="fill: white;">Pope</text>
+                
+                <!-- Vertical line from Pope -->
+                <line x1="400" y1="70" x2="400" y2="120" class="rc-line" />
+                
+                <!-- Cardinals -->
+                <rect x="350" y="120" width="100" height="40" class="box rc-box" id="cardinals" />
+                <text x="400" y="140" class="box-text">Cardinals</text>
+                
+                <!-- Vertical line to Archbishops -->
+                <line x1="400" y1="160" x2="400" y2="210" class="rc-line" />
+                
+                <!-- Archbishops -->
+                <rect x="350" y="210" width="100" height="40" class="box rc-box" id="archbishops" />
+                <text x="400" y="230" class="box-text">Archbishops</text>
+                
+                <!-- Vertical line to Bishops -->
+                <line x1="400" y1="250" x2="400" y2="300" class="rc-line" />
+                
+                <!-- Bishops -->
+                <rect x="350" y="300" width="100" height="40" class="box rc-box" id="bishops" />
+                <text x="400" y="320" class="box-text">Bishops</text>
+                
+                <!-- Vertical line to Priests -->
+                <line x1="400" y1="340" x2="400" y2="390" class="rc-line" />
+                
+                <!-- Priests -->
+                <rect x="350" y="390" width="100" height="40" class="box rc-box" id="priests" />
+                <text x="400" y="410" class="box-text">Priests</text>
+                
+                <!-- Horizontal line to Deacons and Religious Orders -->
+                <line x1="250" y1="430" x2="550" y2="430" class="rc-line" />
+                
+                <!-- Vertical lines to Deacons and Religious Orders -->
+                <line x1="250" y1="430" x2="250" y2="480" class="rc-line" />
+                <line x1="550" y1="430" x2="550" y2="480" class="rc-line" />
+                
+                <!-- Deacons and Religious Orders -->
+                <rect x="200" y="480" width="100" height="40" class="box rc-box" id="rc-deacons" />
+                <text x="250" y="500" class="box-text">Deacons</text>
+                
+                <rect x="480" y="480" width="140" height="40" class="box rc-box" id="religious-orders" />
+                <text x="550" y="500" class="box-text">Religious Orders</text>
+                
+                <!-- Vertical line to Laity -->
+                <line x1="400" y1="430" x2="400" y2="530" class="rc-line" />
+                
+                <!-- Laity -->
+                <rect x="350" y="530" width="100" height="40" class="box rc-box" id="laity" />
+                <text x="400" y="550" class="box-text">Laity</text>
+            </svg>
+        </div>
 
-            <!-- Roman Catholic Structure -->
-            <div class="chart-content hidden" id="rc-structure">
-                <div class="box" id="pope" role="button" tabindex="0" aria-label="Pope: Click for more information">Pope</div>
-                <div class="connector" id="rc-conn1">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="cardinals" role="button" tabindex="0" aria-label="Cardinals: Click for more information">Cardinals</div>
-                <div class="connector" id="rc-conn2">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="archbishops" role="button" tabindex="0" aria-label="Archbishops: Click for more information">Archbishops</div>
-                <div class="connector" id="rc-conn3">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="bishops" role="button" tabindex="0" aria-label="Bishops: Click for more information">Bishops</div>
-                <div class="connector" id="rc-conn4">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="priests" role="button" tabindex="0" aria-label="Priests: Click for more information">Priests</div>
-                <div class="connector" id="rc-conn5">
-                    <div class="line horizontal"></div>
-                </div>
-                <div class="connector" id="rc-conn6">
-                    <div class="line vertical" id="rc-line6a"></div>
-                    <div class="line vertical" id="rc-line6b"></div>
-                </div>
-                <div class="box" id="rc-deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
-                <div class="box" id="religious-orders" role="button" tabindex="0" aria-label="Religious Orders: Click for more information">Religious Orders</div>
-                <div class="connector" id="rc-conn7">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="laity" role="button" tabindex="0" aria-label="Laity: Click for more information">Laity</div>
-
-                <!-- Pop-ups -->
-                <div class="popup" id="popup-pope">
-                    <p><strong>Pope:</strong> The Bishop of Rome, successor of Saint Peter, and supreme Pontiff of the universal Church. Appointed: Elected by the College of Cardinals in conclave. Authority Source: CCC 882–884, Code of Canon Law (Can. 331).</p>
-                </div>
-                <div class="popup" id="popup-cardinals">
-                    <p><strong>Cardinals:</strong> Senior church leaders who assist the Pope by providing counsel, governing the Church alongside him, and electing his successor in conclave.<br>Appointed: Personally chosen and appointed by the Pope, often from among bishops worldwide.<br>Authority Source: Catechism of the Catholic Church (CCC 874, 877), Code of Canon Law (Can. 349–359).</p>
-                </div>
-                <div class="popup" id="popup-archbishops">
-                    <p><strong>Archbishops:</strong> Successors to the Apostles who oversee provinces and manage multiple dioceses.<br>Appointed: Appointed by the Pope following a discernment process.<br>Authority Source: Catechism of the Catholic Church (CCC 877, 886), Code of Canon Law (Can. 375–411).</p>
-                </div>
-                <div class="popup" id="popup-bishops">
-                    <p><strong>Bishops:</strong> Successors to the Apostles who are responsible for teaching doctrine, governing Catholics within their dioceses, sanctifying the faithful through sacraments, and ordaining new priests and deacons.<br>Appointed: Appointed by the Pope following a discernment process.<br>Authority Source: Catechism of the Catholic Church (CCC 877, 886, 1555–1561), Code of Canon Law (Can. 375–411).</p>
-                </div>
-                <div class="popup" id="popup-priests">
-                    <p><strong>Priests:</strong> Ordained ministers who administer the sacraments, preach the gospel, provide pastoral care, and lead parish communities under the bishop’s authority.<br>Appointed: Ordained by bishops after appropriate theological formation.<br>Authority Source: Catechism of the Catholic Church (CCC 1562–1568, 1592), Code of Canon Law (Can. 515–552).</p>
-                </div>
-                <div class="popup" id="popup-rc-deacons">
-                    <p><strong>Deacons:</strong> Ordained ministers who assist bishops and priests, proclaim the Gospel, preach homilies, administer baptism, witness marriages, and perform charitable works.<br>Appointed: Ordained by bishops after appropriate formation.<br>Authority Source: Catechism of the Catholic Church (CCC 1569–1571, 1596), Code of Canon Law (Can. 1008–1009).</p>
-                </div>
-                <div class="popup" id="popup-religious-orders">
-                    <p><strong>Religious Orders:</strong> Communities of men and women living according to specific spiritual charisms and vows (poverty, chastity, obedience), contributing uniquely to the Church's mission through prayer, education, healthcare, and evangelization.<br>Appointed: Members voluntarily profess vows after a period of formation.<br>Authority Source: Catechism of the Catholic Church (CCC 914–933), Code of Canon Law (Can. 573–746).</p>
-                </div>
-                <div class="popup" id="popup-laity">
-                    <p><strong>Laity:</strong> Baptized Catholics who participate actively in the Church’s mission primarily in secular contexts, bearing witness to Christ in family life, society, and professional environments. They are neither ordained nor members of religious communities.<br>Appointed: Incorporated through baptism and confirmation.<br>Authority Source: Catechism of the Catholic Church (CCC 897–913), Code of Canon Law (Can. 204–231).</p>
-                </div>
-            </div>
-
-            <!-- Baptist Structure -->
-            <div class="chart-content hidden" id="baptist-structure">
-                <div class="box" id="baptist-christ" role="button" tabindex="0" aria-label="Christ: Click for more information">Christ</div>
-                <div class="connector" id="baptist-conn1">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="bible" role="button" tabindex="0" aria-label="Bible: Click for more information">Bible</div>
-                <div class="connector" id="baptist-conn2">
-                    <div class="line vertical"></div>
-                </div>
-                <div class="box" id="congregation" role="button" tabindex="0" aria-label="Congregation: Click for more information">Congregation</div>
-                <div class="connector" id="baptist-conn3">
-                    <div class="line horizontal" id="baptist-line3"></div>
-                </div>
-                <div class="connector" id="baptist-conn4">
-                    <div class="line vertical" id="baptist-line4a"></div>
-                    <div class="line vertical" id="baptist-line4b"></div>
-                </div>
-                <div class="box special-line" id="pastor" role="button" tabindex="0" aria-label="Pastor: Click for more information">Pastor</div>
-                <div class="box special-line" id="baptist-deacons" role="button" tabindex="0" aria-label="Deacons: Click for more information">Deacons</div>
-                <div class="connector" id="baptist-conn5">
-                    <div class="line horizontal dotted" id="baptist-line5"></div>
-                    <div class="line vertical" id="baptist-line5a"></div>
-                    <div class="line vertical" id="baptist-line5b"></div>
-                </div>
-                <div class="box" id="committees" role="button" tabindex="0" aria-label="Committees: Click for more information">Committees</div>
-                <div class="box" id="baptist-members" role="button" tabindex="0" aria-label="Members: Click for more information">Members</div>
-                <div class="box dashed-border" id="association" role="button" tabindex="0" aria-label="Association: Click for more information">Association</div>
-                <div class="connector" id="baptist-conn6">
-                    <div class="line vertical dashed"></div>
-                </div>
-                <div class="box dashed-border" id="convention" role="button" tabindex="0" aria-label="Convention: Click for more information">Convention</div>
-
-                <!-- Pop-ups -->
-                <div class="popup" id="popup-baptist-christ">
-                    <p><strong>Christ:</strong> The sole and supreme head of the church, recognized as having absolute spiritual authority over the community of believers. (Colossians 1:18)</p>
-                </div>
-                <div class="popup" id="popup-bible">
-                    <p><strong>Bible:</strong> The inspired Word of God and the ultimate authority guiding all matters of faith, practice, and church governance, central to Baptist life and identity. (2 Timothy 3:16-17)</p>
-                </div>
-                <div class="popup" id="popup-congregation">
-                    <p><strong>Congregation:</strong> The local body of believers who govern the church democratically, with each member having an equal voice in decisions. (Acts 6:3-5)</p>
-                </div>
-                <div class="popup" id="popup-pastor">
-                    <p><strong>Pastor:</strong> In the Baptist tradition, the pastor is a spiritual leader called by the local congregation to preach, teach, provide pastoral care, and guide the church in mission and spiritual growth. The pastor serves under the congregation's authority and oversight, embodying the principle of the priesthood of all believers.</p>
-                </div>
-                <div class="popup" id="popup-baptist-deacons">
-                    <p><strong>Deacons:</strong> Servant-leaders assisting the pastor and congregation in practical ministry and service roles. (Acts 6:1-6)</p>
-                </div>
-                <div class="popup" id="popup-committees">
-                    <p><strong>Committees:</strong> Groups established by the congregation to manage specific responsibilities such as finances, missions, education, worship, and community engagement, enabling organized and effective church operations. This structure reflects the Baptist emphasis on congregational governance and the priesthood of all believers.</p>
-                </div>
-                <div class="popup" id="popup-baptist-members">
-                    <p><strong>Members:</strong> All baptized believers with equal voice in church decisions, actively participating in the church’s life and mission. (1 Corinthians 12:12-27)</p>
-                </div>
-                <div class="popup" id="popup-association">
-                    <p><strong>Association:</strong> Voluntary regional fellowship of Baptist churches for mutual support and cooperation. (No binding authority over local churches)</p>
-                </div>
-                <div class="popup" id="popup-convention">
-                    <p><strong>Convention:</strong> Larger cooperative body for missions and education with no authority over local churches, reflecting Baptist autonomy. (Voluntary participation)</p>
-                </div>
-            </div>
+        <!-- Baptist Structure -->
+        <div class="chart-content hidden" id="baptist-structure">
+            <svg viewBox="0 0 800 600" class="chart-svg">
+                <!-- Christ -->
+                <rect x="350" y="30" width="100" height="40" class="box baptist-box" id="baptist-christ" style="fill: var(--baptist-primary);" />
+                <text x="400" y="50" class="box-text" style="fill: white;">Christ</text>
+                
+                <!-- Vertical line from Christ -->
+                <line x1="400" y1="70" x2="400" y2="120" class="baptist-line" />
+                
+                <!-- Bible -->
+                <rect x="350" y="120" width="100" height="40" class="box baptist-box" id="bible" />
+                <text x="400" y="140" class="box-text">Bible</text>
+                
+                <!-- Vertical line to Congregation -->
+                <line x1="400" y1="160" x2="400" y2="210" class="baptist-line" />
+                
+                <!-- Congregation -->
+                <rect x="330" y="210" width="140" height="40" class="box baptist-box" id="congregation" />
+                <text x="400" y="230" class="box-text">Congregation</text>
+                
+                <!-- Horizontal line to Pastor and Deacons -->
+                <line x1="180" y1="250" x2="620" y2="250" class="baptist-line" />
+                
+                <!-- Vertical lines to Pastor and Deacons -->
+                <line x1="180" y1="250" x2="180" y2="300" class="baptist-line" />
+                <line x1="620" y1="250" x2="620" y2="300" class="baptist-line" />
+                
+                <!-- Pastor and Deacons -->
+                <rect x="130" y="300" width="100" height="40" class="box baptist-box" id="pastor" />
+                <text x="180" y="320" class="box-text">Pastor</text>
+                
+                <rect x="570" y="300" width="100" height="40" class="box baptist-box" id="baptist-deacons" />
+                <text x="620" y="320" class="box-text">Deacons</text>
+                
+                <!-- Horizontal line to Committees and Members (dotted) -->
+                <line x1="180" y1="360" x2="620" y2="360" class="baptist-line dotted-line" />
+                
+                <!-- Vertical lines to Committees and Members -->
+                <line x1="180" y1="360" x2="180" y2="410" class="baptist-line" />
+                <line x1="620" y1="360" x2="620" y2="410" class="baptist-line" />
+                
+                <!-- Committees and Members -->
+                <rect x="130" y="410" width="100" height="40" class="box baptist-box" id="committees" />
+                <text x="180" y="430" class="box-text">Committees</text>
+                
+                <rect x="570" y="410" width="100" height="40" class="box baptist-box" id="baptist-members" />
+                <text x="620" y="430" class="box-text">Members</text>
+                
+                <!-- Association (dashed box) -->
+                <rect x="50" y="210" width="100" height="40" class="box baptist-box dashed-box" id="association" />
+                <text x="100" y="230" class="box-text">Association</text>
+                
+                <!-- Dashed line to Convention -->
+                <line x1="100" y1="250" x2="100" y2="350" class="baptist-line dashed-line" />
+                
+                <!-- Convention (dashed box) -->
+                <rect x="50" y="350" width="100" height="40" class="box baptist-box dashed-box" id="convention" />
+                <text x="100" y="370" class="box-text">Convention</text>
+            </svg>
         </div>
     </div>
 
@@ -255,8 +540,10 @@
         </div>
     </div>
 
-    <!-- Explanation Button -->
+    <!-- Help Button -->
     <button class="help-btn control-button" id="help-btn" aria-label="Help">?</button>
+
+    <!-- Explanation Popup -->
     <div class="popup explanation" id="explanation">
         <h3 id="explanation-title">New Testament Church Structure</h3>
         <div id="nt-explanation">
@@ -279,7 +566,273 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="./script.js"></script>
+    <!-- All the popups from the original design would go here -->
+    <!-- Add these before the closing body tag -->
+<!-- New Testament popups -->
+<div class="popup" id="popup-christ">
+    <p><strong>Christ:</strong> The divine head and ultimate authority of the church, whose leadership is inherent and eternal. His role as the foundation of all spiritual governance is attested in Ephesians 1:22 and Colossians 1:18.</p>
+</div>
+<div class="popup" id="popup-apostles">
+    <p><strong>Apostles:</strong> Those directly commissioned by Christ to establish the church. They were eyewitnesses of Jesus' ministry and resurrection (Acts 1:21-22) and had the authority to teach, lead, and establish local churches.</p>
+</div>
+<div class="popup" id="popup-prophets">
+    <p><strong>Prophets:</strong> Individuals gifted to speak divine revelation and instruction to the early church. They worked alongside apostles to establish the foundational teaching of the church (Ephesians 2:20).</p>
+</div>
+<div class="popup" id="popup-local-church">
+    <p><strong>Local Assembly:</strong> The gathering of believers in a specific location, functioning as an autonomous body under Christ's headship. Each local assembly had its own leadership structure while maintaining fellowship with other assemblies.</p>
+</div>
+<div class="popup" id="popup-elders">
+    <p><strong>Elders:</strong> Also called overseers or bishops, these men were responsible for teaching and governing the local assembly (1 Timothy 3:1-7, Titus 1:5-9). They were to be exemplary in character and able to teach.</p>
+</div>
+<div class="popup" id="popup-evangelists">
+    <p><strong>Evangelists:</strong> Believers specially gifted to proclaim the gospel message to unbelievers. Philip is identified as an evangelist in Acts 21:8, and evangelists are listed among Christ's gifts to the church in Ephesians 4:11.</p>
+</div>
+<div class="popup" id="popup-pastors">
+    <p><strong>Pastors:</strong> Leaders who shepherd the congregation, providing spiritual care, guidance, and protection. The term "pastor" (shepherd) is closely related to the role of elders (1 Peter 5:1-4).</p>
+</div>
+<div class="popup" id="popup-teachers">
+    <p><strong>Teachers:</strong> Those gifted to explain and apply Scripture, helping believers understand and live out God's Word. Teaching was a crucial function in the early church (Acts 13:1).</p>
+</div>
+<div class="popup" id="popup-members">
+    <p><strong>Members:</strong> All believers who compose the body of Christ, each with spiritual gifts to be used for the edification of the church (1 Corinthians 12). Every member has value and purpose in the functioning of the body.</p>
+</div>
+<div class="popup" id="popup-deacons">
+    <p><strong>Deacons:</strong> Servants dedicated to meeting practical needs within the church, allowing elders to focus on prayer and ministry of the Word (Acts 6:1-6). They are to be of good character (1 Timothy 3:8-13).</p>
+</div>
+<div class="popup" id="popup-widows">
+    <p><strong>Widows:</strong> Older women supported by the church who dedicated themselves to prayer and service. 1 Timothy 5:9-10 outlines qualifications for widows to be placed on the support list of the church.</p>
+</div>
+
+<!-- Roman Catholic popups -->
+<div class="popup" id="popup-pope">
+    <p><strong>Pope:</strong> The Bishop of Rome and supreme head of the Catholic Church, considered the successor to St. Peter. He exercises spiritual authority over the global Roman Catholic Church and is regarded as Christ's representative on earth.</p>
+</div>
+<div class="popup" id="popup-cardinals">
+    <p><strong>Cardinals:</strong> Senior ecclesiastical leaders who serve as principal counselors to the Pope and elect a new Pope upon a vacancy. They govern the Church during papal transitions and often lead major dioceses or departments of the Roman Curia.</p>
+</div>
+<div class="popup" id="popup-archbishops">
+    <p><strong>Archbishops:</strong> Bishops who oversee an ecclesiastical province consisting of several dioceses. They have limited supervisory authority over the bishops in their province while maintaining direct authority over their own archdiocese.</p>
+</div>
+<div class="popup" id="popup-bishops">
+    <p><strong>Bishops:</strong> Successors to the apostles who govern individual dioceses. They have the fullness of priestly ordination, allowing them to ordain priests and deacons, administer all sacraments, and teach with authority within their diocese.</p>
+</div>
+<div class="popup" id="popup-priests">
+    <p><strong>Priests:</strong> Ordained ministers who administer most sacraments, lead parishes, and act in the person of Christ (in persona Christi) during Mass. They serve under the authority of their bishop and are responsible for pastoral care of parishioners.</p>
+</div>
+<div class="popup" id="popup-rc-deacons">
+    <p><strong>Deacons:</strong> Ordained ministers who assist bishops and priests in liturgical functions, preaching, baptizing, witnessing marriages, and performing works of charity. Unlike priests, they cannot consecrate the Eucharist or hear confessions.</p>
+</div>
+<div class="popup" id="popup-religious-orders">
+    <p><strong>Religious Orders:</strong> Communities of men or women who live according to specific religious rules and take vows of poverty, chastity, and obedience. They include contemplative monastics, mendicant friars, and apostolic communities dedicated to education, healthcare, or social service.</p>
+</div>
+<div class="popup" id="popup-laity">
+    <p><strong>Laity:</strong> Baptized members of the Church who are not ordained clergy. They participate in Christ's priestly, prophetic, and kingly mission through baptism and have important roles in the Church's life and mission in the secular world.</p>
+</div>
+
+<!-- Baptist popups -->
+<div class="popup" id="popup-baptist-christ">
+    <p><strong>Christ:</strong> The sole head of the church, with direct authority over each congregation. Baptist ecclesiology emphasizes Christ's direct leadership without human intermediaries between Him and the local church.</p>
+</div>
+<div class="popup" id="popup-bible">
+    <p><strong>Bible:</strong> The supreme authority for faith and practice in Baptist churches. The principle of "Sola Scriptura" (Scripture alone) means the Bible is the final arbiter in all matters of doctrine and church governance.</p>
+</div>
+<div class="popup" id="popup-congregation">
+    <p><strong>Congregation:</strong> The gathered body of baptized believers who collectively make decisions through democratic processes. Baptist polity emphasizes the priesthood of all believers and congregational governance.</p>
+</div>
+<div class="popup" id="popup-pastor">
+    <p><strong>Pastor:</strong> The spiritual leader called by the congregation to preach, teach, and provide spiritual guidance. While respected for their leadership, pastors serve at the will of the congregation rather than exercising hierarchical authority.</p>
+</div>
+<div class="popup" id="popup-baptist-deacons">
+    <p><strong>Deacons:</strong> Servants elected by the congregation to assist the pastor, care for members, and handle practical matters of church life. They often function as a leadership council but remain accountable to the congregation.</p>
+</div>
+<div class="popup" id="popup-committees">
+    <p><strong>Committees:</strong> Groups appointed by the congregation to oversee specific areas of ministry such as finance, buildings, missions, education, and worship. They report to and make recommendations to the full congregation.</p>
+</div>
+<div class="popup" id="popup-baptist-members">
+    <p><strong>Members:</strong> Individual believers who have professed faith in Christ, been baptized by immersion, and been received into church membership. Each member has equal voice and vote in church decisions.</p>
+</div>
+<div class="popup" id="popup-association">
+    <p><strong>Association:</strong> A voluntary fellowship of Baptist churches in a geographic region that cooperate for missions, education, and fellowship. Associations have no authority over member churches but provide resources and support.</p>
+</div>
+<div class="popup" id="popup-convention">
+    <p><strong>Convention:</strong> A larger cooperative body of Baptist churches at the state or national level. Conventions facilitate collective mission efforts and may operate seminaries, colleges, and mission boards, but have no jurisdiction over local churches.</p>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.container');
+    let isDragging = false;
+    let hasMoved = false;  // new variable to track movement
+    let startX, startY, scrollLeft, scrollTop;
+    let scale = 1;
+    const initialScale = 1;
+    const dragThreshold = 5; // pixels
+
+    // Structure switcher functionality remains unchanged
+    document.querySelectorAll('.structure-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.structure-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const structureId = this.id.split('-')[0] + '-structure';
+            document.querySelectorAll('.chart-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(structureId).classList.remove('hidden');
+
+            document.getElementById('explanation-title').textContent = this.textContent + ' Church Structure';
+            document.querySelectorAll('.explanation > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById(structureId.split('-')[0] + '-explanation').classList.remove('hidden');
+
+            resetView();
+        });
+    });
+
+    // SVG box click handlers – only trigger if it wasn’t a drag
+    document.querySelectorAll('.box').forEach(box => {
+        box.addEventListener('click', function(e) {
+            // If a drag movement occurred, do not treat this as a click.
+            if (hasMoved) return;
+
+            e.stopPropagation();
+            const boxId = this.id;
+            const popup = document.getElementById(`popup-${boxId}`);
+
+            // Hide all other popups
+            document.querySelectorAll('.popup').forEach(p => {
+                if (p !== popup && p.id !== 'explanation') {
+                    p.style.display = 'none';
+                }
+            });
+
+            if (popup) {
+                if (popup.style.display === 'block') {
+                    popup.style.display = 'none';
+                } else {
+                    const boxRect = this.getBoundingClientRect();
+                    const popupWidth = 250; // Max popup width
+
+                    let top = boxRect.bottom;
+                    let left = boxRect.left + (boxRect.width / 2) - (popupWidth / 2);
+
+                    if (left + popupWidth > window.innerWidth) {
+                        left = window.innerWidth - popupWidth - 10;
+                    }
+                    if (left < 10) left = 10;
+
+                    popup.style.top = top + 'px';
+                    popup.style.left = left + 'px';
+                    popup.style.pointerEvents = 'auto';
+                    popup.style.display = 'block';
+                }
+            }
+        });
+    });
+
+    // Dragging functionality with movement threshold
+    container.addEventListener('mousedown', startDrag);
+    container.addEventListener('touchstart', startDrag);
+
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag);
+
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
+    document.addEventListener('mouseleave', endDrag);
+
+    function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+        hasMoved = false; // reset at the start
+        container.style.cursor = 'grabbing';
+
+        const event = e.type === 'touchstart' ? e.touches[0] : e;
+        startX = event.clientX;
+        startY = event.clientY;
+        scrollLeft = container.scrollLeft;
+        scrollTop = container.scrollTop;
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const event = e.type === 'touchmove' ? e.touches[0] : e;
+        const dx = (startX - event.clientX) / scale;
+        const dy = (startY - event.clientY) / scale;
+
+        // If movement exceeds the threshold, mark as a drag
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+            hasMoved = true;
+        }
+
+        container.scrollLeft = scrollLeft + dx;
+        container.scrollTop = scrollTop + dy;
+    }
+
+    function endDrag() {
+        if (isDragging) {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        }
+    }
+
+    // Zoom functionality remains unchanged
+    document.getElementById('zoom-in').addEventListener('click', function() {
+        scale = Math.min(scale + 0.1, 2.0);
+        updateZoom();
+    });
+
+    document.getElementById('zoom-out').addEventListener('click', function() {
+        scale = Math.max(scale - 0.1, 0.5);
+        updateZoom();
+    });
+
+    document.getElementById('reset-view').addEventListener('click', resetView);
+    document.getElementById('recall-btn').addEventListener('click', centerChart);
+
+    container.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        const zoomStep = 0.05;
+        const oldScale = scale;
+
+        scale = Math.max(0.5, Math.min(2.0,
+            scale + (e.deltaY < 0 ? zoomStep : -zoomStep)
+        ));
+
+        if (scale !== oldScale) {
+            updateZoom();
+        }
+    });
+
+    function updateZoom() {
+        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        if (currentChart) {
+            currentChart.style.transform = `scale(${scale})`;
+            currentChart.style.transformOrigin = 'top left';
+        }
+    }
+
+    function resetView() {
+        scale = initialScale;
+        updateZoom();
+        container.scrollTop = 0;
+        container.scrollLeft = 0;
+    }
+
+    function centerChart() {
+        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        if (currentChart) {
+            // The SVG viewBox is fixed at 800x600, so we calculate its effective dimensions.
+            const effectiveWidth = 800 * scale;
+            const effectiveHeight = 600 * scale;
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+
+            container.scrollLeft = (effectiveWidth - containerWidth) / 2;
+            container.scrollTop = (effectiveHeight - containerHeight) / 2;
+        }
+    }
+});
+
+    </script>
 </body>
 </html>
