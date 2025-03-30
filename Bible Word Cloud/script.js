@@ -52,7 +52,8 @@ async function precomputeStats(bibleData) {
             for (const verse in verses) {
                 // Use RegExp constructor to avoid regex literal parsing issues
                 const verseText = verses[verse].toLowerCase().replace(new RegExp('[^\\w\\s]', 'g'), '');
-                const words = verseText.split(/\s+/).filter(w => w.length > 2);
+                // Use RegExp constructor for splitting on whitespace
+                const words = verseText.split(new RegExp('\\s+', 'g')).filter(w => w.length > 2);
 
                 // Word stats
                 words.forEach(word => {
