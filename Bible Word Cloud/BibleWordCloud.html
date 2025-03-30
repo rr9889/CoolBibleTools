@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblical Word Cloud (NIV)</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="filters">
+        <label for="testament-select">Testament:</label>
+        <select id="testament-select">
+            <option value="all">All</option>
+            <option value="old">Old Testament</option>
+            <option value="new">New Testament</option>
+        </select>
+        <br>
+        <label for="book-select">Book:</label>
+        <select id="book-select" disabled>
+            <option value="all">All Books</option>
+        </select>
+        <br>
+        <label for="item-count">Number of Items:</label>
+        <input type="number" id="item-count" min="1" value="50" style="width: 60px;">
+        <br>
+        <label for="include-items">Include Items (comma-separated):</label>
+        <input type="text" id="include-items" placeholder="e.g., jesus, jerusalem">
+        <br>
+        <label for="exclude-items">Exclude Items (comma-separated):</label>
+        <input type="text" id="exclude-items" placeholder="e.g., day, time">
+        <br>
+        <button id="apply-filters">Apply Filters</button>
+    </div>
+    <div id="tabs">
+        <button id="tab-words" class="active">Words</button>
+        <button id="tab-phrases">Phrases</button>
+        <button id="tab-names">Names</button>
+        <button id="tab-locations">Locations</button>
+        <button id="tab-terms">Religious Terms</button>
+    </div>
+    <div id="overlay"></div>
+    <div id="word-cloud"></div>
+    <div id="popup">
+        <span id="popup-close">×</span>
+        <h2 id="popup-title"></h2>
+        <p id="popup-content"></p>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
