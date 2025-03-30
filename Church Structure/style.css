@@ -7,12 +7,10 @@
     --line-color: #91b3c9;
     --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
-    
     /* Catholic colors */
     --catholic-primary: #8C2318;
     --catholic-secondary: #F2D0A9;
     --catholic-line: #BF5B3A;
-    
     /* Baptist colors */
     --baptist-primary: #1E5631;
     --baptist-secondary: #D1E8D0;
@@ -32,6 +30,7 @@ body {
     height: 100vh;
     overflow: hidden;
     background-color: var(--secondary-color);
+    overscroll-behavior: none;
 }
 
 .container {
@@ -39,34 +38,7 @@ body {
     height: 100%;
     position: relative;
     overflow: auto;
-}
-
-.org-chart {
-    position: relative;
-    width: 3000px;
-    height: 2000px;
-    margin: 0 auto;
-    text-align: center;
-    transform-origin: center center;
-    transition: var(--transition);
-    cursor: grab;
-    touch-action: none;
-}
-
-.org-chart.grabbing {
-    cursor: grabbing !important;
-}
-
-.chart-content {
-    position: absolute;
-    width: 1200px;
-    height: 800px;
-    left: 900px;
-    top: 600px;
-}
-
-.hidden {
-    display: none;
+    overscroll-behavior: contain;
 }
 
 /* Structure Switcher */
@@ -110,146 +82,89 @@ body {
     border-color: var(--baptist-primary);
 }
 
-/* Box Styles */
-.box {
-    position: absolute;
-    width: 120px;
-    padding: 12px;
-    background-color: #fff;
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: 500;
-    box-shadow: var(--box-shadow);
-    z-index: 2;
-    user-select: none;
-}
-
-.box:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    background-color: var(--hover-color);
-}
-
-#rc-structure .box {
-    border-color: var(--catholic-primary);
-}
-
-#baptist-structure .box {
-    border-color: var(--baptist-primary);
-}
-
-.dashed-border {
-    border-style: dashed;
-}
-
-/* Connector styles */
-.connector {
-    position: absolute;
-    z-index: 1;
-}
-
-.line {
-    position: absolute;
-    background-color: var(--line-color);
-    transform-origin: top left;
-}
-
-.vertical {
-    width: 3px; /* Increased for visibility */
-}
-
-.horizontal {
-    height: 3px; /* Increased for visibility */
-}
-
-#rc-structure .line {
-    background-color: var(--catholic-line);
-}
-
-#baptist-structure .line {
-    background-color: var(--baptist-line);
-}
-
-.dashed {
-    background-color: transparent !important;
-    border-left: 3px dashed var(--line-color);
-    width: 0 !important;
-}
-
-.horizontal.dashed {
-    border-left: none;
-    border-top: 3px dashed var(--line-color);
-    height: 0 !important;
-}
-
-.dotted {
-    background-color: transparent !important;
-    border-left: 3px dotted var(--line-color);
-    width: 0 !important;
-}
-
-.horizontal.dotted {
-    border-left: none;
-    border-top: 3px dotted var(--line-color);
-    height: 0 !important;
-}
-
-#rc-structure .dashed, #rc-structure .horizontal.dashed {
-    border-color: var(--catholic-line);
-}
-
-#rc-structure .dotted, #rc-structure .horizontal.dotted {
-    border-color: var(--catholic-line);
-}
-
-#baptist-structure .dashed, #baptist-structure .horizontal.dashed {
-    border-color: var(--baptist-line);
-}
-
-#baptist-structure .dotted, #baptist-structure .horizontal.dotted {
-    border-color: var(--baptist-line);
-}
-
-/* Legend */
-.legend {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 8px 12px;
-    box-shadow: var(--box-shadow);
-    z-index: 20;
+/* SVG Elements */
+.chart-content {
     display: flex;
-    gap: 15px;
-}
-
-.legend-item {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
-    font-size: 12px;
+    width: 100%;
+    height: 100%;
 }
 
-.legend-line {
-    width: 20px;
-    height: 2px;
-    background-color: var(--line-color);
+.hidden {
+    display: none;
 }
 
-.legend-line.dashed {
-    background-color: transparent;
-    border-top: 2px dashed var(--line-color);
-    height: 0;
+.chart-svg {
+    width: 100%;
+    height: 100%;
+    min-width: 800px;
+    min-height: 600px;
 }
 
-.legend-line.dotted {
-    background-color: transparent;
-    border-top: 2px dotted var(--line-color);
-    height: 0;
+.box {
+    fill: white;
+    stroke-width: 2px;
+    rx: 10;
+    ry: 10;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dashed-box {
+    stroke-dasharray: 5, 5;
+}
+
+.nt-box {
+    stroke: var(--primary-color);
+}
+
+.rc-box {
+    stroke: var(--catholic-primary);
+}
+
+.baptist-box {
+    stroke: var(--baptist-primary);
+}
+
+.nt-line {
+    stroke: var(--line-color);
+    stroke-width: 3;
+}
+
+.rc-line {
+    stroke: var(--catholic-line);
+    stroke-width: 3;
+}
+
+.baptist-line {
+    stroke: var(--baptist-line);
+    stroke-width: 3;
+}
+
+.dashed-line {
+    stroke-dasharray: 5, 5;
+}
+
+.dotted-line {
+    stroke-dasharray: 2, 2;
+}
+
+.special-box {
+    fill: var(--primary-color);
+    color: white;
+}
+
+.box-text {
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+.special-text {
+    fill: white;
 }
 
 /* Zoom Controls */
@@ -312,6 +227,46 @@ body {
     z-index: 20;
 }
 
+/* Legend */
+.legend {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: var(--box-shadow);
+    z-index: 20;
+    display: flex;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.legend-line {
+    width: 20px;
+    height: 2px;
+    background-color: var(--line-color);
+}
+
+.legend-line.dashed {
+    background-color: transparent;
+    border-top: 2px dashed var(--line-color);
+    height: 0;
+}
+
+.legend-line.dotted {
+    background-color: transparent;
+    border-top: 2px dotted var(--line-color);
+    height: 0;
+}
+
 /* Popups */
 .popup {
     position: absolute;
@@ -346,108 +301,4 @@ body {
 
 .explanation p {
     margin-bottom: 10px;
-}
-
-/* New Testament Structure Positioning */
-#christ { top: 30px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; font-weight: bold; }
-#conn1 { top: 75px; left: 50%; transform: translateX(-50%); }
-#conn1 .vertical { height: 60px; }
-#apostles { top: 135px; left: 400px; }
-#prophets { top: 135px; right: 400px; }
-#conn2 { top: 155px; left: 460px; }
-#conn2 .horizontal { width: 280px; }
-#conn3 { top: 175px; left: 50%; transform: translateX(-50%); }
-#conn3 .vertical { height: 60px; }
-#local-church { top: 235px; left: 50%; transform: translateX(-50%); width: 160px; } /* Adjusted width */
-#conn4 { top: 280px; left: 240px; }
-#conn4 .horizontal { width: 720px; }
-#conn5, #conn6, #conn7, #conn8, #conn9 { top: 280px; }
-#conn5 { left: 240px; }
-#conn6 { left: 420px; }
-#conn7 { left: 600px; }
-#conn8 { left: 780px; }
-#conn9 { left: 960px; }
-#conn5 .vertical, #conn6 .vertical, #conn7 .vertical, #conn8 .vertical, #conn9 .vertical { height: 60px; }
-#elders { top: 340px; left: 180px; }
-#evangelists { top: 340px; left: 360px; }
-#pastors { top: 340px; left: 540px; }
-#teachers { top: 340px; left: 720px; }
-#members { top: 340px; left: 900px; }
-#conn10 { top: 385px; left: 330px; }
-#conn11 { top: 385px; left: 510px; }
-#conn10 .vertical, #conn11 .vertical { height: 60px; }
-#deacons { top: 445px; left: 270px; }
-#widows { top: 445px; left: 450px; }
-
-/* Roman Catholic Structure Positioning */
-#pope { top: 30px; left: 50%; transform: translateX(-50%); background-color: var(--catholic-primary); color: white; font-weight: bold; }
-#rc-conn1 { top: 75px; left: 50%; transform: translateX(-50%); }
-#rc-conn1 .vertical { height: 60px; }
-#cardinals { top: 135px; left: 50%; transform: translateX(-50%); }
-#rc-conn2 { top: 180px; left: 50%; transform: translateX(-50%); }
-#rc-conn2 .vertical { height: 60px; }
-#archbishops { top: 240px; left: 50%; transform: translateX(-50%); }
-#rc-conn3 { top: 285px; left: 50%; transform: translateX(-50%); }
-#rc-conn3 .vertical { height: 60px; }
-#bishops { top: 345px; left: 50%; transform: translateX(-50%); }
-#rc-conn4 { top: 390px; left: 50%; transform: translateX(-50%); }
-#rc-conn4 .vertical { height: 60px; }
-#priests { top: 450px; left: 50%; transform: translateX(-50%); }
-#rc-conn5 { top: 495px; left: 320px; }
-#rc-conn5 .horizontal { width: 360px; }
-#rc-conn6 { top: 495px; }
-#rc-line6a { left: 320px; height: 60px; }
-#rc-line6b { left: 680px; height: 60px; }
-#rc-deacons { top: 555px; left: 260px; }
-#religious-orders { top: 555px; right: 260px; width: 140px; } /* Adjusted width */
-#rc-conn7 { top: 495px; left: 50%; transform: translateX(-50%); }
-#rc-conn7 .vertical { height: 110px; }
-#laity { top: 605px; left: 50%; transform: translateX(-50%); }
-
-/* Baptist Structure Positioning */
-#baptist-christ { top: 30px; left: 50%; transform: translateX(-50%); background-color: var(--baptist-primary); color: white; font-weight: bold; }
-#baptist-conn1 { top: 75px; left: 50%; transform: translateX(-50%); }
-#baptist-conn1 .vertical { height: 60px; }
-#bible { top: 135px; left: 50%; transform: translateX(-50%); }
-#baptist-conn2 { top: 180px; left: 50%; transform: translateX(-50%); }
-#baptist-conn2 .vertical { height: 60px; }
-#congregation { top: 240px; left: 50%; transform: translateX(-50%); width: 160px; } /* Adjusted width */
-#baptist-conn3 { top: 285px; left: 300px; }
-#baptist-line3 { width: 600px; }
-#baptist-conn4 { top: 285px; }
-#baptist-line4a { left: 300px; height: 60px; }
-#baptist-line4b { left: 900px; height: 60px; }
-#pastor { top: 345px; left: 240px; }
-#baptist-deacons { top: 345px; right: 240px; }
-#baptist-conn5 { top: 390px; left: 300px; }
-#baptist-line5 { width: 600px; }
-#baptist-line5a { left: 300px; height: 60px; }
-#baptist-line5b { left: 900px; height: 60px; }
-#committees { top: 450px; left: 240px; }
-#baptist-members { top: 450px; right: 240px; }
-#association { top: 240px; left: 100px; }
-#baptist-conn6 { top: 285px; left: 160px; }
-#baptist-conn6 .vertical.dashed { height: 120px; }
-#convention { top: 405px; left: 100px; }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .org-chart {
-        width: 1500px;
-        height: 1000px;
-    }
-    .chart-content {
-        width: 600px;
-        height: 400px;
-        left: 450px;
-        top: 300px;
-    }
-    .box {
-        width: 100px;
-        padding: 8px;
-        font-size: 14px;
-    }
-    #local-church, #congregation, #religious-orders {
-        width: 120px;
-    }
 }

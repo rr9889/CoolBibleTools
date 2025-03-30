@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Church Structure Comparison</title>
+  <style>
+    :root {
+      --primary-color: #3a5a78;
+      --secondary-color: #e8f0f8;
+      --text-color: #333;
+      --border-color: #91b3c9;
+      --hover-color: #dae5ee;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      --catholic-primary: #8C2318;
+      --baptist-primary: #1E5631;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-color);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--secondary-color);
+    }
+    .container { width: 100%; height: 100%; position: relative; overflow: auto; }
+    .structure-switcher { position: fixed; top: 30px; left: 30px; z-index: 20; display: flex; gap: 10px; }
+    .structure-btn {
+      padding: 8px 16px; background-color: white; border: 2px solid var(--border-color);
+      border-radius: 8px; cursor: pointer; font-weight: 500; transition: var(--transition);
+      box-shadow: var(--box-shadow);
+    }
+    .structure-btn:hover { background-color: var(--hover-color); }
+    .structure-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+    #rc-btn.active { background-color: var(--catholic-primary); border-color: var(--catholic-primary); }
+    #baptist-btn.active { background-color: var(--baptist-primary); border-color: var(--baptist-primary); }
+    .chart-content { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+    .hidden { display: none; }
+    .chart-svg { width: 100%; height: 100%; min-width: 800px; min-height: 600px; }
+    .zoom-controls { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 8px; z-index: 20; }
+    .control-button {
+      width: 40px; height: 40px; border-radius: 20px; background-color: white;
+      border: 2px solid var(--border-color); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; font-size: 20px; box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+    .control-button:hover { background-color: var(--hover-color); }
+    .help-btn { position: fixed; top: 30px; right: 30px; font-weight: bold; z-index: 20; }
+    .legend {
+      position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; padding: 8px 12px;
+      box-shadow: var(--box-shadow); z-index: 20; display: flex; gap: 15px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+    .legend-line { width: 20px; height: 2px; background-color: #91b3c9; }
+    .legend-line.dashed { background-color: transparent; border-top: 2px dashed #7fa3bc; height: 0; }
+    .legend-line.dotted { background-color: transparent; border-top: 2px dotted #a9c7d6; height: 0; }
+    .popup {
+      position: absolute; background-color: white; border-radius: 8px; padding: 12px;
+      max-width: 250px; box-shadow: var(--box-shadow); z-index: 10; display: none;
+      text-align: left; font-size: 14px; pointer-events: none;
+    }
+    .explanation {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      max-width: 500px; width: 80%; max-height: 80vh; overflow-y: auto; z-index: 30;
+      background-color: white; padding: 20px; border-radius: 8px; box-shadow: var(--box-shadow);
+    }
+    .explanation h3 { margin-bottom: 12px; text-align: center; }
+    .explanation p { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="structure-switcher">
+    <button id="nt-btn" class="structure-btn active">New Testament</button>
+    <button id="rc-btn" class="structure-btn">Roman Catholic</button>
+    <button id="baptist-btn" class="structure-btn">Baptist</button>
+  </div>
+
+  <div class="container">
+    <div class="chart-content" id="nt-structure">
+      <object type="image/svg+xml" data="nt-structure.svg" class="chart-svg" id="nt-svg"></object>
+    </div>
+    <div class="chart-content hidden" id="rc-structure">
+      <object type="image/svg+xml" data="rc-structure.svg" class="chart-svg" id="rc-svg"></object>
+    </div>
+    <div class="chart-content hidden" id="baptist-structure">
+      <object type="image/svg+xml" data="baptist-structure.svg" class="chart-svg" id="baptist-svg"></object>
+    </div>
+  </div>
+
+  <div class="zoom-controls">
+    <button id="zoom-in" aria-label="Zoom in" class="control-button">+</button>
+    <button id="zoom-out" aria-label="Zoom out" class="control-button">−</button>
+    <button id="reset-view" aria-label="Reset view" class="control-button">↺</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-line" style="width: 20px; height: 4px; background-color: #91b3c9;"></div><span>Direct Authority</span></div>
+    <div class="legend-item"><div class="legend-line dashed" style="width: 20px; border-top: 2px dashed #7fa3bc;"></div><span>Cooperative Relationship</span></div>
+    <div class="legend-item"><div class="legend-line dotted" style="width: 20px; border-top: 2px dotted #a9c7d6;"></div><span>Mutual Accountability</span></div>
+  </div>
+
+  <button class="help-btn control-button" id="help-btn" aria-label="Help">?</button>
+
+  <div class="popup explanation" id="explanation">
+    <h3 id="explanation-title">New Testament Church Structure</h3>
+    <div id="nt-explanation">
+      <p>This chart reflects the 1st-century New Testament church structure in Ephesus. <strong>Christ</strong> is the head (Ephesians 1:22). <strong>Apostles</strong> (e.g., Paul) and <strong>Prophets</strong> laid the foundation (Ephesians 2:20; 4:11).</p>
+      <p>The <strong>Church in Ephesus</strong> was an autonomous assembly (Acts 19-20), led by a plurality of <strong>Elders</strong> who oversaw and shepherded (Acts 20:17-28). <strong>Evangelists</strong> (e.g., Timothy, 2 Timothy 4:5), <strong>Pastors</strong> (often elders, Acts 20:28), and <strong>Teachers</strong> supported growth and doctrine.</p>
+      <p><strong>Deacons</strong> served practical needs (1 Timothy 3:8-13), and <strong>Widows</strong> were supported to serve (1 Timothy 5:9-10), not as an office. <strong>Members</strong> (all believers) used gifts to build the body (Ephesians 4:16).</p>
+    </div>
+    <div id="rc-explanation" class="hidden">
+      <p>The Roman Catholic Church follows a hierarchical structure with the <strong>Pope</strong> as the supreme head, considered the successor to St. Peter (Matthew 16:18; John 21:15-17). <strong>Cardinals</strong> serve as principal counselors and elect new popes.</p>
+      <p><strong>Archbishops</strong> oversee provinces of dioceses, and <strong>Bishops</strong> lead individual dioceses. <strong>Priests</strong> administer sacraments in parishes, assisted by <strong>Deacons</strong>. <strong>Religious Orders</strong> form communities living under specific vows, while the <strong>Laity</strong> are baptized non-ordained members.</p>
+    </div>
+    <div id="baptist-explanation" class="hidden">
+      <p>Baptist churches emphasize <strong>Christ</strong> as head and the <strong>Bible</strong> as supreme authority (Sola Scriptura). Each <strong>Congregation</strong> is autonomous, practicing a congregational polity where members vote on church decisions.</p>
+      <p>A <strong>Pastor</strong> leads in preaching and teaching, supported by <strong>Deacons</strong> who help serve. <strong>Committees</strong> handle specific ministries, while <strong>Associations</strong> and <strong>Conventions</strong> are cooperative networks with no binding authority over local churches.</p>
+    </div>
+  </div>
+
+  <!-- Popups -->
+  <div class="popup" id="popup-christ"><p><strong>Christ:</strong> The divine head and ultimate authority of the church (Ephesians 1:22; Colossians 1:18).</p></div>
+  <div class="popup" id="popup-apostles"><p><strong>Apostles:</strong> Commissioned by Christ to establish the church, e.g., Paul in Ephesus (Acts 19:1-10; Ephesians 2:20).</p></div>
+  <div class="popup" id="popup-prophets"><p><strong>Prophets:</strong> Provided divine revelation alongside apostles (Ephesians 2:20; 4:11).</p></div>
+  <div class="popup" id="popup-local-church"><p><strong>Church in Ephesus:</strong> An autonomous local assembly founded by Paul (Acts 19-20; Revelation 2:1-7).</p></div>
+  <div class="popup" id="popup-elders"><p><strong>Elders:</strong> Plurality of overseers appointed to lead and shepherd (Acts 20:17-28; 1 Timothy 3:1-7).</p></div>
+  <div class="popup" id="popup-evangelists"><p><strong>Evangelists:</strong> Spread the gospel, e.g., Timothy in Ephesus (2 Timothy 4:5; Acts 21:8).</p></div>
+  <div class="popup" id="popup-pastors"><p><strong>Pastors:</strong> Shepherded the flock, often elders specializing in care (Acts 20:28; Ephesians 4:11).</p></div>
+  <div class="popup" id="popup-teachers"><p><strong>Teachers:</strong> Instructed believers in doctrine (Ephesians 4:11; Acts 19:9-10).</p></div>
+  <div class="popup" id="popup-members"><p><strong>Members:</strong> All believers, using spiritual gifts to edify the church (Ephesians 4:16; 1 Corinthians 12).</p></div>
+  <div class="popup" id="popup-deacons"><p><strong>Deacons:</strong> Servants meeting practical needs (1 Timothy 3:8-13; Acts 6:1-6 precedent).</p></div>
+  <div class="popup" id="popup-widows"><p><strong>Widows:</strong> Supported believers serving through prayer and good works, not an office (1 Timothy 5:9-10).</p></div>
+  <div class="popup" id="popup-rc-christ"><p><strong>Christ:</strong> The divine head of the Church, acknowledged as the ultimate authority in the Roman Catholic tradition.</p></div>
+  <div class="popup" id="popup-pope"><p><strong>Pope:</strong> The Bishop of Rome and supreme head of the Catholic Church, considered successor to St. Peter.</p></div>
+  <div class="popup" id="popup-cardinals"><p><strong>Cardinals:</strong> Senior leaders who advise the Pope and elect new Popes.</p></div>
+  <div class="popup" id="popup-archbishops"><p><strong>Archbishops:</strong> Oversee ecclesiastical provinces of multiple dioceses.</p></div>
+  <div class="popup" id="popup-bishops"><p><strong>Bishops:</strong> Oversee individual dioceses, with authority to ordain priests and deacons.</p></div>
+  <div class="popup" id="popup-priests"><p><strong>Priests:</strong> Lead local parishes, administer sacraments, and care for the faithful under their bishop's authority.</p></div>
+  <div class="popup" id="popup-rc-deacons"><p><strong>Deacons:</strong> Assist bishops and priests, performing baptisms, marriages, and charitable works.</p></div>
+  <div class="popup" id="popup-religious-orders"><p><strong>Religious Orders:</strong> Communities taking vows of poverty, chastity, and obedience, serving various ministries.</p></div>
+  <div class="popup" id="popup-laity"><p><strong>Laity:</strong> All baptized members who are not ordained; called to witness to Christ in the world.</p></div>
+  <div class="popup" id="popup-baptist-christ"><p><strong>Christ:</strong> The sole head of the church, with direct authority over each congregation.</p></div>
+  <div class="popup" id="popup-bible"><p><strong>Bible:</strong> The supreme authority for faith and practice in Baptist churches (Sola Scriptura).</p></div>
+  <div class="popup" id="popup-congregation"><p><strong>Congregation:</strong> The gathered body of baptized believers who practice congregational governance.</p></div>
+  <div class="popup" id="popup-pastor"><p><strong>Pastor:</strong> Leads in preaching and teaching, accountable to the congregation’s vote.</p></div>
+  <div class="popup" id="popup-baptist-deacons"><p><strong>Deacons:</strong> Servants or ministry leaders who assist the pastor and care for the congregation.</p></div>
+  <div class="popup" id="popup-committees"><p><strong>Committees:</strong> Groups assigned specific tasks (missions, finance, etc.) reporting to the congregation.</p></div>
+  <div class="popup" id="popup-baptist-members"><p><strong>Members:</strong> All believers with equal voice and vote, united under Christ’s lordship.</p></div>
+  <div class="popup" id="popup-association"><p><strong>Association:</strong> A voluntary fellowship of local Baptist churches for cooperative ministry and support.</p></div>
+  <div class="popup" id="popup-convention"><p><strong>Convention:</strong> A larger cooperative body at the state or national level, with no direct authority over local churches.</p></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.container');
+      let isDragging = false;
+      let hasMoved = false;
+      let startX, startY, scrollLeft, scrollTop;
+      let scale = 1;
+      const initialScale = 1;
+      const dragThreshold = 5;
+
+      // Function to attach event listeners to SVG boxes
+      function attachBoxListeners(svgDoc, objectElement) {
+        if (!svgDoc) {
+          console.error('SVG document not loaded');
+          return;
+        }
+        const boxes = svgDoc.querySelectorAll('.box');
+        boxes.forEach(box => {
+          box.addEventListener('click', function(e) {
+            if (hasMoved) return;
+            e.stopPropagation();
+            const boxId = this.id;
+            const popup = document.getElementById(`popup-${boxId}`);
+            document.querySelectorAll('.popup').forEach(p => {
+              if (p !== popup && p.id !== 'explanation') p.style.display = 'none';
+            });
+            if (popup) {
+              if (popup.style.display === 'block') {
+                popup.style.display = 'none';
+              } else {
+                // Get the bounding rectangle relative to the object element
+                const boxRect = this.getBoundingClientRect();
+                const objectRect = objectElement.getBoundingClientRect();
+                const popupWidth = 250;
+                // Position relative to the viewport, accounting for the object's position
+                let top = boxRect.bottom - objectRect.top + container.scrollTop + 10; // Add offset for spacing
+                let left = boxRect.left - objectRect.left + container.scrollLeft + (boxRect.width / 2) - (popupWidth / 2);
+                if (left + popupWidth > window.innerWidth) left = window.innerWidth - popupWidth - 10;
+                if (left < 10) left = 10;
+                popup.style.top = `${top}px`;
+                popup.style.left = `${left}px`;
+                popup.style.pointerEvents = 'auto';
+                popup.style.display = 'block';
+              }
+            }
+          });
+        });
+      }
+
+      // Attach listeners to each SVG after it loads
+      const svgObjects = document.querySelectorAll('.chart-svg');
+      svgObjects.forEach(obj => {
+        obj.addEventListener('load', function() {
+          const svgDoc = this.contentDocument;
+          if (svgDoc) {
+            attachBoxListeners(svgDoc, this);
+          } else {
+            console.error(`Failed to load SVG content for ${this.id}`);
+          }
+        });
+        // Fallback: Check if already loaded (for cached SVGs)
+        if (obj.contentDocument) {
+          attachBoxListeners(obj.contentDocument, obj);
+        }
+      });
+
+      // Structure switcher
+      document.querySelectorAll('.structure-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.structure-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          const structureId = this.id.split('-')[0] + '-structure';
+          document.querySelectorAll('.chart-content').forEach(c => c.classList.add('hidden'));
+          document.getElementById(structureId).classList.remove('hidden');
+          document.getElementById('explanation-title').textContent = this.textContent + ' Church Structure';
+          document.querySelectorAll('.explanation > div').forEach(d => d.classList.add('hidden'));
+          document.getElementById(structureId.split('-')[0] + '-explanation').classList.remove('hidden');
+          resetView();
+        });
+      });
+
+      // Dragging functionality
+      container.addEventListener('mousedown', startDrag);
+      container.addEventListener('touchstart', startDrag);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag);
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchend', endDrag);
+      document.addEventListener('mouseleave', endDrag);
+
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+        hasMoved = false;
+        container.style.cursor = 'grabbing';
+        const event = e.type === 'touchstart' ? e.touches[0] : e;
+        startX = event.clientX;
+        startY = event.clientY;
+        scrollLeft = container.scrollLeft;
+        scrollTop = container.scrollTop;
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        const event = e.type === 'touchmove' ? e.touches[0] : e;
+        const dx = (startX - event.clientX) / scale;
+        const dy = (startY - event.clientY) / scale;
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) hasMoved = true;
+        container.scrollLeft = scrollLeft + dx;
+        container.scrollTop = scrollTop + dy;
+      }
+
+      function endDrag() {
+        if (isDragging) {
+          isDragging = false;
+          container.style.cursor = 'grab';
+        }
+      }
+
+      // Zoom functionality
+      document.getElementById('zoom-in').addEventListener('click', function() {
+        scale = Math.min(scale + 0.1, 2.0);
+        updateZoom();
+      });
+      document.getElementById('zoom-out').addEventListener('click', function() {
+        scale = Math.max(scale - 0.1, 0.5);
+        updateZoom();
+      });
+      document.getElementById('reset-view').addEventListener('click', resetView);
+
+      container.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        const zoomStep = 0.05;
+        const oldScale = scale;
+        scale = Math.max(0.5, Math.min(2.0, scale + (e.deltaY < 0 ? zoomStep : -zoomStep)));
+        if (scale !== oldScale) updateZoom();
+      }, { passive: false });
+
+      function updateZoom() {
+        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        if (currentChart) {
+          currentChart.style.transform = `scale(${scale})`;
+          currentChart.style.transformOrigin = 'top left';
+        }
+      }
+
+      function resetView() {
+        scale = initialScale;
+        updateZoom();
+        container.scrollTop = 0;
+        container.scrollLeft = 0;
+      }
+
+      // Help button
+      const helpBtn = document.getElementById('help-btn');
+      const explanationDiv = document.getElementById('explanation');
+      helpBtn.addEventListener('click', () => {
+        explanationDiv.style.display = (explanationDiv.style.display === 'block') ? 'none' : 'block';
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!explanationDiv.contains(e.target) && e.target !== helpBtn) {
+          explanationDiv.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

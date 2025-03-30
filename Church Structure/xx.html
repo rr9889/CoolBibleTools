@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Church Structure Comparison</title>
+  <style>
+    :root {
+      --primary-color: #3a5a78;
+      --secondary-color: #e8f0f8;
+      --text-color: #333;
+      --border-color: #91b3c9;
+      --hover-color: #dae5ee;
+      --line-color: #91b3c9;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      
+      /* Catholic colors */
+      --catholic-primary: #8C2318;
+      --catholic-secondary: #F2D0A9;
+      --catholic-line: #BF5B3A;
+      
+      /* Baptist colors */
+      --baptist-primary: #1E5631;
+      --baptist-secondary: #D1E8D0;
+      --baptist-line: #538D56;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-color);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--secondary-color);
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: auto;
+    }
+
+    /* Structure Switcher */
+    .structure-switcher {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+    }
+
+    .structure-btn {
+      padding: 8px 16px;
+      background-color: white;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      box-shadow: var(--box-shadow);
+    }
+
+    .structure-btn:hover {
+      background-color: var(--hover-color);
+    }
+
+    .structure-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+
+    #rc-btn.active {
+      background-color: var(--catholic-primary);
+      border-color: var(--catholic-primary);
+    }
+
+    #baptist-btn.active {
+      background-color: var(--baptist-primary);
+      border-color: var(--baptist-primary);
+    }
+
+    /* SVG Elements */
+    .chart-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      min-width: 800px;
+      min-height: 600px;
+    }
+
+    .box {
+      fill: white;
+      stroke-width: 2px;
+      rx: 10;
+      ry: 10;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dashed-box {
+      stroke-dasharray: 5, 5;
+    }
+
+    .nt-box {
+      stroke: var(--primary-color);
+    }
+
+    .rc-box {
+      stroke: var(--catholic-primary);
+    }
+
+    .baptist-box {
+      stroke: var(--baptist-primary);
+    }
+
+    .nt-line {
+      stroke: var(--line-color);
+      stroke-width: 3;
+    }
+
+    .rc-line {
+      stroke: var(--catholic-line);
+      stroke-width: 3;
+    }
+
+    .baptist-line {
+      stroke: var(--baptist-line);
+      stroke-width: 3;
+    }
+
+    .dashed-line {
+      stroke-dasharray: 5, 5;
+    }
+
+    .dotted-line {
+      stroke-dasharray: 2, 2;
+    }
+
+    .special-box {
+      fill: var(--primary-color);
+      color: white;
+    }
+
+    .box-text {
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-size: 14px;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .special-text {
+      fill: white;
+    }
+
+    /* Zoom Controls */
+    .zoom-controls {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    .control-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: white;
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .control-button:hover {
+      background-color: var(--hover-color);
+    }
+
+    /* Recall button */
+    .recall-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: auto;
+      height: 40px;
+      padding: 0 15px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      z-index: 20;
+    }
+
+    .recall-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--text-color);
+    }
+
+    /* Help button */
+    .help-btn {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      font-weight: bold;
+      z-index: 20;
+    }
+
+    /* Legend */
+    .legend {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      padding: 8px 12px;
+      box-shadow: var(--box-shadow);
+      z-index: 20;
+      display: flex;
+      gap: 15px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+    }
+
+    .legend-line {
+      width: 20px;
+      height: 2px;
+      background-color: var(--line-color);
+    }
+
+    .legend-line.dashed {
+      background-color: transparent;
+      border-top: 2px dashed var(--line-color);
+      height: 0;
+    }
+
+    .legend-line.dotted {
+      background-color: transparent;
+      border-top: 2px dotted var(--line-color);
+      height: 0;
+    }
+
+    /* Popups */
+    .popup {
+      position: absolute;
+      background-color: white;
+      border-radius: 8px;
+      padding: 12px;
+      max-width: 250px;
+      box-shadow: var(--box-shadow);
+      z-index: 10;
+      display: none;
+      text-align: left;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .explanation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 500px;
+      width: 80%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 30;
+    }
+
+    .explanation h3 {
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .explanation p {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="chart-content" id="nt-structure">
+  <svg viewBox="0 0 1000 800" class="chart-svg">
+
+    <!-- Christ (Ephesians 1:22; Colossians 1:18) -->
+    <rect x="450" y="20" width="100" height="40"
+          class="box nt-box special-box" id="christ" />
+    <text x="500" y="40" class="box-text special-text">Christ</text>
+
+    <!-- Vertical line from Christ to Apostles/Prophets -->
+    <line x1="500" y1="60" x2="500" y2="110" class="nt-line" />
+
+    <!-- Apostles & Prophets (Eph 2:20; 4:11) -->
+    <rect x="370" y="110" width="260" height="50"
+          class="box nt-box" id="apostles-prophets" />
+    <text x="500" y="135" class="box-text">
+      Apostles &amp; Prophets
+    </text>
+    <!-- (foundation of early church, references: Acts, Ephesians, etc.) -->
+
+    <!-- Horizontal line to Council of Jerusalem (Acts 15) -->
+    <line x1="370" y1="135" x2="250" y2="135" class="nt-line" />
+
+    <!-- Council of Jerusalem box (AD ~49, Acts 15) -->
+    <rect x="150" y="110" width="100" height="50"
+          class="box nt-box" id="jerusalem-council" />
+    <text x="200" y="135" class="box-text" style="font-size:11px;">
+      Council of<br/>Jerusalem
+    </text>
+
+    <!-- Lines from Apostles/Prophets to local churches (including Ephesus) -->
+    <line x1="500" y1="160" x2="500" y2="210" class="nt-line" />
+
+    <!-- Key Local Churches label (dashed box) -->
+    <rect x="300" y="210" width="400" height="40"
+          class="box nt-box dashed-box" id="local-churches" />
+    <text x="500" y="230" class="box-text">
+      Local Churches (Elders, Deacons, etc. - Acts 14:23, 1 Tim 3)
+    </text>
+
+    <!-- A line specifically to Ephesus from the local-churches box -->
+    <line x1="500" y1="250" x2="500" y2="300" class="nt-line" />
+
+    <!-- Ephesus: Major NT Center (1st/2nd Century) -->
+    <rect x="380" y="300" width="240" height="50"
+          class="box nt-box" id="ephesus-church" />
+    <text x="500" y="325" class="box-text">
+      Church at Ephesus
+    </text>
+
+    <!-- Branching lines from Ephesus to various references -->
+    <!-- 1) Paul in Ephesus box -->
+    <line x1="500" y1="350" x2="300" y2="410" class="nt-line" />
+    <rect x="200" y="410" width="200" height="60"
+          class="box nt-box" id="paul-ministry" />
+    <text x="300" y="435" class="box-text" style="font-size:12px;">
+      Paul’s ~3-year Ministry
+    </text>
+    <text x="300" y="455" class="box-text" style="font-size:10px;">
+      (AD 52–54, Acts 19–20)
+    </text>
+
+    <!-- 2) Timothy as Bishop box -->
+    <line x1="500" y1="350" x2="500" y2="410" class="nt-line" />
+    <rect x="400" y="410" width="200" height="60"
+          class="box nt-box" id="timothy" />
+    <text x="500" y="435" class="box-text" style="font-size:12px;">
+      Timothy (1st Bishop)
+    </text>
+    <text x="500" y="455" class="box-text" style="font-size:10px;">
+      (1 Tim 1:3; Eusebius)
+    </text>
+
+    <!-- 3) John the Apostle in Ephesus box -->
+    <line x1="500" y1="350" x2="700" y2="410" class="nt-line" />
+    <rect x="700" y="410" width="200" height="60"
+          class="box nt-box" id="john-ephesus" />
+    <text x="800" y="435" class="box-text" style="font-size:12px;">
+      John the Apostle
+    </text>
+    <text x="800" y="455" class="box-text" style="font-size:10px;">
+      (c. AD 90–100, wrote Gospel)
+    </text>
+
+    <!-- 4) 2nd Century: Polycrates & Ignatius box -->
+    <line x1="500" y1="350" x2="350" y2="510" class="nt-line" />
+    <rect x="250" y="510" width="200" height="60"
+          class="box nt-box" id="polycrates-ignatius" />
+    <text x="350" y="535" class="box-text" style="font-size:12px;">
+      Polycrates &amp; Ignatius
+    </text>
+    <text x="350" y="555" class="box-text" style="font-size:10px;">
+      (Easter Controversy, Letters)
+    </text>
+
+    <!-- 5) Letters & Key Events box -->
+    <line x1="500" y1="350" x2="650" y2="510" class="nt-line" />
+    <rect x="650" y="510" width="230" height="90"
+          class="box nt-box" id="ephesus-events" />
+    <text x="765" y="530" class="box-text" style="font-size:12px;">
+      Letters &amp; Key Events
+    </text>
+    <text x="765" y="550" class="box-text" style="font-size:10px;">
+      • 1 Corinthians from Ephesus
+    </text>
+    <text x="765" y="565" class="box-text" style="font-size:10px;">
+      • Riot of Demetrios (Acts 19)
+    </text>
+    <text x="765" y="580" class="box-text" style="font-size:10px;">
+      • Epistle to Ephesians (c. AD 62)
+    </text>
+    <text x="765" y="595" class="box-text" style="font-size:10px;">
+      • Book of Revelation: Ephesus
+    </text>
+
+  </svg>
+</div>
