@@ -38,7 +38,8 @@
     #baptist-btn.active { background-color: var(--baptist-primary); border-color: var(--baptist-primary); }
     .chart-content { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
     .hidden { display: none; }
-    .chart-svg { width: 100%; height: 100%; min-width: 800px; min-height: 600px; }
+    .chart-svg { width: 100%; height: 100%; min-width: 1200px; min-height: 900px; cursor: grab; }
+    .chart-svg.dragging { cursor: grabbing; }
     .zoom-controls { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 8px; z-index: 20; }
     .control-button {
       width: 40px; height: 40px; border-radius: 20px; background-color: white;
@@ -157,12 +158,12 @@
       const container = document.querySelector('.container');
       let isDragging = false;
       let hasMoved = false;
-      let startX, startY, scrollLeft, scrollTop;
+      let startX, startY;
+      let translateX = 0, translateY = 0;
       let scale = 1;
       const initialScale = 1;
       const dragThreshold = 5;
 
-      // Function to attach event listeners to SVG boxes
       function attachBoxListeners(svgDoc, objectElement) {
         if (!svgDoc) {
           console.error('SVG document not loaded');
@@ -182,12 +183,10 @@
               if (popup.style.display === 'block') {
                 popup.style.display = 'none';
               } else {
-                // Get the bounding rectangle relative to the object element
                 const boxRect = this.getBoundingClientRect();
                 const objectRect = objectElement.getBoundingClientRect();
                 const popupWidth = 250;
-                // Position relative to the viewport, accounting for the object's position
-                let top = boxRect.bottom - objectRect.top + container.scrollTop + 10; // Add offset for spacing
+                let top = boxRect.bottom - objectRect.top + container.scrollTop + 10;
                 let left = boxRect.left - objectRect.left + container.scrollLeft + (boxRect.width / 2) - (popupWidth / 2);
                 if (left + popupWidth > window.innerWidth) left = window.innerWidth - popupWidth - 10;
                 if (left < 10) left = 10;
@@ -201,24 +200,66 @@
         });
       }
 
-      // Attach listeners to each SVG after it loads
       const svgObjects = document.querySelectorAll('.chart-svg');
       svgObjects.forEach(obj => {
         obj.addEventListener('load', function() {
           const svgDoc = this.contentDocument;
-          if (svgDoc) {
-            attachBoxListeners(svgDoc, this);
-          } else {
-            console.error(`Failed to load SVG content for ${this.id}`);
-          }
+          if (svgDoc) attachBoxListeners(svgDoc, this);
         });
-        // Fallback: Check if already loaded (for cached SVGs)
-        if (obj.contentDocument) {
-          attachBoxListeners(obj.contentDocument, obj);
-        }
+        if (obj.contentDocument) attachBoxListeners(obj.contentDocument, obj);
+
+        // Add dragging to each SVG
+        obj.addEventListener('mousedown', startDrag);
+        obj.addEventListener('touchstart', startDrag);
       });
 
-      // Structure switcher
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag);
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchend', endDrag);
+      document.addEventListener('mouseleave', endDrag);
+
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+        hasMoved = false;
+        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        currentChart.classList.add('dragging');
+        const event = e.type === 'touchstart' ? e.touches[0] : e;
+        startX = event.clientX;
+        startY = event.clientY;
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        const event = e.type === 'touchmove' ? e.touches[0] : e;
+        const dx = (event.clientX - startX) / scale;
+        const dy = (event.clientY - startY) / scale;
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) hasMoved = true;
+        translateX += dx;
+        translateY += dy;
+        startX = event.clientX;
+        startY = event.clientY;
+        updateTransform();
+      }
+
+      function endDrag() {
+        if (isDragging) {
+          isDragging = false;
+          const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+          currentChart.classList.remove('dragging');
+        }
+      }
+
+      function updateTransform() {
+        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        if (currentChart) {
+          currentChart.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+          currentChart.style.transformOrigin = 'top left';
+        }
+      }
+
       document.querySelectorAll('.structure-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.structure-btn').forEach(b => b.classList.remove('active'));
@@ -233,53 +274,13 @@
         });
       });
 
-      // Dragging functionality
-      container.addEventListener('mousedown', startDrag);
-      container.addEventListener('touchstart', startDrag);
-      document.addEventListener('mousemove', drag);
-      document.addEventListener('touchmove', drag);
-      document.addEventListener('mouseup', endDrag);
-      document.addEventListener('touchend', endDrag);
-      document.addEventListener('mouseleave', endDrag);
-
-      function startDrag(e) {
-        e.preventDefault();
-        isDragging = true;
-        hasMoved = false;
-        container.style.cursor = 'grabbing';
-        const event = e.type === 'touchstart' ? e.touches[0] : e;
-        startX = event.clientX;
-        startY = event.clientY;
-        scrollLeft = container.scrollLeft;
-        scrollTop = container.scrollTop;
-      }
-
-      function drag(e) {
-        if (!isDragging) return;
-        e.preventDefault();
-        const event = e.type === 'touchmove' ? e.touches[0] : e;
-        const dx = (startX - event.clientX) / scale;
-        const dy = (startY - event.clientY) / scale;
-        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) hasMoved = true;
-        container.scrollLeft = scrollLeft + dx;
-        container.scrollTop = scrollTop + dy;
-      }
-
-      function endDrag() {
-        if (isDragging) {
-          isDragging = false;
-          container.style.cursor = 'grab';
-        }
-      }
-
-      // Zoom functionality
       document.getElementById('zoom-in').addEventListener('click', function() {
         scale = Math.min(scale + 0.1, 2.0);
-        updateZoom();
+        updateTransform();
       });
       document.getElementById('zoom-out').addEventListener('click', function() {
         scale = Math.max(scale - 0.1, 0.5);
-        updateZoom();
+        updateTransform();
       });
       document.getElementById('reset-view').addEventListener('click', resetView);
 
@@ -288,25 +289,18 @@
         const zoomStep = 0.05;
         const oldScale = scale;
         scale = Math.max(0.5, Math.min(2.0, scale + (e.deltaY < 0 ? zoomStep : -zoomStep)));
-        if (scale !== oldScale) updateZoom();
+        if (scale !== oldScale) updateTransform();
       }, { passive: false });
-
-      function updateZoom() {
-        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
-        if (currentChart) {
-          currentChart.style.transform = `scale(${scale})`;
-          currentChart.style.transformOrigin = 'top left';
-        }
-      }
 
       function resetView() {
         scale = initialScale;
-        updateZoom();
+        translateX = 0;
+        translateY = 0;
+        updateTransform();
         container.scrollTop = 0;
         container.scrollLeft = 0;
       }
 
-      // Help button
       const helpBtn = document.getElementById('help-btn');
       const explanationDiv = document.getElementById('explanation');
       helpBtn.addEventListener('click', () => {
