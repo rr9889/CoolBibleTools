@@ -109,6 +109,10 @@
             font-size: 18px;
             text-align: center;
         }
+        #book-select:disabled {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +122,11 @@
             <option value="all">All</option>
             <option value="old">Old Testament</option>
             <option value="new">New Testament</option>
+        </select>
+        <br>
+        <label for="book-select">Book:</label>
+        <select id="book-select" disabled>
+            <option value="all">All Books</option>
         </select>
         <br>
         <label for="item-count">Number of Items:</label>
@@ -221,8 +230,8 @@
             return { wordStats, phraseStats };
         }
 
-        // Process Bible data based on section type and testament
-        function processBibleData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament) {
+        // Process Bible data based on section type, testament, and book
+        function processBibleData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament, bookFilter) {
             // Split glossary into categories
             const names = new Set([
                 "jesus", "moses", "abraham", "david", "solomon", "joseph", "mary", "paul", "peter", "john",
@@ -248,7 +257,7 @@
             let totalItems = 0;
             const relevantStats = section === 'phrases' ? stats.phraseStats : stats.wordStats;
 
-            // Filter by testament
+            // Filter by testament and book
             const filterStats = new Map();
             for (const [item, stat] of relevantStats) {
                 let count = 0;
@@ -258,25 +267,39 @@
                 const chapters = new Set();
                 const verses = new Set();
 
-                if (testament === 'all') {
+                if (testament === 'all' && bookFilter === 'all') {
                     count = stat.count;
                     otCount = stat.ot;
                     ntCount = stat.nt;
                     stat.books.forEach(b => books.add(b));
                     stat.chapters.forEach(c => chapters.add(c));
                     stat.verses.forEach(v => verses.add(v));
-                } else if (testament === 'old') {
+                } else if (testament === 'old' && (bookFilter === 'all' || bookFilter === item.split(':')[0])) {
                     otCount = stat.ot;
                     count = otCount;
                     stat.books.forEach(b => { if (oldTestamentBooks.has(b)) books.add(b); });
                     stat.chapters.forEach(c => { if (oldTestamentBooks.has(c.split(':')[0])) chapters.add(c); });
                     stat.verses.forEach(v => { if (oldTestamentBooks.has(v.split(':')[0])) verses.add(v); });
-                } else if (testament === 'new') {
+                    if (bookFilter !== 'all') {
+                        count = stat.books.has(bookFilter) ? count : 0;
+                        books.clear(); if (stat.books.has(bookFilter)) books.add(bookFilter);
+                        chapters.clear(); stat.chapters.forEach(c => { if (c.startsWith(bookFilter + ':')) chapters.add(c); });
+                        verses.clear(); stat.verses.forEach(v => { if (v.startsWith(bookFilter + ':')) verses.add(v); });
+                        count = verses.size; // Recalculate count based on verses in this book
+                    }
+                } else if (testament === 'new' && (bookFilter === 'all' || bookFilter === item.split(':')[0])) {
                     ntCount = stat.nt;
                     count = ntCount;
                     stat.books.forEach(b => { if (newTestamentBooks.has(b)) books.add(b); });
                     stat.chapters.forEach(c => { if (newTestamentBooks.has(c.split(':')[0])) chapters.add(c); });
                     stat.verses.forEach(v => { if (newTestamentBooks.has(v.split(':')[0])) verses.add(v); });
+                    if (bookFilter !== 'all') {
+                        count = stat.books.has(bookFilter) ? count : 0;
+                        books.clear(); if (stat.books.has(bookFilter)) books.add(bookFilter);
+                        chapters.clear(); stat.chapters.forEach(c => { if (c.startsWith(bookFilter + ':')) chapters.add(c); });
+                        verses.clear(); stat.verses.forEach(v => { if (v.startsWith(bookFilter + ':')) verses.add(v); });
+                        count = verses.size; // Recalculate count based on verses in this book
+                    }
                 }
 
                 if (count > 0) {
@@ -319,19 +342,19 @@
         }
 
         // Fetch and process data with filters
-        async function fetchItemData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament) {
-            return processBibleData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament);
+        async function fetchItemData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament, bookFilter) {
+            return processBibleData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament, bookFilter);
         }
 
         // Display items
-        async function displayItems(bibleData, stats, section, testament) {
+        async function displayItems(bibleData, stats, section, testament, bookFilter) {
             const wordCloud = document.getElementById('word-cloud');
             const itemLimit = parseInt(document.getElementById('item-count').value) || 50;
             const includeItems = document.getElementById('include-items').value;
             const excludeItems = document.getElementById('exclude-items').value;
 
             try {
-                const { itemData, totalItems } = await fetchItemData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament);
+                const { itemData, totalItems } = await fetchItemData(bibleData, stats, itemLimit, includeItems, excludeItems, section, testament, bookFilter);
                 window.itemData = itemData; // Store globally for popup access
                 const maxCount = Math.max(...itemData.map(i => i.count));
 
@@ -390,15 +413,35 @@
             document.getElementById('overlay').style.display = 'none';
         });
 
+        // Populate book dropdown based on testament
+        function populateBookDropdown(testament) {
+            const bookSelect = document.getElementById('book-select');
+            bookSelect.innerHTML = '<option value="all">All Books</option>';
+            if (testament === 'all') {
+                bookSelect.disabled = true;
+            } else {
+                bookSelect.disabled = false;
+                const books = testament === 'old' ? Array.from(oldTestamentBooks) : Array.from(newTestamentBooks);
+                books.sort().forEach(book => {
+                    const option = document.createElement('option');
+                    option.value = book;
+                    option.textContent = book;
+                    bookSelect.appendChild(option);
+                });
+            }
+        }
+
         // Initialize and set up tabs/filters
         async function initialize() {
             const bibleData = await fetchBibleData();
             const stats = await precomputeStats(bibleData);
             let currentSection = 'words';
             let currentTestament = 'all';
+            let currentBook = 'all';
 
             // Initial display
-            displayItems(bibleData, stats, currentSection, currentTestament);
+            populateBookDropdown(currentTestament);
+            displayItems(bibleData, stats, currentSection, currentTestament, currentBook);
 
             // Tab switching
             const tabs = document.querySelectorAll('#tabs button');
@@ -407,18 +450,26 @@
                     tabs.forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
                     currentSection = tab.id.replace('tab-', '');
-                    displayItems(bibleData, stats, currentSection, currentTestament);
+                    displayItems(bibleData, stats, currentSection, currentTestament, currentBook);
                 });
             });
 
             // Testament filter
             document.getElementById('testament-select').addEventListener('change', (e) => {
                 currentTestament = e.target.value;
-                displayItems(bibleData, stats, currentSection, currentTestament);
+                currentBook = 'all'; // Reset book when testament changes
+                populateBookDropdown(currentTestament);
+                displayItems(bibleData, stats, currentSection, currentTestament, currentBook);
+            });
+
+            // Book filter
+            document.getElementById('book-select').addEventListener('change', (e) => {
+                currentBook = e.target.value;
+                displayItems(bibleData, stats, currentSection, currentTestament, currentBook);
             });
 
             // Apply filters
-            document.getElementById('apply-filters').addEventListener('click', () => displayItems(bibleData, stats, currentSection, currentTestament));
+            document.getElementById('apply-filters').addEventListener('click', () => displayItems(bibleData, stats, currentSection, currentTestament, currentBook));
         }
 
         initialize();
