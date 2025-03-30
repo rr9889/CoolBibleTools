@@ -9,6 +9,37 @@ body {
     padding: 20px;
     overflow: auto;
 }
+#toggle-controls {
+    text-align: center;
+    margin-bottom: 10px;
+}
+#toggle-controls-btn {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+#toggle-controls-btn:hover {
+    background-color: #45a049;
+}
+#filters, #tabs {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+}
+#filters.visible, #tabs.visible {
+    max-height: 300px; /* Adjust based on content height */
+    opacity: 1;
+}
+#filters.hidden, #tabs.hidden {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
 #filters {
     margin-bottom: 20px;
     text-align: center;
