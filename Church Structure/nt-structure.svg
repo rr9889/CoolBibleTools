@@ -1,4 +1,4 @@
-<svg viewBox="0 0 800 600" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1200 900" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
   <style>
     .box { fill: white; stroke-width: 2px; rx: 10; ry: 10; cursor: pointer; transition: all 0.3s ease; }
     .nt-box { stroke: #3a5a78; }
@@ -10,41 +10,41 @@
     .special-text { fill: white; }
   </style>
   <!-- Christ -->
-  <rect x="350" y="30" width="100" height="40" class="box nt-box special-box" id="christ" />
-  <text x="400" y="50" class="box-text special-text">Christ</text>
-  <line x1="400" y1="70" x2="400" y2="120" class="nt-line" />
+  <rect x="550" y="80" width="100" height="40" class="box nt-box special-box" id="christ" />
+  <text x="600" y="100" class="box-text special-text">Christ</text>
+  <line x1="600" y1="120" x2="600" y2="170" class="nt-line" />
   <!-- Apostles and Prophets -->
-  <rect x="250" y="120" width="100" height="40" class="box nt-box" id="apostles" />
-  <text x="300" y="140" class="box-text">Apostles</text>
-  <rect x="450" y="120" width="100" height="40" class="box nt-box" id="prophets" />
-  <text x="500" y="140" class="box-text">Prophets</text>
-  <line x1="350" y1="140" x2="450" y2="140" class="nt-line dashed-line" />
-  <line x1="400" y1="140" x2="400" y2="190" class="nt-line" />
+  <rect x="450" y="170" width="100" height="40" class="box nt-box" id="apostles" />
+  <text x="500" y="190" class="box-text">Apostles</text>
+  <rect x="650" y="170" width="100" height="40" class="box nt-box" id="prophets" />
+  <text x="700" y="190" class="box-text">Prophets</text>
+  <line x1="550" y1="190" x2="650" y2="190" class="nt-line dashed-line" />
+  <line x1="600" y1="190" x2="600" y2="240" class="nt-line" />
   <!-- Church in Ephesus -->
-  <rect x="330" y="190" width="140" height="40" class="box nt-box" id="local-church" />
-  <text x="400" y="210" class="box-text">Church in Ephesus</text>
-  <line x1="150" y1="260" x2="650" y2="260" class="nt-line" />
+  <rect x="530" y="240" width="140" height="40" class="box nt-box" id="local-church" />
+  <text x="600" y="260" class="box-text">Church in Ephesus</text>
+  <line x1="350" y1="310" x2="850" y2="310" class="nt-line" />
   <!-- Elders, Evangelists, Pastors, Teachers, Members -->
-  <line x1="150" y1="260" x2="150" y2="310" class="nt-line dotted-line" />
-  <line x1="250" y1="260" x2="250" y2="310" class="nt-line dashed-line" />
-  <line x1="350" y1="260" x2="350" y2="310" class="nt-line dashed-line" />
-  <line x1="450" y1="260" x2="450" y2="310" class="nt-line dashed-line" />
-  <line x1="550" y1="260" x2="550" y2="310" class="nt-line dotted-line" />
-  <rect x="100" y="310" width="100" height="40" class="box nt-box" id="elders" />
-  <text x="150" y="330" class="box-text">Elders</text>
-  <rect x="200" y="310" width="100" height="40" class="box nt-box" id="evangelists" />
-  <text x="250" y="330" class="box-text">Evangelists</text>
-  <rect x="300" y="310" width="100" height="40" class="box nt-box" id="pastors" />
-  <text x="350" y="330" class="box-text">Pastors</text>
-  <rect x="400" y="310" width="100" height="40" class="box nt-box" id="teachers" />
-  <text x="450" y="330" class="box-text">Teachers</text>
-  <rect x="500" y="310" width="100" height="40" class="box nt-box" id="members" />
-  <text x="550" y="330" class="box-text">Members</text>
+  <line x1="350" y1="310" x2="350" y2="360" class="nt-line dotted-line" />
+  <line x1="450" y1="310" x2="450" y2="360" class="nt-line dashed-line" />
+  <line x1="550" y1="310" x2="550" y2="360" class="nt-line dashed-line" />
+  <line x1="650" y1="310" x2="650" y2="360" class="nt-line dashed-line" />
+  <line x1="750" y1="310" x2="750" y2="360" class="nt-line dotted-line" />
+  <rect x="300" y="360" width="100" height="40" class="box nt-box" id="elders" />
+  <text x="350" y="380" class="box-text">Elders</text>
+  <rect x="400" y="360" width="100" height="40" class="box nt-box" id="evangelists" />
+  <text x="450" y="380" class="box-text">Evangelists</text>
+  <rect x="500" y="360" width="100" height="40" class="box nt-box" id="pastors" />
+  <text x="550" y="380" class="box-text">Pastors</text>
+  <rect x="600" y="360" width="100" height="40" class="box nt-box" id="teachers" />
+  <text x="650" y="380" class="box-text">Teachers</text>
+  <rect x="700" y="360" width="100" height="40" class="box nt-box" id="members" />
+  <text x="750" y="380" class="box-text">Members</text>
   <!-- Deacons and Widows -->
-  <line x1="150" y1="350" x2="150" y2="400" class="nt-line dashed-line" />
-  <line x1="350" y1="350" x2="350" y2="400" class="nt-line dashed-line" />
-  <rect x="100" y="400" width="100" height="40" class="box nt-box" id="deacons" />
-  <text x="150" y="420" class="box-text">Deacons</text>
-  <rect x="300" y="400" width="100" height="40" class="box nt-box" id="widows" />
-  <text x="350" y="420" class="box-text">Widows</text>
+  <line x1="350" y1="400" x2="350" y2="450" class="nt-line dashed-line" />
+  <line x1="550" y1="400" x2="550" y2="450" class="nt-line dashed-line" />
+  <rect x="300" y="450" width="100" height="40" class="box nt-box" id="deacons" />
+  <text x="350" y="470" class="box-text">Deacons</text>
+  <rect x="500" y="450" width="100" height="40" class="box nt-box" id="widows" />
+  <text x="550" y="470" class="box-text">Widows</text>
 </svg>
