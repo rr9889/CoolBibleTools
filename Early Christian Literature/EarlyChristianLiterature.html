@@ -11,34 +11,62 @@
         <h1 class="page-title">Early Christian Literature Timeline</h1>
         
         <div class="filter-section">
-            <label for="centuryFilter">Show Century:</label>
-            <select id="centuryFilter">
-                <option value="all">All Centuries</option>
-                <option value="1">1st Century (0-99 AD)</option>
-                <option value="2">2nd Century (100-199 AD)</option>
-                <option value="3">3rd Century (200-299 AD)</option>
-            </select>
-            
-            <label for="authorFilter">Author:</label>
-            <select id="authorFilter">
-                <option value="all">All Authors</option>
-            </select>
-            
-            <label for="categoryFilter">Category:</label>
-            <select id="categoryFilter">
-                <option value="all">All Categories</option>
-            </select>
-            
+            <div class="filter-group">
+                <label for="centuryFilter">Century:</label>
+                <select id="centuryFilter">
+                    <option value="all">All Centuries</option>
+                    <option value="1">1st Century (0-99 AD)</option>
+                    <option value="2">2nd Century (100-199 AD)</option>
+                    <option value="3">3rd Century (200-299 AD)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="authorFilter">Author:</label>
+                <select id="authorFilter">
+                    <option value="all">All Authors</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="hereticalFilter">Heretical:</label>
+                <select id="hereticalFilter">
+                    <option value="all">Any</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="locationFilter">Location:</label>
+                <select id="locationFilter">
+                    <option value="all">All Locations</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="genuineFilter">Authenticity:</label>
+                <select id="genuineFilter">
+                    <option value="all">All Ratings</option>
+                    <option value="genuine">Genuine</option>
+                    <option value="fair">Fair</option>
+                    <option value="forgery">Forgery</option>
+                </select>
+            </div>
             <button id="applyFilter">Apply Filters</button>
         </div>
 
         <div class="timeline-container" id="timelineContainer">
+            <div class="zoom-controls">
+                <button id="zoomIn">+</button>
+                <button id="zoomOut">-</button>
+            </div>
             <div class="timeline" id="timeline">
                 <div class="timeline-line"></div>
-                <!-- Timeline points will be dynamically inserted here -->
             </div>
         </div>
-    </div>
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
