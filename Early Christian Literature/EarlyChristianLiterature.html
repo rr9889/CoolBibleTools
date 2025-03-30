@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Early Christian Literature Timeline</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Early Christian Literature Timeline</h1>
+        
+        <div class="filter-section">
+            <label for="centuryFilter">Show Century:</label>
+            <select id="centuryFilter">
+                <option value="all">All Centuries</option>
+                <option value="1">1st Century (0-99 AD)</option>
+                <option value="2">2nd Century (100-199 AD)</option>
+                <option value="3">3rd Century (200-299 AD)</option>
+            </select>
+            
+            <label for="authorFilter">Author:</label>
+            <select id="authorFilter">
+                <option value="all">All Authors</option>
+            </select>
+            
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+            </select>
+            
+            <button id="applyFilter">Apply Filters</button>
+        </div>
+
+        <div class="timeline-container" id="timelineContainer">
+            <div class="timeline" id="timeline">
+                <div class="timeline-line"></div>
+                <!-- Timeline points will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <span class="close" id="closePopup">×</span>
+        <h3 id="popupTitle"></h3>
+        <div id="popupInfo"></div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
