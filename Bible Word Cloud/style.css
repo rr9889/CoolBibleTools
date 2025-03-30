@@ -1,6 +1,10 @@
+/* Import a modern font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5; /* Light gray background */
+    color: #333; /* Dark gray text */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,115 +13,192 @@ body {
     padding: 20px;
     overflow: auto;
 }
+
 #toggle-controls {
-    text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
+
 #toggle-controls-btn {
     padding: 8px 16px;
-    background-color: #4CAF50;
+    background-color: #4A90E2; /* Soft blue */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
+
 #toggle-controls-btn:hover {
-    background-color: #45a049;
+    background-color: #357ABD; /* Darker blue on hover */
 }
+
 #filters, #tabs {
     transition: max-height 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
+    width: 100%;
+    max-width: 600px; /* Constrain width for better organization */
 }
+
 #filters.visible, #tabs.visible {
-    max-height: 300px; /* Adjust based on content height */
+    max-height: 400px; /* Increased to accommodate content */
     opacity: 1;
 }
+
 #filters.hidden, #tabs.hidden {
     max-height: 0;
     opacity: 0;
     padding: 0;
     margin: 0;
 }
+
 #filters {
+    background-color: #fff; /* White background for card effect */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     margin-bottom: 20px;
-    text-align: center;
+    display: grid;
+    gap: 15px; /* Space between form elements */
 }
+
 #filters label {
-    margin-right: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #555; /* Slightly lighter gray for labels */
 }
+
 #filters input, #filters select {
-    margin: 5px;
-    padding: 5px;
+    padding: 8px;
+    border: 1px solid #d1d1d1; /* Subtle border */
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%; /* Full width for consistency */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
+
+#filters input:focus, #filters select:focus {
+    border-color: #4A90E2; /* Highlight on focus */
+    outline: none;
+}
+
+#filters input[type="number"] {
+    width: 80px; /* Smaller width for number input */
+}
+
 #filters button {
-    padding: 5px 10px;
-    background-color: #007BFF;
+    padding: 8px 16px;
+    background-color: #4A90E2; /* Soft blue */
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
+
 #filters button:hover {
-    background-color: #0056b3;
+    background-color: #357ABD; /* Darker blue on hover */
 }
+
 #tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
+
 #tabs button {
     padding: 10px 20px;
-    margin: 0 5px;
-    background-color: #ddd;
+    background-color: #e0e0e0; /* Light gray for inactive tabs */
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 #tabs button.active {
-    background-color: #007BFF;
+    background-color: #4A90E2; /* Soft blue for active tab */
     color: white;
 }
+
+#tabs button:hover:not(.active) {
+    background-color: #d1d1d1; /* Slightly darker gray on hover */
+}
+
 #word-cloud {
-    text-align: center;
     max-width: 90%;
-    flex-wrap: wrap;
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
 }
+
 .word {
     cursor: pointer;
     display: inline-block;
-    transition: transform 0.2s;
-    padding: 5px;
-    white-space: nowrap;
+    padding: 5px 10px;
+    background-color: #fff; /* White background for words */
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .word:hover {
-    transform: scale(1.1);
-    color: #007BFF;
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    color: #4A90E2; /* Soft blue on hover */
 }
+
 #popup {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: #fff;
     padding: 20px;
-    border: 2px solid #333;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     max-width: 400px;
     text-align: left;
     max-height: 80vh;
     overflow-y: auto;
 }
+
 #popup-close {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
     font-size: 20px;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+#popup-close:hover {
     color: #333;
 }
+
+#popup-title {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+#popup-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
 #overlay {
     display: none;
     position: fixed;
@@ -125,15 +206,18 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 #error-message {
-    color: red;
-    font-size: 18px;
+    color: #e74c3c; /* Soft red for errors */
+    font-size: 16px;
     text-align: center;
+    margin: 20px 0;
 }
+
 #book-select:disabled {
-    background-color: #eee;
+    background-color: #f0f0f0;
     cursor: not-allowed;
 }
