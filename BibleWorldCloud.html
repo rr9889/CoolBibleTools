@@ -83,6 +83,8 @@
             z-index: 1000;
             max-width: 400px;
             text-align: left;
+            max-height: 80vh;
+            overflow-y: auto; /* Scroll if content overflows */
         }
         #popup-close {
             position: absolute;
@@ -195,8 +197,13 @@
             const excludeSet = excludeItems ? new Set(excludeItems.split(',').map(i => i.trim().toLowerCase())) : new Set();
 
             let text = "";
+            const bookOccurrences = new Map();
+            const chapterOccurrences = new Map();
+            const verseOccurrences = new Set();
+            let otCount = 0;
+            let ntCount = 0;
+
             for (const book in bibleData) {
-                // Filter by testament
                 if (testament === 'all' || 
                     (testament === 'old' && oldTestamentBooks.has(book)) || 
                     (testament === 'new' && newTestamentBooks.has(book))) {
@@ -204,7 +211,9 @@
                     for (const chapter in chapters) {
                         const verses = chapters[chapter];
                         for (const verse in verses) {
-                            text += verses[verse] + " ";
+                            const verseText = verses[verse];
+                            text += verseText + " ";
+                            verseOccurrences.add(`${book}:${chapter}:${verse}`);
                         }
                     }
                 }
@@ -232,37 +241,95 @@
                 }
                 totalItems = items.length;
                 const phraseCount = {};
+                const phraseStats = new Map();
                 items.forEach(item => {
                     phraseCount[item] = (phraseCount[item] || 0) + 1;
+                    if (!phraseStats.has(item)) {
+                        phraseStats.set(item, { books: new Set(), chapters: new Set(), verses: new Set(), ot: 0, nt: 0 });
+                    }
+                    const stats = phraseStats.get(item);
+                    for (const book in bibleData) {
+                        if (testament === 'all' || 
+                            (testament === 'old' && oldTestamentBooks.has(book)) || 
+                            (testament === 'new' && newTestamentBooks.has(book))) {
+                            const chapters = bibleData[book];
+                            for (const chapter in chapters) {
+                                const verses = chapters[chapter];
+                                for (const verse in verses) {
+                                    const verseText = verses[verse].toLowerCase().replace(/[^\w\s]/g, '');
+                                    if (verseText.includes(item)) {
+                                        stats.books.add(book);
+                                        stats.chapters.add(`${book}:${chapter}`);
+                                        stats.verses.add(`${book}:${chapter}:${verse}`);
+                                        if (oldTestamentBooks.has(book)) stats.ot++;
+                                        else if (newTestamentBooks.has(book)) stats.nt++;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
                 items = Object.entries(phraseCount)
-                    .map(([phrase, count]) => ({ item: phrase, count }))
+                    .map(([phrase, count]) => ({
+                        item: phrase,
+                        count,
+                        books: phraseStats.get(phrase).books.size,
+                        chapters: phraseStats.get(phrase).chapters.size,
+                        verses: phraseStats.get(phrase).verses.size,
+                        otCount: phraseStats.get(phrase).ot,
+                        ntCount: phraseStats.get(phrase).nt
+                    }))
                     .sort((a, b) => b.count - a.count);
             } else {
                 // Single words
                 let filterSet;
                 switch (section) {
-                    case 'words':
-                        filterSet = null; // All words
-                        break;
-                    case 'names':
-                        filterSet = names;
-                        break;
-                    case 'locations':
-                        filterSet = locations;
-                        break;
-                    case 'terms':
-                        filterSet = religiousTerms;
-                        break;
+                    case 'words': filterSet = null; break;
+                    case 'names': filterSet = names; break;
+                    case 'locations': filterSet = locations; break;
+                    case 'terms': filterSet = religiousTerms; break;
                 }
                 items = words.filter(word => (!filterSet || filterSet.has(word) || (includeSet && includeSet.has(word))) && !excludeSet.has(word));
                 totalItems = items.length;
                 const wordCount = {};
+                const wordStats = new Map();
                 items.forEach(item => {
                     wordCount[item] = (wordCount[item] || 0) + 1;
+                    if (!wordStats.has(item)) {
+                        wordStats.set(item, { books: new Set(), chapters: new Set(), verses: new Set(), ot: 0, nt: 0 });
+                    }
+                    const stats = wordStats.get(item);
+                    for (const book in bibleData) {
+                        if (testament === 'all' || 
+                            (testament === 'old' && oldTestamentBooks.has(book)) || 
+                            (testament === 'new' && newTestamentBooks.has(book))) {
+                            const chapters = bibleData[book];
+                            for (const chapter in chapters) {
+                                const verses = chapters[chapter];
+                                for (const verse in verses) {
+                                    const verseText = verses[verse].toLowerCase().replace(/[^\w\s]/g, '');
+                                    if (verseText.includes(item)) {
+                                        stats.books.add(book);
+                                        stats.chapters.add(`${book}:${chapter}`);
+                                        stats.verses.add(`${book}:${chapter}:${verse}`);
+                                        if (oldTestamentBooks.has(book)) stats.ot++;
+                                        else if (newTestamentBooks.has(book)) stats.nt++;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
                 items = Object.entries(wordCount)
-                    .map(([word, count]) => ({ item: word, count }))
+                    .map(([word, count]) => ({
+                        item: word,
+                        count,
+                        books: wordStats.get(word).books.size,
+                        chapters: wordStats.get(word).chapters.size,
+                        verses: wordStats.get(word).verses.size,
+                        otCount: wordStats.get(word).ot,
+                        ntCount: wordStats.get(word).nt
+                    }))
                     .sort((a, b) => b.count - a.count);
             }
 
@@ -294,7 +361,7 @@
                     const span = document.createElement('span');
                     span.className = 'word';
                     span.textContent = item.item;
-                    const fontSize = (item.count / maxCount) * 60 + 10;
+                    const fontSize = (item.count / maxCount * 60) + 10;
                     span.style.fontSize = `${fontSize}px`;
                     span.addEventListener('click', () => showPopup(item, totalItems));
                     wordCloud.appendChild(span);
@@ -305,7 +372,7 @@
             }
         }
 
-        // Show popup with stats
+        // Show popup with detailed stats
         function showPopup(item, totalItems) {
             const popup = document.getElementById('popup');
             const overlay = document.getElementById('overlay');
@@ -313,10 +380,21 @@
             const content = document.getElementById('popup-content');
 
             title.textContent = item.item;
+            const totalBooks = oldTestamentBooks.size + newTestamentBooks.size;
+            const otPercent = item.otCount + item.ntCount > 0 ? (item.otCount / (item.otCount + item.ntCount) * 100).toFixed(2) : 0;
+            const ntPercent = item.otCount + item.ntCount > 0 ? (item.ntCount / (item.otCount + item.ntCount) * 100).toFixed(2) : 0;
+            const avgPerBook = item.books > 0 ? (item.count / item.books).toFixed(2) : 0;
+
             content.innerHTML = `
                 <strong>Occurrences:</strong> ${item.count} times<br>
-                <strong>Percentage:</strong> ${(item.count / totalItems * 100).toFixed(2)}%<br>
-                <strong>Rank:</strong> ${window.itemData.findIndex(i => i.item === item.item) + 1}
+                <strong>Percentage of Filtered Items:</strong> ${(item.count / totalItems * 100).toFixed(2)}%<br>
+                <strong>Rank:</strong> ${window.itemData.findIndex(i => i.item === item.item) + 1}<br>
+                <strong>Books Appeared In:</strong> ${item.books} (of ${totalBooks})<br>
+                <strong>Chapters Appeared In:</strong> ${item.chapters}<br>
+                <strong>Verses Appeared In:</strong> ${item.verses}<br>
+                <strong>Old Testament:</strong> ${item.otCount} occurrences (${otPercent}%)<br>
+                <strong>New Testament:</strong> ${item.ntCount} occurrences (${ntPercent}%)<br>
+                <strong>Avg. Frequency per Book:</strong> ${avgPerBook} times/book
             `;
 
             popup.style.display = 'block';
