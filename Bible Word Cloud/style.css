@@ -1,49 +1,59 @@
-/* Import a modern font */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5; /* Light gray background */
-    color: #333; /* Dark gray text */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
-    overflow: auto;
+    padding: 16px;
+    line-height: 1.5;
 }
 
+/* Control toggle styling - more compact */
 #toggle-controls {
-    margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 700px;
 }
 
 #toggle-controls-btn {
-    padding: 8px 16px;
-    background-color: #4A90E2; /* Soft blue */
-    color: white;
-    border: none;
+    padding: 6px 12px;
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #eaeaea;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 #toggle-controls-btn:hover {
-    background-color: #357ABD; /* Darker blue on hover */
+    background-color: #f1f1f1;
 }
 
+/* Filters and tabs containers - reduced max-height for compactness */
 #filters, #tabs {
     transition: max-height 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
     width: 100%;
-    max-width: 600px; /* Constrain width for better organization */
+    max-width: 700px;
+    border-radius: 6px;
 }
 
-#filters.visible, #tabs.visible {
-    max-height: 400px; /* Increased to accommodate content */
+#filters.visible {
+    max-height: 200px;
     opacity: 1;
+    margin-bottom: 12px;
+}
+
+#tabs.visible {
+    max-height: 40px;
+    opacity: 1;
+    margin-bottom: 12px;
 }
 
 #filters.hidden, #tabs.hidden {
@@ -53,120 +63,164 @@ body {
     margin: 0;
 }
 
+/* Filter styling - horizontal layout */
 #filters {
-    background-color: #fff; /* White background for card effect */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    margin-bottom: 20px;
-    display: grid;
-    gap: 15px; /* Space between form elements */
+    background-color: #fafafa;
+    padding: 14px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 }
 
 #filters label {
+    font-size: 13px;
     font-weight: 500;
-    font-size: 14px;
-    color: #555; /* Slightly lighter gray for labels */
+    color: #555;
+    margin: 0;
+    margin-right: 4px;
 }
 
-#filters input, #filters select {
-    padding: 8px;
-    border: 1px solid #d1d1d1; /* Subtle border */
+/* Create filter groups for horizontal layout */
+.filter-group {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+#filters select, #filters input[type="text"], #filters input[type="number"] {
+    padding: 6px 8px;
+    border: 1px solid #e0e0e0;
     border-radius: 4px;
-    font-size: 14px;
-    width: 100%; /* Full width for consistency */
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    font-size: 13px;
+    background-color: white;
 }
 
-#filters input:focus, #filters select:focus {
-    border-color: #4A90E2; /* Highlight on focus */
+#testament-select, #book-select {
+    width: 120px;
+}
+
+#item-count {
+    width: 60px;
+}
+
+#include-items, #exclude-items {
+    width: 150px;
+}
+
+#filters select:focus, #filters input:focus {
     outline: none;
-}
-
-#filters input[type="number"] {
-    width: 80px; /* Smaller width for number input */
+    border-color: #2563eb;
 }
 
 #filters button {
-    padding: 8px 16px;
-    background-color: #4A90E2; /* Soft blue */
+    padding: 6px 12px;
+    background-color: #2563eb;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
+    margin-left: auto;
 }
 
 #filters button:hover {
-    background-color: #357ABD; /* Darker blue on hover */
+    background-color: #1d4ed8;
 }
 
-#tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-#tabs button {
-    padding: 10px 20px;
-    background-color: #e0e0e0; /* Light gray for inactive tabs */
+/* Apply Filters button - ensure visibility */
+#apply-filters {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #2563eb;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
     font-weight: 500;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
+}
+
+#apply-filters:hover {
+    background-color: #1d4ed8;
+}
+
+/* Tabs styling - horizontal */
+#tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+}
+
+#tabs button {
+    padding: 5px 10px;
+    background-color: #f8f8f8;
+    color: #555;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#tabs button:hover {
+    background-color: #f1f1f1;
 }
 
 #tabs button.active {
-    background-color: #4A90E2; /* Soft blue for active tab */
+    background-color: #2563eb;
     color: white;
+    border-color: #2563eb;
 }
 
-#tabs button:hover:not(.active) {
-    background-color: #d1d1d1; /* Slightly darker gray on hover */
-}
-
+/* Word cloud styling */
 #word-cloud {
-    max-width: 90%;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 12px;
     justify-content: center;
+    margin-top: 16px;
 }
 
 .word {
     cursor: pointer;
     display: inline-block;
-    padding: 5px 10px;
-    background-color: #fff; /* White background for words */
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    white-space: nowrap;
+    border-radius: 3px;
 }
 
 .word:hover {
-    transform: translateY(-2px); /* Slight lift on hover */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
-    color: #4A90E2; /* Soft blue on hover */
+    transform: scale(1.05);
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.08);
 }
 
+/* Popup styling */
 #popup {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     z-index: 1000;
-    max-width: 400px;
+    max-width: 480px;
+    width: 90%;
     text-align: left;
     max-height: 80vh;
     overflow-y: auto;
@@ -174,29 +228,37 @@ body {
 
 #popup-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     cursor: pointer;
-    font-size: 20px;
-    color: #555;
-    transition: color 0.3s ease;
+    font-size: 18px;
+    color: #777;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 #popup-close:hover {
+    background-color: #f5f5f5;
     color: #333;
 }
 
 #popup-title {
     margin-top: 0;
+    margin-bottom: 12px;
+    color: #1a1a1a;
     font-size: 18px;
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
 }
 
 #popup-content {
+    color: #444;
     font-size: 14px;
-    line-height: 1.6;
-    color: #555;
+    line-height: 1.5;
+    margin: 0;
 }
 
 #overlay {
@@ -206,18 +268,46 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
     z-index: 999;
 }
 
 #error-message {
-    color: #e74c3c; /* Soft red for errors */
-    font-size: 16px;
+    color: #e11d48;
+    font-size: 13px;
     text-align: center;
-    margin: 20px 0;
+    padding: 6px;
+    background-color: #fef2f2;
+    border-radius: 4px;
+    margin-top: 8px;
 }
 
 #book-select:disabled {
-    background-color: #f0f0f0;
+    background-color: #f8f8f8;
     cursor: not-allowed;
+    color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+    #filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-group {
+        width: 100%;
+        margin-right: 0;
+        justify-content: space-between;
+    }
+    
+    #testament-select, #book-select, #include-items, #exclude-items {
+        flex-grow: 1;
+    }
+    
+    #filters button {
+        margin-left: 0;
+        width: 100%;
+    }
 }
