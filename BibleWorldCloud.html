@@ -454,10 +454,24 @@ function populateBookDropdown(testament) {
             option.value = book;
             option.textContent = book;
             bookSelect.appendChild(option);
-        });
+});
     }
 }
+// Toggle filters visibility (NEW CODE INSERTED HERE)
+document.getElementById('toggle-filters-btn').addEventListener('click', () => {
+    const filtersDiv = document.getElementById('filters');
+    const toggleBtn = document.getElementById('toggle-filters-btn');
 
+    if (filtersDiv.classList.contains('visible')) {
+        filtersDiv.classList.remove('visible');
+        filtersDiv.classList.add('hidden');
+        toggleBtn.textContent = 'Show Filters';
+    } else {
+        filtersDiv.classList.remove('hidden');
+        filtersDiv.classList.add('visible');
+        toggleBtn.textContent = 'Hide Filters';
+    }
+});
 // Initialize and set up tabs/filters
 async function initialize() {
     const bibleData = await fetchBibleData();
@@ -498,21 +512,6 @@ async function initialize() {
     // Apply filters
     document.getElementById('apply-filters').addEventListener('click', () => displayItems(bibleData, stats, currentSection, currentTestament, currentBook));
 }
-
-        // Toggle filters visibility
-document.getElementById('toggle-filters-btn').addEventListener('click', () => {
-    const filtersDiv = document.getElementById('filters');
-    const toggleBtn = document.getElementById('toggle-filters-btn');
-
-    if (filtersDiv.classList.contains('visible')) {
-        filtersDiv.classList.remove('visible');
-        filtersDiv.classList.add('hidden');
-        toggleBtn.textContent = 'Show Filters';
-    } else {
-        filtersDiv.classList.remove('hidden');
-        filtersDiv.classList.add('visible');
-        toggleBtn.textContent = 'Hide Filters';
-    }
 
 initialize();
     </script>
