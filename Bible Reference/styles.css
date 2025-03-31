@@ -1,0 +1,360 @@
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+    line-height: 1.5;
+}
+
+#toggle-controls {
+    text-align: center;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 900px;
+}
+
+#toggle-controls-btn {
+    padding: 6px 12px;
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#toggle-controls-btn:hover {
+    background-color: #f1f1f1;
+}
+
+#filters, #tabs {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 6px;
+}
+
+#filters.visible {
+    max-height: 200px;
+    opacity: 1;
+    margin-bottom: 12px;
+}
+
+#tabs.visible {
+    max-height: 40px;
+    opacity: 1;
+    margin-bottom: 12px;
+}
+
+#filters.hidden, #tabs.hidden {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-group {
+    background-color: #fafafa;
+    padding: 14px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.filter-group.visible { opacity: 1; }
+.filter-group.hidden { opacity: 0; height: 0; padding: 0; margin: 0; }
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.filter-item label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    margin-right: 4px;
+}
+
+.filter-item input, .filter-item select {
+    padding: 6px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: white;
+}
+
+#search-name, #search-event, #search-location { width: 150px; }
+#gender, #occupation, #testament, #sort, #testament-event, #testament-location { width: 120px; }
+
+.filter-item input:focus, .filter-item select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+#tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+}
+
+#tabs button {
+    padding: 5px 10px;
+    background-color: #f8f8f8;
+    color: #555;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#tabs button:hover {
+    background-color: #f1f1f1;
+}
+
+#tabs button.active {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+#content-sections {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 16px;
+}
+
+.content-container {
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    overflow: hidden;
+}
+
+.content-container.visible {
+    max-height: 2000px;
+    opacity: 1;
+}
+
+.content-container.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+/* Figures */
+#figures-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.card {
+    cursor: pointer;
+    width: 200px;
+    padding: 12px;
+    background-color: #f8f8f8;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.card-content h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.card-content .dates {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 8px;
+}
+
+.card-content p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Events Timeline */
+#events-section {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px 0;
+}
+
+#timeline {
+    display: inline-flex;
+    gap: 20px;
+    position: relative;
+    padding: 0 10px;
+}
+
+.timeline-event {
+    cursor: pointer;
+    display: inline-block;
+    width: 150px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.timeline-event:hover {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.timeline-event h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.timeline-event p {
+    margin: 0;
+    font-size: 12px;
+}
+
+/* Locations Map */
+#map-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 400px;
+}
+
+#map-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#pins {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.pin {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #2563eb;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: all 0.2s ease;
+}
+
+.pin:hover {
+    background-color: #1d4ed8;
+    width: 24px;
+    height: 24px;
+}
+
+.pin-label {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #777;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #333;
+}
+
+#modal-image {
+    width: 100%;
+    max-width: 300px;
+    max-height: 200px;
+    object-fit: contain;
+    display: none;
+    margin: 10px auto;
+    border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+    .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-item {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    #search-name, #gender, #occupation, #testament, #sort {
+        width: 100%;
+    }
+}

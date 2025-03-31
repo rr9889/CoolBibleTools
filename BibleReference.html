@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblical Explorer (NIV)</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="toggle-controls">
+        <button id="toggle-controls-btn">Hide Filters & Tabs</button>
+    </div>
+    <div id="filters" class="visible">
+        <!-- Figures Filters -->
+        <div id="figures-filters" class="filter-group visible">
+            <div class="filter-item">
+                <label for="search-name">Search Name:</label>
+                <input type="text" id="search-name" placeholder="e.g., Moses" list="name-suggestions">
+                <datalist id="name-suggestions"></datalist>
+            </div>
+            <div class="filter-item">
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="all">All</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="occupation">Occupation:</label>
+                <select id="occupation"></select>
+            </div>
+            <div class="filter-item">
+                <label for="testament">Testament:</label>
+                <select id="testament">
+                    <option value="all">All</option>
+                    <option value="old">Old Testament</option>
+                    <option value="new">New Testament</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="sort">Sort:</label>
+                <select id="sort">
+                    <option value="alpha">Alphabetically</option>
+                    <option value="chrono">Chronologically</option>
+                </select>
+            </div>
+        </div>
+        <!-- Events Filters (Minimal for Timeline) -->
+        <div id="events-filters" class="filter-group hidden">
+            <div class="filter-item">
+                <label for="search-event">Search Event:</label>
+                <input type="text" id="search-event" placeholder="e.g., Flood">
+            </div>
+            <div class="filter-item">
+                <label for="testament-event">Testament:</label>
+                <select id="testament-event">
+                    <option value="all">All</option>
+                    <option value="old">Old Testament</option>
+                    <option value="new">New Testament</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+        </div>
+        <!-- Locations Filters (Minimal for Map) -->
+        <div id="locations-filters" class="filter-group hidden">
+            <div class="filter-item">
+                <label for="search-location">Search Location:</label>
+                <input type="text" id="search-location" placeholder="e.g., Jerusalem">
+            </div>
+            <div class="filter-item">
+                <label for="testament-location">Testament:</label>
+                <select id="testament-location">
+                    <option value="all">All</option>
+                    <option value="old">Old Testament</option>
+                    <option value="new">New Testament</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="tabs" class="visible">
+        <button id="tab-figures" class="active">Figures</button>
+        <button id="tab-events">Events</button>
+        <button id="tab-locations">Locations</button>
+    </div>
+    <div id="content-sections">
+        <div id="figures-section" class="content-container visible" data-category="figures"></div>
+        <div id="events-section" class="content-container hidden" data-category="events">
+            <div id="timeline"></div>
+        </div>
+        <div id="locations-section" class="content-container hidden" data-category="locations">
+            <div id="map-container">
+                <img src="https://via.placeholder.com/900x400?text=Ancient+Near+East+Map" alt="Map" id="map-bg">
+                <div id="pins"></div>
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2 id="modal-title"></h2>
+            <img id="modal-image" alt="">
+            <p id="modal-description"></p>
+            <p id="modal-time"></p>
+            <p id="modal-testament"></p>
+            <p id="modal-related"></p>
+            <p id="modal-role"></p>
+            <p id="modal-scripture"></p>
+            <p id="modal-context"></p>
+            <p id="modal-significance"></p>
+            <p id="modal-gender"></p>
+            <p id="modal-tribe"></p>
+            <p id="modal-occupation"></p>
+            <p id="modal-family"></p>
+            <p id="modal-traits"></p>
+        </div>
+    </div>
+    <script src="./data.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
