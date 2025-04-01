@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeContent = document.getElementById('home-content')?.innerHTML || '<p>Welcome</p>';
     const ROW_LIMIT = 50; // Limit rows to prevent lag
 
-    // URLs for the JSON data
+    // URLs for the JSON data (using rr9889/biblejsondata)
     const DATA_URLS = {
         books: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Book.json',
         people: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Person.json',
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         personRelationships: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonRelationship.json',
         personVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerse.json',
         personVerseApostolic: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerseApostolic.json',
-        personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-BibleData-PersonVerseTanakh.json',
+        personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerseTanakh.json', // Corrected from BibleData-BibleData-
         placeLabels: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceLabel.json',
         placeVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceVerse.json',
         references: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Reference.json',
