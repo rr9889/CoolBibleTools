@@ -6,23 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // URLs for the JSON data
     const DATA_URLS = {
-        books: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Book.json',
-        people: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Person.json',
-        places: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Place.json',
-        personLabels: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonLabel.json',
-        epochs: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Epoch.json',
-        personRelationships: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonRelationship.json',
-        personVerse: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonVerse.json',
-        personVerseApostolic: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonVerseApostolic.json',
-        personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PersonVerseTanakh.json',
-        placeLabels: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PlaceLabel.json',
-        placeVerse: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PlaceVerse.json',
-        references: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Reference.json',
-        naves: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/NavesTopicalDictionary.json',
-        hitchcock: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/HitchcocksBibleNamesDictionary.json',
-        strongs: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/HebrewStrongs.json',
-        commandments: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Commandments.json',
-        events: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Event.json'
+        books: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Book.json',
+        people: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Person.json',
+        places: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Place.json',
+        personLabels: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonLabel.json',
+        epochs: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Epoch.json',
+        personRelationships: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonRelationship.json',
+        personVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerse.json',
+        personVerseApostolic: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerseApostolic.json',
+        personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-BibleData-PersonVerseTanakh.json',
+        placeLabels: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceLabel.json', // Using non-duplicate
+        placeVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceVerse.json', // Using non-duplicate
+        references: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Reference.json', // Using non-duplicate
+        naves: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/NavesTopicalDictionary.json',
+        hitchcock: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/HitchcocksBibleNamesDictionary.json',
+        strongs: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/HebrewStrongs.json',
+        commandments: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Commandments.json',
+        events: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Event.json'
     };
 
     const cachedData = {};
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         } catch (error) {
             console.error(`Failed to fetch ${cacheKey}:`, error);
-            renderContent(`<p class="error">Failed to load ${cacheKey} data.</p>`);
+            renderContent(`<p class="error">Failed to load ${cacheKey} data. Please try again later.</p>`);
             return null;
         }
     }
