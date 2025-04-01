@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingIndicator = document.getElementById('loading-indicator');
     const sidebarLinks = document.querySelectorAll('.sidebar nav a, .sidebar .dictionary-links a');
     const homeContent = document.getElementById('home-content')?.innerHTML || '<p>Welcome</p>';
+    const ROW_LIMIT = 50; // Limit rows to prevent lag
 
     // URLs for the JSON data
     const DATA_URLS = {
@@ -15,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         personVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerse.json',
         personVerseApostolic: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PersonVerseApostolic.json',
         personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-BibleData-PersonVerseTanakh.json',
-        placeLabels: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceLabel.json', // Using non-duplicate
-        placeVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceVerse.json', // Using non-duplicate
-        references: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Reference.json', // Using non-duplicate
+        placeLabels: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceLabel.json',
+        placeVerse: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-PlaceVerse.json',
+        references: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/BibleData-Reference.json',
         naves: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/NavesTopicalDictionary.json',
         hitchcock: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/HitchcocksBibleNamesDictionary.json',
         strongs: 'https://raw.githubusercontent.com/rr9889/biblejsondata/main/HebrewStrongs.json',
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideLoading();
         contentArea.innerHTML = html;
         addListItemListeners();
+        addSearchListeners();
     }
 
     function setActiveLink(targetLink) {
@@ -64,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showLoading();
         try {
+            console.log(`Fetching ${cacheKey} from ${url}`);
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
@@ -77,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Display Functions ---
+    // --- Display Functions with Search and Row Limits ---
 
     function displayHome() {
         renderContent(`<section>${homeContent}</section>`);
@@ -87,8 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const books = await fetchJSON(DATA_URLS.books, 'books');
         if (!books) return;
 
-        let html = `<h2>Books of the Bible</h2><p>Found ${books.length} books.</p><ul class="item-list">`;
-        books.forEach(book => {
+        let html = `
+            <h2>Books of the Bible</h2>
+            <p>Found ${books.length} books. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="books-search" class="section-search" placeholder="Search books...">
+            <ul class="item-list" id="books-list">`;
+        const limitedBooks = books.slice(0, ROW_LIMIT);
+        limitedBooks.forEach(book => {
             const id = getProp(book, 'BibleData_BookID');
             const name = getProp(book, 'Name');
             const testament = getProp(book, 'Testament');
@@ -99,14 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         html += `</ul><div id="details-area"></div>`;
         renderContent(html);
+
+        document.getElementById('books-search').addEventListener('input', (e) => filterList('books-list', books, e.target.value, 'book'));
     }
 
     async function displayPeople() {
         const people = await fetchJSON(DATA_URLS.people, 'people');
         if (!people) return;
 
-        let html = `<h2>Key People</h2><p>Found ${people.length} people.</p><ul class="item-list">`;
-        people.forEach(person => {
+        let html = `
+            <h2>Key People</h2>
+            <p>Found ${people.length} people. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="people-search" class="section-search" placeholder="Search people...">
+            <ul class="item-list" id="people-list">`;
+        const limitedPeople = people.slice(0, ROW_LIMIT);
+        limitedPeople.forEach(person => {
             const id = getProp(person, 'BibleData_PersonID');
             const name = getProp(person, 'Name');
             const desc = getProp(person, 'Description');
@@ -116,14 +131,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         html += `</ul><div id="details-area"></div>`;
         renderContent(html);
+
+        document.getElementById('people-search').addEventListener('input', (e) => filterList('people-list', people, e.target.value, 'person'));
     }
 
     async function displayPlaces() {
         const places = await fetchJSON(DATA_URLS.places, 'places');
         if (!places) return;
 
-        let html = `<h2>Key Places</h2><p>Found ${places.length} places.</p><ul class="item-list">`;
-        places.forEach(place => {
+        let html = `
+            <h2>Key Places</h2>
+            <p>Found ${places.length} places. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="places-search" class="section-search" placeholder="Search places...">
+            <ul class="item-list" id="places-list">`;
+        const limitedPlaces = places.slice(0, ROW_LIMIT);
+        limitedPlaces.forEach(place => {
             const id = getProp(place, 'BibleData_PlaceID');
             const name = getProp(place, 'Name');
             const lat = getProp(place, 'Latitude');
@@ -134,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         html += `</ul><div id="details-area"></div>`;
         renderContent(html);
+
+        document.getElementById('places-search').addEventListener('input', (e) => filterList('places-list', places, e.target.value, 'place'));
     }
 
     async function displayTopics() {
@@ -141,48 +165,68 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!topics) return;
 
         const uniqueTopics = [...new Set(topics.map(t => getProp(t, 'Topic')))].sort();
-        let html = `<h2>Nave's Topical Dictionary</h2><p>Found ${uniqueTopics.length} topics.</p><ul class="item-list">`;
-        uniqueTopics.forEach(topic => {
+        let html = `
+            <h2>Nave's Topical Dictionary</h2>
+            <p>Found ${uniqueTopics.length} topics. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="topics-search" class="section-search" placeholder="Search topics...">
+            <ul class="item-list" id="topics-list">`;
+        const limitedTopics = uniqueTopics.slice(0, ROW_LIMIT);
+        limitedTopics.forEach(topic => {
             html += `<li data-type="topic" data-topic="${topic}"><strong>${topic}</strong></li>`;
         });
         html += `</ul><div id="details-area"></div>`;
         renderContent(html);
+
+        document.getElementById('topics-search').addEventListener('input', (e) => filterList('topics-list', uniqueTopics, e.target.value, 'topic', true));
     }
 
     async function displayHitchcock() {
         const names = await fetchJSON(DATA_URLS.hitchcock, 'hitchcock');
         if (!names) return;
 
-        let html = `<h2>Hitchcock's Bible Names</h2><p>Found ${names.length} entries.</p><ul class="item-list simple-list">`;
-        names.forEach(entry => {
+        let html = `
+            <h2>Hitchcock's Bible Names</h2>
+            <p>Found ${names.length} entries. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="hitchcock-search" class="section-search" placeholder="Search names...">
+            <ul class="item-list simple-list" id="hitchcock-list">`;
+        const limitedNames = names.slice(0, ROW_LIMIT);
+        limitedNames.forEach(entry => {
             const name = getProp(entry, 'Name');
             const meaning = getProp(entry, 'Meaning');
             html += `<li><strong>${name}:</strong> ${meaning}</li>`;
         });
         html += `</ul>`;
         renderContent(html);
+
+        document.getElementById('hitchcock-search').addEventListener('input', (e) => filterList('hitchcock-list', names, e.target.value, 'hitchcock'));
     }
 
     async function displayStrongs() {
         const strongs = await fetchJSON(DATA_URLS.strongs, 'strongs');
         if (!strongs) return;
 
-        let html = `<h2>Hebrew Strong's</h2><p>Found ${strongs.length} entries (showing 100).</p><ul class="item-list simple-list">`;
-        strongs.slice(0, 100).forEach(entry => {
+        let html = `
+            <h2>Hebrew Strong's</h2>
+            <p>Found ${strongs.length} entries. Showing up to ${ROW_LIMIT} (search to filter).</p>
+            <input type="text" id="strongs-search" class="section-search" placeholder="Search Strong's...">
+            <ul class="item-list simple-list" id="strongs-list">`;
+        const limitedStrongs = strongs.slice(0, ROW_LIMIT);
+        limitedStrongs.forEach(entry => {
             const num = getProp(entry, 'StrongsNumber');
             const lemma = getProp(entry, 'Lemma');
             const trans = getProp(entry, 'Transliteration');
             const def = getProp(entry, 'Definition').substring(0, 100) + '...';
             html += `<li><strong>H${num} ${lemma}</strong> (${trans}): ${def}</li>`;
         });
-        if (strongs.length > 100) html += `<li>... and ${strongs.length - 100} more.</li>`;
         html += `</ul>`;
         renderContent(html);
+
+        document.getElementById('strongs-search').addEventListener('input', (e) => filterList('strongs-list', strongs, e.target.value, 'strongs'));
     }
 
     async function displaySearch() {
         const html = `
-            <h2>Search</h2>
+            <h2>Global Search</h2>
             <form id="search-form">
                 <input type="text" id="search-query" placeholder="Enter name...">
                 <button type="submit">Search</button>
@@ -208,26 +252,71 @@ document.addEventListener('DOMContentLoaded', () => {
             const placeMatches = places?.filter(p => getProp(p, 'Name').toLowerCase().includes(query)) || [];
 
             resultsHtml += '<h4>People:</h4><ul class="item-list">';
-            peopleMatches.forEach(p => {
+            peopleMatches.slice(0, ROW_LIMIT).forEach(p => {
                 resultsHtml += `<li data-type="person" data-id="${getProp(p, 'BibleData_PersonID')}">
                     <strong>${getProp(p, 'Name')}</strong>${getProp(p, 'Description') !== 'N/A' ? ` - ${getProp(p, 'Description')}` : ''}
                 </li>`;
             });
             if (!peopleMatches.length) resultsHtml += '<li>No matches.</li>';
+            else if (peopleMatches.length > ROW_LIMIT) resultsHtml += `<li>... and ${peopleMatches.length - ROW_LIMIT} more.</li>`;
             resultsHtml += '</ul>';
 
             resultsHtml += '<h4>Places:</h4><ul class="item-list">';
-            placeMatches.forEach(p => {
+            placeMatches.slice(0, ROW_LIMIT).forEach(p => {
                 resultsHtml += `<li data-type="place" data-id="${getProp(p, 'BibleData_PlaceID')}">
                     <strong>${getProp(p, 'Name')}</strong> (Lat: ${getProp(p, 'Latitude')}, Lon: ${getProp(p, 'Longitude')})
                 </li>`;
             });
             if (!placeMatches.length) resultsHtml += '<li>No matches.</li>';
+            else if (placeMatches.length > ROW_LIMIT) resultsHtml += `<li>... and ${placeMatches.length - ROW_LIMIT} more.</li>`;
             resultsHtml += '</ul>';
 
             resultsArea.innerHTML = resultsHtml;
             addListItemListeners();
         });
+    }
+
+    // Filter function for section-specific search
+    function filterList(listId, fullData, query, type, isTopic = false) {
+        const list = document.getElementById(listId);
+        if (!list) return;
+
+        const filtered = isTopic
+            ? fullData.filter(item => item.toLowerCase().includes(query.toLowerCase()))
+            : fullData.filter(item => getProp(item, 'Name').toLowerCase().includes(query.toLowerCase()));
+        let html = '';
+        const limitedFiltered = filtered.slice(0, ROW_LIMIT);
+        limitedFiltered.forEach(item => {
+            if (isTopic) {
+                html += `<li data-type="topic" data-topic="${item}"><strong>${item}</strong></li>`;
+            } else if (type === 'book') {
+                const id = getProp(item, 'BibleData_BookID');
+                html += `<li data-type="book" data-id="${id}">
+                    <strong>${getProp(item, 'Name')}</strong> (${getProp(item, 'Testament')}) - Genre: ${getProp(item, 'Genre')}
+                </li>`;
+            } else if (type === 'person') {
+                const id = getProp(item, 'BibleData_PersonID');
+                html += `<li data-type="person" data-id="${id}">
+                    <strong>${getProp(item, 'Name')}</strong>${getProp(item, 'Description') !== 'N/A' ? ` - ${getProp(item, 'Description')}` : ''}
+                </li>`;
+            } else if (type === 'place') {
+                const id = getProp(item, 'BibleData_PlaceID');
+                html += `<li data-type="place" data-id="${id}">
+                    <strong>${getProp(item, 'Name')}</strong> (Lat: ${getProp(item, 'Latitude')}, Lon: ${getProp(item, 'Longitude')})
+                </li>`;
+            } else if (type === 'hitchcock') {
+                html += `<li><strong>${getProp(item, 'Name')}:</strong> ${getProp(item, 'Meaning')}</li>`;
+            } else if (type === 'strongs') {
+                const num = getProp(item, 'StrongsNumber');
+                const lemma = getProp(item, 'Lemma');
+                const trans = getProp(item, 'Transliteration');
+                const def = getProp(item, 'Definition').substring(0, 100) + '...';
+                html += `<li><strong>H${num} ${lemma}</strong> (${trans}): ${def}</li>`;
+            }
+        });
+        if (filtered.length > ROW_LIMIT) html += `<li>... and ${filtered.length - ROW_LIMIT} more.</li>`;
+        list.innerHTML = html || '<li>No matches found.</li>';
+        addListItemListeners();
     }
 
     async function displayItemDetails(type, id) {
@@ -368,6 +457,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (type && id) displayItemDetails(type, id);
             });
         });
+    }
+
+    function addSearchListeners() {
+        // Already handled in each display function
     }
 
     // --- Initial Load ---
