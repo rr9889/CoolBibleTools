@@ -2,18 +2,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentArea = document.getElementById('content-area');
     const loadingIndicator = document.getElementById('loading-indicator');
     const sidebarLinks = document.querySelectorAll('.sidebar nav a, .sidebar .dictionary-links a');
-    const homeContent = document.getElementById('home-content')?.innerHTML || '<p>Welcome</p>'; // Fallback if not found
+    const homeContent = document.getElementById('home-content')?.innerHTML || '<p>Welcome</p>';
 
-    // URLs for the CSV data
+    // URLs for the JSON data
     const DATA_URLS = {
-        books: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/BibleData-Book.csv',
-        people: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/BibleData-Person.csv',
-        places: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/BibleData-Place.csv',
-        naves: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/NavesTopicalDictionary.csv',
-        hitchcock: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/HitchcocksBibleNamesDictionary.csv',
-        strongs: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/HebrewStrongs.csv',
-        personVerse: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/BibleData-PersonVerse.csv',
-        placeVerse: 'https://raw.githubusercontent.com/BradyStephenson/bible-data/main/BibleData-PlaceVerse.csv'
+        books: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Book.json',
+        people: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Person.json',
+        places: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Place.json',
+        personLabels: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonLabel.json',
+        epochs: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Epoch.json',
+        personRelationships: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonRelationship.json',
+        personVerse: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonVerse.json',
+        personVerseApostolic: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-PersonVerseApostolic.json',
+        personVerseTanakh: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PersonVerseTanakh.json',
+        placeLabels: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PlaceLabel.json',
+        placeVerse: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-BibleData-PlaceVerse.json',
+        references: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Reference.json',
+        naves: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/NavesTopicalDictionary.json',
+        hitchcock: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/HitchcocksBibleNamesDictionary.json',
+        strongs: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/HebrewStrongs.json',
+        commandments: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Commandments.json',
+        events: 'https://raw.githubusercontent.com/rr9889/bibletoolsgenology/main/BibleData-Event.json'
     };
 
     const cachedData = {};
@@ -40,15 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         targetLink?.classList.add('active');
     }
 
-    // Case-insensitive property accessor
     function getProp(obj, prop) {
         if (!obj) return 'N/A';
         const keys = Object.keys(obj);
         const key = keys.find(k => k.toLowerCase() === prop.toLowerCase());
-        return key ? obj[key] || 'N/A' : 'N/A';
+        return key ? (obj[key] || 'N/A') : 'N/A';
     }
 
-    async function fetchCSV(url, cacheKey) {
+    async function fetchJSON(url, cacheKey) {
         if (cachedData[cacheKey]) {
             console.log(`Using cached data for ${cacheKey}`);
             return cachedData[cacheKey];
@@ -58,22 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const csvText = await response.text();
-            const results = await new Promise((resolve, reject) => {
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: (res) => resolve(res),
-                    error: (err) => reject(err)
-                });
-            });
-
-            if (results.errors.length) {
-                console.warn(`Parsing warnings for ${cacheKey}:`, results.errors);
-            }
-            console.log(`Fetched ${cacheKey}: ${results.data.length} rows`);
-            cachedData[cacheKey] = results.data;
-            return results.data;
+            const data = await response.json();
+            console.log(`Fetched ${cacheKey}: ${Array.isArray(data) ? data.length : Object.keys(data).length} items`);
+            cachedData[cacheKey] = data;
+            return data;
         } catch (error) {
             console.error(`Failed to fetch ${cacheKey}:`, error);
             renderContent(`<p class="error">Failed to load ${cacheKey} data.</p>`);
@@ -88,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayBooks() {
-        const books = await fetchCSV(DATA_URLS.books, 'books');
+        const books = await fetchJSON(DATA_URLS.books, 'books');
         if (!books) return;
 
         let html = `<h2>Books of the Bible</h2><p>Found ${books.length} books.</p><ul class="item-list">`;
@@ -106,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayPeople() {
-        const people = await fetchCSV(DATA_URLS.people, 'people');
+        const people = await fetchJSON(DATA_URLS.people, 'people');
         if (!people) return;
 
         let html = `<h2>Key People</h2><p>Found ${people.length} people.</p><ul class="item-list">`;
@@ -123,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayPlaces() {
-        const places = await fetchCSV(DATA_URLS.places, 'places');
+        const places = await fetchJSON(DATA_URLS.places, 'places');
         if (!places) return;
 
         let html = `<h2>Key Places</h2><p>Found ${places.length} places.</p><ul class="item-list">`;
@@ -141,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayTopics() {
-        const topics = await fetchCSV(DATA_URLS.naves, 'naves');
+        const topics = await fetchJSON(DATA_URLS.naves, 'naves');
         if (!topics) return;
 
         const uniqueTopics = [...new Set(topics.map(t => getProp(t, 'Topic')))].sort();
@@ -154,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayHitchcock() {
-        const names = await fetchCSV(DATA_URLS.hitchcock, 'hitchcock');
+        const names = await fetchJSON(DATA_URLS.hitchcock, 'hitchcock');
         if (!names) return;
 
         let html = `<h2>Hitchcock's Bible Names</h2><p>Found ${names.length} entries.</p><ul class="item-list simple-list">`;
@@ -168,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function displayStrongs() {
-        const strongs = await fetchCSV(DATA_URLS.strongs, 'strongs');
+        const strongs = await fetchJSON(DATA_URLS.strongs, 'strongs');
         if (!strongs) return;
 
         let html = `<h2>Hebrew Strong's</h2><p>Found ${strongs.length} entries (showing 100).</p><ul class="item-list simple-list">`;
@@ -204,8 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             resultsArea.innerHTML = '<div class="loading">Searching...</div>';
-            const people = await fetchCSV(DATA_URLS.people, 'people');
-            const places = await fetchCSV(DATA_URLS.places, 'places');
+            const people = await fetchJSON(DATA_URLS.people, 'people');
+            const places = await fetchJSON(DATA_URLS.places, 'places');
 
             let resultsHtml = '<h3>Results:</h3>';
             const peopleMatches = people?.filter(p => getProp(p, 'Name').toLowerCase().includes(query)) || [];
@@ -242,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '<div class="details-view">';
 
         if (type === 'book') {
-            const books = await fetchCSV(DATA_URLS.books, 'books');
+            const books = await fetchJSON(DATA_URLS.books, 'books');
             const book = books?.find(b => getProp(b, 'BibleData_BookID') === id);
             if (book) {
                 html += `<h3>${getProp(book, 'Name')}</h3>
@@ -253,18 +249,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += `<p>Book ID ${id} not found.</p>`;
             }
         } else if (type === 'person') {
-            const people = await fetchCSV(DATA_URLS.people, 'people');
+            const people = await fetchJSON(DATA_URLS.people, 'people');
+            const epochs = await fetchJSON(DATA_URLS.epochs, 'epochs');
             const person = people?.find(p => getProp(p, 'BibleData_PersonID') === id);
             if (person) {
+                const birthEpoch = epochs?.find(e => getProp(e, 'BibleData_EpochID') === getProp(person, 'BirthEpochID'));
+                const deathEpoch = epochs?.find(e => getProp(e, 'BibleData_EpochID') === getProp(person, 'DeathEpochID'));
                 html += `<h3>${getProp(person, 'Name')}</h3>
                     <p><strong>Description:</strong> ${getProp(person, 'Description')}</p>
-                    <p><strong>Gender:</strong> ${getProp(person, 'Gender')}</p>`;
+                    <p><strong>Gender:</strong> ${getProp(person, 'Gender')}</p>
+                    <p><strong>Born:</strong> ${birthEpoch ? getProp(birthEpoch, 'Name') : getProp(person, 'BirthEpochID')}</p>
+                    <p><strong>Died:</strong> ${deathEpoch ? getProp(deathEpoch, 'Name') : getProp(person, 'DeathEpochID')}</p>`;
                 html += await findRelatedVerses('person', id);
+                html += await findRelationships(id);
             } else {
                 html += `<p>Person ID ${id} not found.</p>`;
             }
         } else if (type === 'place') {
-            const places = await fetchCSV(DATA_URLS.places, 'places');
+            const places = await fetchJSON(DATA_URLS.places, 'places');
             const place = places?.find(p => getProp(p, 'BibleData_PlaceID') === id);
             if (place) {
                 html += `<h3>${getProp(place, 'Name')}</h3>
@@ -275,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += `<p>Place ID ${id} not found.</p>`;
             }
         } else if (type === 'topic') {
-            const topics = await fetchCSV(DATA_URLS.naves, 'naves');
+            const topics = await fetchJSON(DATA_URLS.naves, 'naves');
             const items = topics?.filter(t => getProp(t, 'Topic') === id);
             if (items?.length) {
                 html += `<h3>Topic: ${id}</h3><ul>`;
@@ -292,19 +294,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function findRelatedVerses(type, id) {
-        const key = type === 'person' ? 'personVerse' : 'placeVerse';
-        const url = type === 'person' ? DATA_URLS.personVerse : DATA_URLS.placeVerse;
+        const urls = type === 'person' ? [DATA_URLS.personVerse, DATA_URLS.personVerseApostolic, DATA_URLS.personVerseTanakh] : [DATA_URLS.placeVerse];
+        const cacheKeys = type === 'person' ? ['personVerse', 'personVerseApostolic', 'personVerseTanakh'] : ['placeVerse'];
         const idField = type === 'person' ? 'BibleData_PersonID' : 'BibleData_PlaceID';
 
-        const verses = await fetchCSV(url, key);
-        const related = verses?.filter(v => getProp(v, idField) === id) || [];
-        if (related.length) {
-            return `<p><strong>Found ${related.length} verses:</strong></p><ul>
-                ${related.slice(0, 10).map(v => `<li>Verse ID: ${getProp(v, 'BibleData_VerseID')}</li>`).join('')}
-                ${related.length > 10 ? `<li>... and ${related.length - 10} more.</li>` : ''}
+        let allVerses = [];
+        for (let i = 0; i < urls.length; i++) {
+            const verses = await fetchJSON(urls[i], cacheKeys[i]);
+            if (verses) {
+                allVerses = allVerses.concat(verses.filter(v => getProp(v, idField) === id));
+            }
+        }
+
+        if (allVerses.length) {
+            return `<p><strong>Found ${allVerses.length} verses:</strong></p><ul>
+                ${allVerses.slice(0, 10).map(v => `<li>Verse ID: ${getProp(v, 'BibleData_VerseID')}</li>`).join('')}
+                ${allVerses.length > 10 ? `<li>... and ${allVerses.length - 10} more.</li>` : ''}
             </ul>`;
         }
         return '<p>No verses found.</p>';
+    }
+
+    async function findRelationships(personId) {
+        const relationships = await fetchJSON(DATA_URLS.personRelationships, 'personRelationships');
+        const people = cachedData.people || await fetchJSON(DATA_URLS.people, 'people');
+        if (!relationships || !people) return '';
+
+        const related = relationships.filter(r => getProp(r, 'BibleData_PersonID1') === personId || getProp(r, 'BibleData_PersonID2') === personId);
+        if (!related.length) return '<p>No relationships found.</p>';
+
+        let html = '<p><strong>Relationships:</strong></p><ul>';
+        related.forEach(rel => {
+            const otherId = getProp(rel, 'BibleData_PersonID1') === personId ? getProp(rel, 'BibleData_PersonID2') : getProp(rel, 'BibleData_PersonID1');
+            const otherPerson = people.find(p => getProp(p, 'BibleData_PersonID') === otherId);
+            const relType = getProp(rel, 'RelationshipType');
+            html += `<li>${relType} of <strong>${otherPerson ? getProp(otherPerson, 'Name') : otherId}</strong></li>`;
+        });
+        html += '</ul>';
+        return html;
     }
 
     // --- Event Listeners ---
