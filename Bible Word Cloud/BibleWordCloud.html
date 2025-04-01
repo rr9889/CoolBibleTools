@@ -8,38 +8,64 @@
 </head>
 <body>
     <div id="toggle-controls">
-        <button id="toggle-controls-btn">Hide Filters & Tabs</button>
+        <button id="toggle-controls-btn">Hide Menu</button>
     </div>
-    <div id="filters" class="visible">
-        <label for="testament-select">Testament:</label>
-        <select id="testament-select">
-            <option value="all">All</option>
-            <option value="old">Old Testament</option>
-            <option value="new">New Testament</option>
-        </select>
-        <br>
-        <label for="book-select">Book:</label>
-        <select id="book-select" disabled>
-            <option value="all">All Books</option>
-        </select>
-        <br>
-        <label for="item-count">Number of Items:</label>
-        <input type="number" id="item-count" min="1" value="50" style="width: 60px;">
-        <br>
-        <label for="include-items">Include Items (comma-separated):</label>
-        <input type="text" id="include-items" placeholder="e.g., jesus, jerusalem">
-        <br>
-        <label for="exclude-items">Exclude Items (comma-separated):</label>
-        <input type="text" id="exclude-items" placeholder="e.g., day, time">
-        <br>
+    <div id="menu" class="visible">
+        <div class="filter-group">
+            <label for="testament-select">Testament:</label>
+            <select id="testament-select">
+                <option value="all">All</option>
+                <option value="old">Old Testament</option>
+                <option value="new">New Testament</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="book-select">Book:</label>
+            <select id="book-select" disabled>
+                <option value="all">All Books</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="item-count">Number of Items:</label>
+            <input type="number" id="item-count" min="1" value="50" style="width: 60px;">
+        </div>
+        <div class="filter-group">
+            <label for="search-word">Search Word:</label>
+            <input type="text" id="search-word" placeholder="e.g., jesus">
+        </div>
         <button id="apply-filters">Apply Filters</button>
-    </div>
-    <div id="tabs" class="visible">
-        <button id="tab-words" class="active">Words</button>
-        <button id="tab-phrases">Phrases</button>
-        <button id="tab-names">Names</button>
-        <button id="tab-locations">Locations</button>
-        <button id="tab-terms">Religious Terms</button>
+        <div id="tabs">
+            <button id="tab-words" class="active">Words</button>
+            <button id="tab-names">Names</button>
+            <button id="tab-locations">Locations</button>
+            <button id="tab-advanced">Advanced</button>
+        </div>
+        <!-- Advanced Section (hidden by default) -->
+        <div id="advanced-section" class="hidden">
+            <div class="advanced-group">
+                <label>Advanced Tabs:</label>
+                <div id="advanced-tabs">
+                    <button id="adv-tab-phrases">Phrases</button>
+                    <button id="adv-tab-terms">Religious Terms</button>
+                    <button id="adv-tab-positive">Positive Words</button>
+                    <button id="adv-tab-negative">Negative Words</button>
+                </div>
+            </div>
+            <div class="advanced-group">
+                <label for="preset-filters">Preset Filters:</label>
+                <select id="preset-filters">
+                    <option value="">Select a Preset</option>
+                    <option value="salvation">Salvation</option>
+                    <option value="faith">Faith</option>
+                    <option value="creation">Creation</option>
+                    <option value="flood">Flood</option>
+                    <option value="patriarchs">Patriarchs</option>
+                    <option value="prophets">Prophets</option>
+                    <option value="holy-land">Holy Land</option>
+                    <option value="early-church">Early Church</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div id="overlay"></div>
     <div id="word-cloud"></div>

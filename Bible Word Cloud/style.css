@@ -11,7 +11,6 @@ body {
     line-height: 1.5;
 }
 
-/* Control toggle styling - more compact */
 #toggle-controls {
     text-align: center;
     margin-bottom: 12px;
@@ -35,36 +34,11 @@ body {
     background-color: #f1f1f1;
 }
 
-/* Filters and tabs containers - reduced max-height for compactness */
-#filters, #tabs {
+#menu {
     transition: max-height 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
     width: 100%;
     max-width: 700px;
-    border-radius: 6px;
-}
-
-#filters.visible {
-    max-height: 200px;
-    opacity: 1;
-    margin-bottom: 12px;
-}
-
-#tabs.visible {
-    max-height: 40px;
-    opacity: 1;
-    margin-bottom: 12px;
-}
-
-#filters.hidden, #tabs.hidden {
-    max-height: 0;
-    opacity: 0;
-    padding: 0;
-    margin: 0;
-}
-
-/* Filter styling - horizontal layout */
-#filters {
     background-color: #fafafa;
     padding: 14px;
     border: 1px solid #eaeaea;
@@ -73,9 +47,23 @@ body {
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
+    margin-bottom: 12px;
 }
 
-#filters label {
+#menu.visible {
+    max-height: 600px; /* Increased to accommodate advanced section */
+    opacity: 1;
+    overflow-y: auto;
+}
+
+#menu.hidden {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#menu label {
     font-size: 13px;
     font-weight: 500;
     color: #555;
@@ -83,39 +71,45 @@ body {
     margin-right: 4px;
 }
 
-/* Create filter groups for horizontal layout */
 .filter-group {
     display: flex;
     align-items: center;
     margin-right: 12px;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
-#filters select, #filters input[type="text"], #filters input[type="number"] {
+#menu select, #menu input[type="text"], #menu input[type="number"] {
     padding: 6px 8px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     font-size: 13px;
     background-color: white;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #testament-select, #book-select {
-    width: 120px;
+    min-width: 120px;
+    max-width: 100%;
 }
 
 #item-count {
-    width: 60px;
+    min-width: 60px;
+    max-width: 100%;
 }
 
-#include-items, #exclude-items {
-    width: 150px;
+#search-word {
+    min-width: 150px;
+    max-width: 100%;
 }
 
-#filters select:focus, #filters input:focus {
+#menu select:focus, #menu input:focus {
     outline: none;
     border-color: #2563eb;
 }
 
-#filters button {
+#apply-filters {
     padding: 6px 12px;
     background-color: #2563eb;
     color: white;
@@ -126,36 +120,20 @@ body {
     font-size: 13px;
     transition: background-color 0.2s ease;
     margin-left: auto;
-}
-
-#filters button:hover {
-    background-color: #1d4ed8;
-}
-
-/* Apply Filters button - ensure visibility */
-#apply-filters {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 13px;
-    transition: background-color 0.2s ease;
+    flex-shrink: 0;
 }
 
 #apply-filters:hover {
     background-color: #1d4ed8;
 }
 
-/* Tabs styling - horizontal */
 #tabs {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 4px;
     padding: 0;
+    width: 100%;
 }
 
 #tabs button {
@@ -168,6 +146,8 @@ body {
     font-size: 13px;
     font-weight: 500;
     transition: all 0.2s ease;
+    flex: 1 0 auto;
+    min-width: 80px;
 }
 
 #tabs button:hover {
@@ -180,7 +160,76 @@ body {
     border-color: #2563eb;
 }
 
-/* Word cloud styling */
+#advanced-section {
+    width: 100%;
+    padding-top: 10px;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+#advanced-section.hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+}
+
+#advanced-section.visible {
+    max-height: 400px; /* Adjust as needed */
+    opacity: 1;
+}
+
+.advanced-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#advanced-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+#advanced-tabs button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    flex: 1 0 auto;
+    min-width: 80px;
+}
+
+#advanced-tabs button:hover {
+    background-color: #e8e8e8;
+}
+
+#advanced-tabs button.active {
+    background-color: #1d4ed8;
+    color: white;
+    border-color: #1d4ed8;
+}
+
+#preset-filters {
+    padding: 6px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 13px;
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 4px;
+}
+
+#preset-filters:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
 #word-cloud {
     text-align: center;
     max-width: 900px;
@@ -207,7 +256,6 @@ body {
     background-color: rgba(37, 99, 235, 0.08);
 }
 
-/* Popup styling */
 #popup {
     display: none;
     position: fixed;
@@ -289,25 +337,62 @@ body {
     color: #999;
 }
 
-/* Responsive adjustments */
 @media (max-width: 700px) {
-    #filters {
+    #menu {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        padding: 10px;
+    }
+    
+    #menu.visible {
+        max-height: none;
+        height: auto;
     }
     
     .filter-group {
         width: 100%;
         margin-right: 0;
+        margin-bottom: 8px;
         justify-content: space-between;
     }
     
-    #testament-select, #book-select, #include-items, #exclude-items {
+    #testament-select, #book-select, #search-word {
         flex-grow: 1;
+        width: 100%;
     }
     
-    #filters button {
+    #item-count {
+        width: 100%;
+    }
+    
+    #apply-filters {
         margin-left: 0;
         width: 100%;
+        margin-top: 8px;
+    }
+    
+    #tabs {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    #tabs button {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    #advanced-section.visible {
+        max-height: none; /* Ensure full visibility on mobile */
+        height: auto;
+    }
+    
+    #advanced-tabs {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    #advanced-tabs button {
+        width: 100%;
+        min-width: 0;
     }
 }
