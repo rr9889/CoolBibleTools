@@ -1,0 +1,269 @@
+/* Basic Reset & Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #007bff; /* Simple blue accent */
+    --secondary-color: #f8f9fa; /* Light grey for backgrounds */
+    --border-color: #dee2e6;
+    --font-family: 'Inter', sans-serif;
+    --header-font-weight: 600;
+    --body-font-weight: 400;
+    --light-font-weight: 300;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    padding: 1rem; /* Add padding around the whole page */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 220px 1fr; /* Sidebar and main content */
+    grid-template-rows: auto 1fr auto; /* Header, content, footer */
+    grid-template-areas:
+        "header header"
+        "sidebar main"
+        "footer footer";
+    gap: 1.5rem;
+    max-width: 1200px; /* Limit overall width */
+    width: 100%;
+    min-height: 95vh; /* Ensure container takes height */
+    background-color: var(--bg-color);
+    /* Optional: add a subtle shadow or border */
+    /* box-shadow: 0 0 15px rgba(0,0,0,0.05); */
+    /* border: 1px solid var(--border-color); */
+}
+
+/* Header */
+.site-header {
+    grid-area: header;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.site-header h1 {
+    font-weight: var(--header-font-weight);
+    margin-bottom: 0.25rem;
+    color: var(--primary-color);
+}
+
+.site-header p {
+    font-weight: var(--light-font-weight);
+    color: #6c757d; /* Muted text color */
+}
+
+
+/* Sidebar */
+.sidebar {
+    grid-area: sidebar;
+    background-color: var(--secondary-color);
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar h2, .sidebar h3 {
+    font-weight: var(--header-font-weight);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar nav ul, .sidebar .dictionary-links ul {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar nav li, .sidebar .dictionary-links li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: var(--text-color);
+    display: block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: var(--body-font-weight);
+}
+
+.sidebar a:hover,
+.sidebar a.active { /* Add class 'active' via JS */
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Main Content Area */
+.content {
+    grid-area: main;
+    padding: 1.5rem;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.content h2 {
+    font-weight: var(--header-font-weight);
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.content p {
+    margin-bottom: 1rem;
+}
+
+.content ul {
+    list-style-position: inside;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Interactive Elements & Lists */
+.item-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.item-list li {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.item-list li:last-child {
+    border-bottom: none;
+}
+
+.item-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.item-list li strong { /* Book names, Person names etc */
+    font-weight: var(--header-font-weight);
+}
+
+/* Details View */
+.details-view {
+    background-color: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+}
+
+.details-view h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.details-view p {
+    margin-bottom: 0.5rem;
+}
+
+.details-view strong {
+     font-weight: var(--header-font-weight);
+}
+
+/* Loading Indicator */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #6c757d;
+    font-weight: var(--light-font-weight);
+}
+
+/* Search Input */
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-form input[type="text"] {
+    flex-grow: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+}
+
+.search-form button {
+    padding: 0.6rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.search-form button:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+/* Footer */
+.site-footer {
+    grid-area: footer;
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: var(--light-font-weight);
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive (Basic Example) */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr; /* Stack sidebar and main content */
+        grid-template-rows: auto auto 1fr auto; /* Header, Sidebar, Content, Footer */
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main"
+            "footer";
+        gap: 1rem;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .site-header, .sidebar, .content {
+        padding: 1rem;
+    }
+}

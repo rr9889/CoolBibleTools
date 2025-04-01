@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Bible Explorer</title>
+    <link rel="stylesheet" href="./code.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <h1>Bible Explorer</h1>
+            <p>An interactive journey through scripture data</p>
+        </header>
+
+        <aside class="sidebar">
+            <h2>Explore</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" data-section="home">Home</a></li>
+                    <li><a href="#" data-section="books">Books</a></li>
+                    <li><a href="#" data-section="people">People</a></li>
+                    <li><a href="#" data-section="places">Places</a></li>
+                    <li><a href="#" data-section="topics">Topics (Naves)</a></li>
+                    <li><a href="#" data-section="search">Search (Basic)</a></li>
+                    <!-- Add more sections as needed -->
+                </ul>
+            </nav>
+             <div class="dictionary-links">
+                 <h3>Reference</h3>
+                 <ul>
+                     <li><a href="#" data-section="hitchcock">Hitchcock's Names</a></li>
+                     <li><a href="#" data-section="strongs">Hebrew Strong's</a></li>
+                 </ul>
+             </div>
+        </aside>
+
+        <main class="content" id="content-area">
+            <!-- Dynamic content will be loaded here -->
+            <section id="home-content">
+                <h2>Welcome!</h2>
+                <p>Select a section from the sidebar to begin exploring the Bible data.</p>
+                <p>This tool uses data graciously provided by <a href="https://github.com/BradyStephenson/bible-data" target="_blank" rel="noopener noreferrer">Brady Stephenson's bible-data project</a>.</p>
+                 <p><strong>Note:</strong> Loading and processing data directly from CSV files in your browser may take a moment, especially for larger datasets.</p>
+            </section>
+            <div id="loading-indicator" class="loading" style="display: none;">Loading...</div>
+        </main>
+
+        <footer class="site-footer">
+            <p>&copy; 2023 Bible Explorer</p>
+        </footer>
+    </div>
+
+    <!-- PapaParse for CSV Parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.4.1/papaparse.min.js"></script>
+    <!-- Our JavaScript -->
+    <script src="./code.js"></script>
+</body>
+</html>
