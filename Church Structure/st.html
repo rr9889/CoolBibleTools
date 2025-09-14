@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Church Structure Comparison</title>
   <style>
     :root {
@@ -18,7 +18,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text-color);
       margin: 0;
       height: 100vh;
@@ -28,21 +28,21 @@
     .container { width: 100%; height: 100%; position: relative; overflow: auto; }
     .structure-switcher { position: fixed; top: 30px; left: 30px; z-index: 20; display: flex; gap: 10px; }
     .structure-btn {
-      padding: 8px 16px; background-color: white; border: 2px solid var(--border-color);
-      border-radius: 8px; cursor: pointer; font-weight: 500; transition: var(--transition);
+      padding: 8px 16px; background-color: #fff; border: 2px solid var(--border-color);
+      border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition);
       box-shadow: var(--box-shadow);
     }
     .structure-btn:hover { background-color: var(--hover-color); }
-    .structure-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+    .structure-btn.active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
     #rc-btn.active { background-color: var(--catholic-primary); border-color: var(--catholic-primary); }
     #baptist-btn.active { background-color: var(--baptist-primary); border-color: var(--baptist-primary); }
     .chart-content { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     .chart-svg { width: 100%; height: 100%; min-width: 1200px; min-height: 900px; cursor: grab; }
     .chart-svg.dragging { cursor: grabbing; }
     .zoom-controls { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 8px; z-index: 20; }
     .control-button {
-      width: 40px; height: 40px; border-radius: 20px; background-color: white;
+      width: 40px; height: 40px; border-radius: 20px; background-color: #fff;
       border: 2px solid var(--border-color); cursor: pointer; display: flex;
       align-items: center; justify-content: center; font-size: 20px; box-shadow: var(--box-shadow);
       transition: var(--transition);
@@ -54,66 +54,69 @@
       background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; padding: 8px 12px;
       box-shadow: var(--box-shadow); z-index: 20; display: flex; gap: 15px;
     }
-    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; }
-    .legend-line { width: 20px; height: 2px; background-color: #91b3c9; }
-    .legend-line.dashed { background-color: transparent; border-top: 2px dashed #7fa3bc; height: 0; }
-    .legend-line.dotted { background-color: transparent; border-top: 2px dotted #a9c7d6; height: 0; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; white-space: nowrap; }
+    .legend-line { width: 20px; height: 4px; background-color: #91b3c9; }
+    .legend-line.dashed { height: 0; background: transparent; border-top: 2px dashed #7fa3bc; }
+    .legend-line.dotted { height: 0; background: transparent; border-top: 2px dotted #a9c7d6; }
     .popup {
-      position: absolute; background-color: white; border-radius: 8px; padding: 12px;
-      max-width: 250px; box-shadow: var(--box-shadow); z-index: 10; display: none;
+      position: absolute; background-color: #fff; border-radius: 8px; padding: 12px;
+      max-width: 260px; box-shadow: var(--box-shadow); z-index: 10; display: none;
       text-align: left; font-size: 14px; pointer-events: none;
     }
+    /* Ensure the modal explanation is fully interactive (fixes pointer-events) */
     .explanation {
       position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      max-width: 500px; width: 80%; max-height: 80vh; overflow-y: auto; z-index: 30;
-      background-color: white; padding: 20px; border-radius: 8px; box-shadow: var(--box-shadow);
+      max-width: 560px; width: 80%; max-height: 80vh; overflow-y: auto; z-index: 30;
+      background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: var(--box-shadow);
+      display: none; pointer-events: auto;
     }
     .explanation h3 { margin-bottom: 12px; text-align: center; }
-    .explanation p { margin-bottom: 10px; }
+    .explanation p { margin-bottom: 10px; line-height: 1.4; }
   </style>
 </head>
 <body>
-  <div class="structure-switcher">
-    <button id="nt-btn" class="structure-btn active">New Testament</button>
-    <button id="rc-btn" class="structure-btn">Roman Catholic</button>
-    <button id="baptist-btn" class="structure-btn">Baptist</button>
+  <div class="structure-switcher" role="tablist" aria-label="Structure selector">
+    <button id="nt-btn" class="structure-btn active" role="tab" aria-selected="true" aria-controls="nt-structure">New Testament</button>
+    <button id="rc-btn" class="structure-btn" role="tab" aria-selected="false" aria-controls="rc-structure">Roman Catholic</button>
+    <button id="baptist-btn" class="structure-btn" role="tab" aria-selected="false" aria-controls="baptist-structure">Baptist</button>
   </div>
 
   <div class="container">
     <div class="chart-content" id="nt-structure">
-      <object type="image/svg+xml" data="nt-structure.svg" class="chart-svg" id="nt-svg"></object>
+      <object type="image/svg+xml" data="nt-structure.svg" class="chart-svg" id="nt-svg" tabindex="0" aria-label="New Testament chart"></object>
     </div>
     <div class="chart-content hidden" id="rc-structure">
-      <object type="image/svg+xml" data="rc-structure.svg" class="chart-svg" id="rc-svg"></object>
+      <object type="image/svg+xml" data="rc-structure.svg" class="chart-svg" id="rc-svg" tabindex="0" aria-label="Roman Catholic chart"></object>
     </div>
     <div class="chart-content hidden" id="baptist-structure">
-      <object type="image/svg+xml" data="baptist-structure.svg" class="chart-svg" id="baptist-svg"></object>
+      <object type="image/svg+xml" data="baptist-structure.svg" class="chart-svg" id="baptist-svg" tabindex="0" aria-label="Baptist chart"></object>
     </div>
   </div>
 
-  <div class="zoom-controls">
-    <button id="zoom-in" aria-label="Zoom in" class="control-button">+</button>
-    <button id="zoom-out" aria-label="Zoom out" class="control-button">−</button>
-    <button id="reset-view" aria-label="Reset view" class="control-button">↺</button>
+  <div class="zoom-controls" aria-label="Zoom controls">
+    <button id="zoom-in" aria-label="Zoom in" class="control-button" title="Zoom in">+</button>
+    <button id="zoom-out" aria-label="Zoom out" class="control-button" title="Zoom out">−</button>
+    <button id="reset-view" aria-label="Reset view" class="control-button" title="Reset view">↺</button>
   </div>
 
-  <div class="legend">
-    <div class="legend-item"><div class="legend-line" style="width: 20px; height: 4px; background-color: #91b3c9;"></div><span>Direct Authority</span></div>
-    <div class="legend-item"><div class="legend-line dashed" style="width: 20px; border-top: 2px dashed #7fa3bc;"></div><span>Cooperative Relationship</span></div>
-    <div class="legend-item"><div class="legend-line dotted" style="width: 20px; border-top: 2px dotted #a9c7d6;"></div><span>Mutual Accountability</span></div>
+  <div class="legend" aria-hidden="true">
+    <div class="legend-item"><div class="legend-line"></div><span>Direct Authority</span></div>
+    <div class="legend-item"><div class="legend-line dashed"></div><span>Cooperative Relationship</span></div>
+    <div class="legend-item"><div class="legend-line dotted"></div><span>Mutual Accountability</span></div>
   </div>
 
-  <button class="help-btn control-button" id="help-btn" aria-label="Help">?</button>
+  <button class="help-btn control-button" id="help-btn" aria-label="Help" title="Show explanation">?</button>
 
-  <div class="popup explanation" id="explanation">
+  <!-- Modal explanation (made interactive by removing .popup behavior) -->
+  <div class="explanation" id="explanation" role="dialog" aria-modal="true" aria-labelledby="explanation-title">
     <h3 id="explanation-title">New Testament Church Structure</h3>
     <div id="nt-explanation">
       <p>This chart reflects the 1st-century New Testament church structure in Ephesus. <strong>Christ</strong> is the head (Ephesians 1:22). <strong>Apostles</strong> (e.g., Paul) and <strong>Prophets</strong> laid the foundation (Ephesians 2:20; 4:11).</p>
-      <p>The <strong>Church in Ephesus</strong> was an autonomous assembly (Acts 19-20), led by a plurality of <strong>Elders</strong> who oversaw and shepherded (Acts 20:17-28). <strong>Evangelists</strong> (e.g., Timothy, 2 Timothy 4:5), <strong>Pastors</strong> (often elders, Acts 20:28), and <strong>Teachers</strong> supported growth and doctrine.</p>
-      <p><strong>Deacons</strong> served practical needs (1 Timothy 3:8-13), and <strong>Widows</strong> were supported to serve (1 Timothy 5:9-10), not as an office. <strong>Members</strong> (all believers) used gifts to build the body (Ephesians 4:16).</p>
+      <p>The <strong>Church in Ephesus</strong> was an autonomous assembly (Acts 19–20), led by a plurality of <strong>Elders</strong> who oversaw and shepherded (Acts 20:17–28). <strong>Evangelists</strong> (e.g., Timothy, 2 Timothy 4:5), <strong>Pastors</strong> (often elders, Acts 20:28), and <strong>Teachers</strong> supported growth and doctrine.</p>
+      <p><strong>Deacons</strong> served practical needs (1 Timothy 3:8–13), and <strong>Widows</strong> were supported to serve (1 Timothy 5:9–10), not as an office. <strong>Members</strong> (all believers) used gifts to build the body (Ephesians 4:16).</p>
     </div>
     <div id="rc-explanation" class="hidden">
-      <p>The Roman Catholic Church follows a hierarchical structure with the <strong>Pope</strong> as the supreme head, considered the successor to St. Peter (Matthew 16:18; John 21:15-17). <strong>Cardinals</strong> serve as principal counselors and elect new popes.</p>
+      <p>The Roman Catholic Church follows a hierarchical structure with the <strong>Pope</strong> as the supreme head, considered the successor to St. Peter (Matthew 16:18; John 21:15–17). <strong>Cardinals</strong> serve as principal counselors and elect new popes.</p>
       <p><strong>Archbishops</strong> oversee provinces of dioceses, and <strong>Bishops</strong> lead individual dioceses. <strong>Priests</strong> administer sacraments in parishes, assisted by <strong>Deacons</strong>. <strong>Religious Orders</strong> form communities living under specific vows, while the <strong>Laity</strong> are baptized non-ordained members.</p>
     </div>
     <div id="baptist-explanation" class="hidden">
@@ -122,18 +125,18 @@
     </div>
   </div>
 
-  <!-- Popups -->
+  <!-- Info popups (toggle via matching SVG element IDs like #christ → #popup-christ) -->
   <div class="popup" id="popup-christ"><p><strong>Christ:</strong> The divine head and ultimate authority of the church (Ephesians 1:22; Colossians 1:18).</p></div>
-  <div class="popup" id="popup-apostles"><p><strong>Apostles:</strong> Commissioned by Christ to establish the church, e.g., Paul in Ephesus (Acts 19:1-10; Ephesians 2:20).</p></div>
+  <div class="popup" id="popup-apostles"><p><strong>Apostles:</strong> Commissioned by Christ to establish the church, e.g., Paul in Ephesus (Acts 19:1–10; Ephesians 2:20).</p></div>
   <div class="popup" id="popup-prophets"><p><strong>Prophets:</strong> Provided divine revelation alongside apostles (Ephesians 2:20; 4:11).</p></div>
-  <div class="popup" id="popup-local-church"><p><strong>Church in Ephesus:</strong> An autonomous local assembly founded by Paul (Acts 19-20; Revelation 2:1-7).</p></div>
-  <div class="popup" id="popup-elders"><p><strong>Elders:</strong> Plurality of overseers appointed to lead and shepherd (Acts 20:17-28; 1 Timothy 3:1-7).</p></div>
+  <div class="popup" id="popup-local-church"><p><strong>Church in Ephesus:</strong> An autonomous local assembly founded by Paul (Acts 19–20; Revelation 2:1–7).</p></div>
+  <div class="popup" id="popup-elders"><p><strong>Elders:</strong> Plurality of overseers appointed to lead and shepherd (Acts 20:17–28; 1 Timothy 3:1–7).</p></div>
   <div class="popup" id="popup-evangelists"><p><strong>Evangelists:</strong> Spread the gospel, e.g., Timothy in Ephesus (2 Timothy 4:5; Acts 21:8).</p></div>
   <div class="popup" id="popup-pastors"><p><strong>Pastors:</strong> Shepherded the flock, often elders specializing in care (Acts 20:28; Ephesians 4:11).</p></div>
-  <div class="popup" id="popup-teachers"><p><strong>Teachers:</strong> Instructed believers in doctrine (Ephesians 4:11; Acts 19:9-10).</p></div>
+  <div class="popup" id="popup-teachers"><p><strong>Teachers:</strong> Instructed believers in doctrine (Ephesians 4:11; Acts 19:9–10).</p></div>
   <div class="popup" id="popup-members"><p><strong>Members:</strong> All believers, using spiritual gifts to edify the church (Ephesians 4:16; 1 Corinthians 12).</p></div>
-  <div class="popup" id="popup-deacons"><p><strong>Deacons:</strong> Servants meeting practical needs (1 Timothy 3:8-13; Acts 6:1-6 precedent).</p></div>
-  <div class="popup" id="popup-widows"><p><strong>Widows:</strong> Supported believers serving through prayer and good works, not an office (1 Timothy 5:9-10).</p></div>
+  <div class="popup" id="popup-deacons"><p><strong>Deacons:</strong> Servants meeting practical needs (1 Timothy 3:8–13; Acts 6:1–6 precedent).</p></div>
+  <div class="popup" id="popup-widows"><p><strong>Widows:</strong> Supported believers serving through prayer and good works, not an office (1 Timothy 5:9–10).</p></div>
   <div class="popup" id="popup-rc-christ"><p><strong>Christ:</strong> The divine head of the Church, acknowledged as the ultimate authority in the Roman Catholic tradition.</p></div>
   <div class="popup" id="popup-pope"><p><strong>Pope:</strong> The Bishop of Rome and supreme head of the Catholic Church, considered successor to St. Peter.</p></div>
   <div class="popup" id="popup-cardinals"><p><strong>Cardinals:</strong> Senior leaders who advise the Pope and elect new Popes.</p></div>
@@ -154,143 +157,73 @@
   <div class="popup" id="popup-convention"><p><strong>Convention:</strong> A larger cooperative body at the state or national level, with no direct authority over local churches.</p></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', () => {
       const container = document.querySelector('.container');
       let isDragging = false;
       let hasMoved = false;
-      let startX, startY;
+      let startX = 0, startY = 0;
       let translateX = 0, translateY = 0;
       let scale = 1;
       const initialScale = 1;
       const dragThreshold = 5;
 
+      function hideAllPopups() {
+        document.querySelectorAll('.popup').forEach(p => {
+          if (p.id !== 'explanation') p.style.display = 'none';
+        });
+      }
+
       function attachBoxListeners(svgDoc, objectElement) {
-        if (!svgDoc) {
-          console.error('SVG document not loaded');
-          return;
-        }
+        if (!svgDoc) return;
+        // Click on named boxes inside the SVG
         const boxes = svgDoc.querySelectorAll('.box');
         boxes.forEach(box => {
-          box.addEventListener('click', function(e) {
+          box.addEventListener('click', (e) => {
             if (hasMoved) return;
             e.stopPropagation();
-            const boxId = this.id;
+            const boxId = box.id;
             const popup = document.getElementById(`popup-${boxId}`);
+            // Hide others
             document.querySelectorAll('.popup').forEach(p => {
-              if (p !== popup && p.id !== 'explanation') p.style.display = 'none';
+              if (p !== popup) p.style.display = 'none';
             });
             if (popup) {
-              if (popup.style.display === 'block') {
-                popup.style.display = 'none';
-              } else {
-                const boxRect = this.getBoundingClientRect();
-                const objectRect = objectElement.getBoundingClientRect();
-                const popupWidth = 250;
-                let top = boxRect.bottom - objectRect.top + container.scrollTop + 10;
-                let left = boxRect.left - objectRect.left + container.scrollLeft + (boxRect.width / 2) - (popupWidth / 2);
-                if (left + popupWidth > window.innerWidth) left = window.innerWidth - popupWidth - 10;
-                if (left < 10) left = 10;
-                popup.style.top = `${top}px`;
-                popup.style.left = `${left}px`;
-                popup.style.pointerEvents = 'auto';
-                popup.style.display = 'block';
-              }
+              const boxRect = box.getBoundingClientRect();
+              const objectRect = objectElement.getBoundingClientRect();
+              const popupWidth = Math.min(260, window.innerWidth - 20);
+              let top = boxRect.bottom - objectRect.top + container.scrollTop + 10;
+              let left = boxRect.left - objectRect.left + container.scrollLeft + (boxRect.width / 2) - (popupWidth / 2);
+
+              // Keep inside container viewport
+              const maxLeft = container.clientWidth - popupWidth - 10;
+              if (left > maxLeft) left = maxLeft;
+              if (left < 10) left = 10;
+
+              popup.style.top = `${top}px`;
+              popup.style.left = `${left}px`;
+              popup.style.display = 'block';
+              popup.style.pointerEvents = 'auto';
             }
-          });
+          }, { passive: true });
+        });
+
+        // Clicking the SVG background closes popups
+        svgDoc.addEventListener('click', () => {
+          if (!hasMoved) hideAllPopups();
         });
       }
 
-      const svgObjects = document.querySelectorAll('.chart-svg');
-      svgObjects.forEach(obj => {
-        obj.addEventListener('load', function() {
-          const svgDoc = this.contentDocument;
-          if (svgDoc) attachBoxListeners(svgDoc, this);
-        });
-        if (obj.contentDocument) attachBoxListeners(obj.contentDocument, obj);
-
-        // Add dragging to each SVG
-        obj.addEventListener('mousedown', startDrag);
-        obj.addEventListener('touchstart', startDrag);
-      });
-
-      document.addEventListener('mousemove', drag);
-      document.addEventListener('touchmove', drag);
-      document.addEventListener('mouseup', endDrag);
-      document.addEventListener('touchend', endDrag);
-      document.addEventListener('mouseleave', endDrag);
-
-      function startDrag(e) {
-        e.preventDefault();
-        isDragging = true;
-        hasMoved = false;
-        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
-        currentChart.classList.add('dragging');
-        const event = e.type === 'touchstart' ? e.touches[0] : e;
-        startX = event.clientX;
-        startY = event.clientY;
-      }
-
-      function drag(e) {
-        if (!isDragging) return;
-        e.preventDefault();
-        const event = e.type === 'touchmove' ? e.touches[0] : e;
-        const dx = (event.clientX - startX) / scale;
-        const dy = (event.clientY - startY) / scale;
-        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) hasMoved = true;
-        translateX += dx;
-        translateY += dy;
-        startX = event.clientX;
-        startY = event.clientY;
-        updateTransform();
-      }
-
-      function endDrag() {
-        if (isDragging) {
-          isDragging = false;
-          const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
-          currentChart.classList.remove('dragging');
-        }
+      function getCurrentChart() {
+        return document.querySelector('.chart-content:not(.hidden) .chart-svg');
       }
 
       function updateTransform() {
-        const currentChart = document.querySelector('.chart-content:not(.hidden) .chart-svg');
+        const currentChart = getCurrentChart();
         if (currentChart) {
-          currentChart.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
           currentChart.style.transformOrigin = 'top left';
+          currentChart.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
         }
       }
-
-      document.querySelectorAll('.structure-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          document.querySelectorAll('.structure-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          const structureId = this.id.split('-')[0] + '-structure';
-          document.querySelectorAll('.chart-content').forEach(c => c.classList.add('hidden'));
-          document.getElementById(structureId).classList.remove('hidden');
-          document.getElementById('explanation-title').textContent = this.textContent + ' Church Structure';
-          document.querySelectorAll('.explanation > div').forEach(d => d.classList.add('hidden'));
-          document.getElementById(structureId.split('-')[0] + '-explanation').classList.remove('hidden');
-          resetView();
-        });
-      });
-
-      document.getElementById('zoom-in').addEventListener('click', function() {
-        scale = Math.min(scale + 0.1, 2.0);
-        updateTransform();
-      });
-      document.getElementById('zoom-out').addEventListener('click', function() {
-        scale = Math.max(scale - 0.1, 0.5);
-        updateTransform();
-      });
-      document.getElementById('reset-view').addEventListener('click', resetView);
-
-      container.addEventListener('wheel', function(e) {
-        e.preventDefault();
-        const zoomStep = 0.05;
-        const oldScale = scale;
-        scale = Math.max(0.5, Math.min(2.0, scale + (e.deltaY < 0 ? zoomStep : -zoomStep)));
-        if (scale !== oldScale) updateTransform();
-      }, { passive: false });
 
       function resetView() {
         scale = initialScale;
@@ -299,16 +232,131 @@
         updateTransform();
         container.scrollTop = 0;
         container.scrollLeft = 0;
+        hideAllPopups();
       }
 
-      const helpBtn = document.getElementById('help-btn');
-      const explanationDiv = document.getElementById('explanation');
-      helpBtn.addEventListener('click', () => {
-        explanationDiv.style.display = (explanationDiv.style.display === 'block') ? 'none' : 'block';
+      // Attach listeners to each SVG object
+      document.querySelectorAll('.chart-svg').forEach(obj => {
+        obj.addEventListener('load', function() {
+          try {
+            const svgDoc = this.contentDocument;
+            if (svgDoc) attachBoxListeners(svgDoc, this);
+          } catch (err) {
+            // Likely cross-origin; skip interactive wiring
+            console.warn('Could not access SVG contentDocument (CORS). Interactions disabled for this SVG.');
+          }
+        });
+
+        // If already loaded (e.g., from cache)
+        try {
+          if (obj.contentDocument) attachBoxListeners(obj.contentDocument, obj);
+        } catch {}
+
+        // Drag start
+        const startDrag = (e) => {
+          e.preventDefault();
+          isDragging = true;
+          hasMoved = false;
+          const currentChart = getCurrentChart();
+          if (currentChart) currentChart.classList.add('dragging');
+          const point = (e.touches && e.touches[0]) || e;
+          startX = point.clientX;
+          startY = point.clientY;
+        };
+
+        obj.addEventListener('mousedown', startDrag);
+        obj.addEventListener('touchstart', startDrag, { passive: false });
       });
 
+      // Drag move
+      const drag = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const point = (e.touches && e.touches[0]) || e;
+        const dx = (point.clientX - startX) / scale;
+        const dy = (point.clientY - startY) / scale;
+        if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) hasMoved = true;
+        translateX += dx;
+        translateY += dy;
+        startX = point.clientX;
+        startY = point.clientY;
+        updateTransform();
+      };
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag, { passive: false });
+
+      // Drag end
+      const endDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const currentChart = getCurrentChart();
+        if (currentChart) currentChart.classList.remove('dragging');
+      };
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchend', endDrag);
+      document.addEventListener('mouseleave', endDrag);
+
+      // Structure switching
+      document.querySelectorAll('.structure-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.structure-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+
+          const structureId = this.id.split('-')[0] + '-structure';
+          document.querySelectorAll('.chart-content').forEach(c => c.classList.add('hidden'));
+          document.getElementById(structureId).classList.remove('hidden');
+
+          const labelBase = structureId.split('-')[0];
+          document.getElementById('explanation-title').textContent = this.textContent + ' Church Structure';
+          document.querySelectorAll('.explanation > div').forEach(d => d.classList.add('hidden'));
+          const expl = document.getElementById(labelBase + '-explanation');
+          if (expl) expl.classList.remove('hidden');
+
+          resetView();
+        });
+      });
+
+      // Zoom controls
+      document.getElementById('zoom-in').addEventListener('click', () => {
+        scale = Math.min(scale + 0.1, 2.0);
+        updateTransform();
+      });
+      document.getElementById('zoom-out').addEventListener('click', () => {
+        scale = Math.max(scale - 0.1, 0.5);
+        updateTransform();
+      });
+      document.getElementById('reset-view').addEventListener('click', resetView);
+
+      // Wheel zoom
+      container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const old = scale;
+        const step = 0.05;
+        scale = Math.max(0.5, Math.min(2.0, scale + (e.deltaY < 0 ? step : -step)));
+        if (scale !== old) updateTransform();
+      }, { passive: false });
+
+      // Help / modal
+      const helpBtn = document.getElementById('help-btn');
+      const explanationDiv = document.getElementById('explanation');
+      const toggleExplanation = () => {
+        const open = explanationDiv.style.display === 'block';
+        explanationDiv.style.display = open ? 'none' : 'block';
+        explanationDiv.setAttribute('aria-hidden', open ? 'true' : 'false');
+      };
+      helpBtn.addEventListener('click', toggleExplanation);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          explanationDiv.style.display = 'none';
+          hideAllPopups();
+        }
+      });
       document.addEventListener('click', (e) => {
-        if (!explanationDiv.contains(e.target) && e.target !== helpBtn) {
+        if (explanationDiv.style.display === 'block' && !explanationDiv.contains(e.target) && e.target !== helpBtn) {
           explanationDiv.style.display = 'none';
         }
       });
