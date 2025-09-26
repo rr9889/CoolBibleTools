@@ -5,10 +5,12 @@
   <title>Head Covering Timeline — 1 Cor 11:2–16</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Timeline of key literature and practice on 1 Corinthians 11:2–16, driven by Data.json." />
+  <!-- Match your CSS filename -->
   <link rel="stylesheet" href="./css.css">
 </head>
 <body>
 
+  <!-- Timeline-only layout (no headers/menus) -->
   <main id="timeline-page" aria-label="Head Covering Timeline">
     <section class="era-card" id="era-card">
 
@@ -16,8 +18,10 @@
       <header class="era-head">
         <div class="timeline" id="timeline">
           <div class="era-banner" id="eraBanner">Loading…</div>
-          <div class="track" id="tlTrack">
-            <div class="fill" id="tlFill"></div>
+          <div class="track" id="tlTrack" aria-hidden="false">
+            <div class="fill" id="tlFill" style="width:0%"></div>
+
+            <!-- Draggable knob -->
             <div
               class="thumb"
               id="tlThumb"
@@ -25,19 +29,21 @@
               aria-valuemin="0"
               aria-valuemax="0"
               aria-valuenow="0"
-              aria-label="Era"
+              aria-label="Era position"
               tabindex="0"></div>
-            <div class="year-badge" id="tlYear">—</div>
-            <!-- milestone ticks injected by JS from Data.json -->
+
+            <!-- Dynamic year readout -->
+            <div class="year-badge" id="tlYear" aria-live="polite">—</div>
+
+            <!-- Milestone ticks injected by JS from Data.json -->
           </div>
         </div>
       </header>
 
-      <!-- Sliding panes (ERAS) — kept empty; JS uses Data.json to control count/order -->
+      <!-- Sliding panes (ERAS) — empty shells; JS will inject content based on Data.json -->
       <div class="era-viewport" aria-live="polite">
-        <div class="era-track">
-          <!-- Placeholders to ensure layout works before data loads.
-               JS will slice to ERAS length and can choose to inject content later. -->
+        <div class="era-track" style="--count:5">
+          <!-- Placeholders (5 eras). JS may replace titles/content and even resize the count -->
           <section class="era-pane" id="pane-0" role="region" aria-label="Era 1">
             <h3 class="era-title">Loading…</h3>
             <div class="era-content" aria-busy="true"></div>
@@ -74,6 +80,7 @@
     </p>
   </noscript>
 
-  <script src="js.js"></script>
+  <!-- Match your JS filename. It should fetch ./Data.json and populate UI -->
+  <script src="./js.js" defer></script>
 </body>
 </html>
