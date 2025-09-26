@@ -1,118 +1,85 @@
-/* ========= Drawer open/close (works even if there is no drawer) ========= */
-document.addEventListener('DOMContentLoaded', () => {
-  const openBtn  = document.getElementById('open-compare');
-  const drawer   = document.getElementById('compare-drawer');
-  const backdrop = document.getElementById('compare-backdrop');
-  const closeBtn = document.getElementById('close-compare');
-  let lastFocus  = null;
-  let sliderInit = false;
+/* =======================================================
+   js.js — Timeline-only (works with Data.json + styles.css)
+   - Builds eras & milestones from ./Data.json
+   - Smooth drag/click interactions
+   - No hardcoded dates or content
+   ======================================================= */
 
-  function openDrawer(){
-    lastFocus = document.activeElement || null;
-    document.body.classList.add('no-scroll');
-    if (backdrop) backdrop.hidden = false;
-    requestAnimationFrame(()=>{
-      backdrop?.classList.add('is-open');
-      drawer?.classList.add('is-open');
-      drawer?.setAttribute('aria-hidden','false');
-      if(!sliderInit){ initEraTimeline(drawer || document); sliderInit = true; }
-      closeBtn?.focus();
-    });
-  }
-  function closeDrawer(){
-    backdrop?.classList.remove('is-open');
-    drawer?.classList.remove('is-open');
-    drawer?.setAttribute('aria-hidden','true');
-    drawer?.addEventListener('transitionend', function tidy(e){
-      if(e.propertyName === 'transform'){
-        if (backdrop) backdrop.hidden = true;
-        document.body.classList.remove('no-scroll');
-        drawer.removeEventListener('transitionend', tidy);
-      }
-    });
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
-  }
+document.addEventListener('DOMContentLoaded', async () => {
+  const jsonUrl = './Data.json';
 
-  openBtn?.addEventListener('click', openDrawer);
-  closeBtn?.addEventListener('click', closeDrawer);
-  backdrop?.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e=>{
-    if(e.key === 'Escape' && drawer && drawer.classList.contains('is-open')) closeDrawer();
-  });
-
-  // If this is a timeline-only page (no drawer), init immediately.
-  if (!drawer && document.getElementById('timeline')) {
-    if(!sliderInit){ initEraTimeline(document); sliderInit = true; }
-  }
-
-  // footer year (if present)
-  const y = document.getElementById('y'); if(y) y.textContent = new Date().getFullYear();
-});
-
-/* ========= Timeline + Era logic (data-driven via Data.json) ========= */
-async function initEraTimeline(scope){
-  // DOM
-  const trackElAll = scope.querySelector('.era-track');          // sliding content container
-  const allPanes   = Array.from(scope.querySelectorAll('.era-pane'));
-  const viewport   = scope.querySelector('.era-viewport');
-
-  const tl        = scope.querySelector('#timeline');
-  const tlTrack   = scope.querySelector('#tlTrack');
-  const tlFill    = scope.querySelector('#tlFill');
-  const tlThumb   = scope.querySelector('#tlThumb');
-  const tlYear    = scope.querySelector('#tlYear');
-  const eraBanner = scope.querySelector('#eraBanner');
-
-  if(!tl || !tlTrack || !tlThumb || !tlFill || !tlYear || !eraBanner || !trackElAll || !viewport) return;
-
-  // -------- Load JSON --------
-  let data;
   try {
-    const res = await fetch('./data.json', { cache: 'no-store' });
+    const res = await fetch(jsonUrl, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
+    const data = await res.json();
+
+    // Basic validation
+    if (!data || !Array.isArray(data.eras) || !Array.isArray(data.milestones)) {
+      throw new Error('Invalid JSON shape: expected { eras:[], milestones:[] }');
+    }
+
+    initTimelineFromData(document, data);
   } catch (err) {
     console.error('Failed to load Data.json:', err);
-    // graceful fallback: do nothing (UI stays usable, just no ticks)
+    // Minimal fallback UI message
+    const banner = document.getElementById('eraBanner');
+    const year   = document.getElementById('tlYear');
+    if (banner) banner.textContent = 'Data load failed';
+    if (year)   year.textContent   = '—';
+  }
+});
+
+/* ---------------- Core ---------------- */
+
+function initTimelineFromData(root, data) {
+  // DOM refs
+  const timeline   = root.getElementById('timeline');
+  const tlTrack    = root.getElementById('tlTrack');
+  const tlFill     = root.getElementById('tlFill');
+  const tlThumb    = root.getElementById('tlThumb');
+  const tlYear     = root.getElementById('tlYear');
+  const eraBanner  = root.getElementById('eraBanner');
+
+  const viewport   = root.querySelector('.era-viewport');
+  const trackEl    = root.querySelector('.era-track'); // content panes track
+
+  if (!timeline || !tlTrack || !tlFill || !tlThumb || !tlYear || !eraBanner || !viewport || !trackEl) {
+    console.warn('Missing required DOM nodes for the timeline.');
     return;
   }
 
-  // Validate/normalize
-  const ERAS = (Array.isArray(data.eras) ? data.eras : [])
+  // Normalize + sort eras by start year
+  const ERAS = [...data.eras]
     .map(e => ({
-      label: e.label ?? e.key ?? 'Era',
-      start: Number(e.start ?? 0),
-      end:   Number(e.end   ?? 0),
-      anchor: Number(e.anchor ?? (e.start ?? 0) )
+      label: String(e.label),
+      start: Number(e.start),
+      end:   Number(e.end),
+      anchor: Number(e.anchor ?? e.start)
     }))
-    // Sort ascending by start to match the visual order (Antiquity → … → Modern)
-    .sort((a,b)=> a.start - b.start);
+    .sort((a,b) => a.start - b.start);
 
-  const WORKS = Array.isArray(data.works) ? data.works : [];
+  // Prepare milestones; sort by year
+  const MILESTONES = [...data.milestones]
+    .map(m => ({
+      id: m.id || `${m.year}-${m.label}`,
+      year: Number(m.year),
+      label: String(m.label),
+      era_label: String(m.era_label || ''),
+      primary: !!m.primary,
+      view: String(m.view || ''),
+      url: m.url || '',
+      image: m.image || ''
+    }))
+    .sort((a,b) => a.year - b.year);
 
-  // If the page has more panes than ERAS, hide extras to keep the slider width correct
-  const panes = allPanes.slice(0, ERAS.length);
-  const extraPanes = allPanes.slice(ERAS.length);
-  extraPanes.forEach(p => { p.style.display = 'none'; });
+  // Compute bounds
+  const minEraStart = Math.min(...ERAS.map(e => e.start));
+  const maxEraEnd   = Math.max(...ERAS.map(e => e.end));
+  const minMil      = MILESTONES.length ? Math.min(...MILESTONES.map(m => m.year)) : minEraStart;
+  const maxMil      = MILESTONES.length ? Math.max(...MILESTONES.map(m => m.year)) : maxEraEnd;
 
-  const trackEl = trackElAll;
-  trackEl.style.setProperty('--count', String(panes.length));
-
-  // -------- Build milestone ticks from works --------
-  // Primary works = labeled ticks; non-primary = faint ticks
-  const worksWithYear = WORKS.filter(w => Number.isFinite(w.year));
-  const primary = worksWithYear.filter(w => w.primary);
-  const secondary = worksWithYear.filter(w => !w.primary);
-
-  // Timeline bounds from eras + all works
-  const MIN_YEAR = Math.min(
-    ...ERAS.map(e=>e.start),
-    ...(worksWithYear.length ? worksWithYear.map(w=>w.year) : [new Date().getFullYear()])
-  );
-  const MAX_YEAR = Math.max(
-    ...ERAS.map(e=>e.end),
-    ...(worksWithYear.length ? worksWithYear.map(w=>w.year) : [new Date().getFullYear()])
-  );
+  const MIN_YEAR = Math.min(minEraStart, minMil);
+  const MAX_YEAR = Math.max(maxEraEnd, maxMil);
 
   // Helpers
   const clamp01 = t => Math.max(0, Math.min(1, t));
@@ -121,103 +88,74 @@ async function initEraTimeline(scope){
   const posFromYear = y => clamp01(norm(y, MIN_YEAR, MAX_YEAR));
   const yearFromPos = p => lerp(MIN_YEAR, MAX_YEAR, p);
   const ease    = t => (t<.5)?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const fmtYear = y => (y <= 0 ? `${Math.abs(Math.round(y))} BC` : `${Math.round(y)} AD`);
 
-  function eraIndexFromYear(y){
-    for(let k=0;k<ERAS.length;k++){
-      const e=ERAS[k]; if(y >= e.start && y < e.end) return k;
+  // Map any year → era index
+  function eraIndexFromYear(y) {
+    for (let k = 0; k < ERAS.length; k++) {
+      const e = ERAS[k];
+      if (y >= e.start && y < e.end) return k;
     }
-    return (y >= ERAS[ERAS.length-1].end) ? ERAS.length-1 : 0;
+    return (y >= ERAS[ERAS.length - 1].end) ? ERAS.length - 1 : 0;
   }
 
-  // -------- Render ticks --------
-  function renderTicks(){
-    // clear any previous
-    tlTrack.querySelectorAll('.tick, .tick-label').forEach(n => n.remove());
+  // Ensure the content panes match number of ERAS
+  syncPanesToEras(trackEl, ERAS);
 
-    const frag = document.createDocumentFragment();
+  // After syncing, get fresh pane refs
+  const panes = Array.from(trackEl.querySelectorAll('.era-pane'));
+  trackEl.style.setProperty('--count', String(ERAS.length));
 
-    // Secondary (faint) ticks
-    secondary.forEach(w=>{
-      const leftPct = (posFromYear(w.year)*100) + '%';
-      const tick = document.createElement('button');
-      tick.type = 'button';
-      tick.className = 'tick';
-      tick.style.left = leftPct;
-      tick.title = `${w.year} — ${w.author}: ${w.title}`;
-      tick.setAttribute('aria-label', `${w.year}: ${w.author} — ${w.title}`);
-      tick.addEventListener('click', ()=> goToYear(w.year, true));
-      frag.appendChild(tick);
-    });
+  // Populate era titles + content paragraphs from milestones (no bullet lists)
+  populateEraContent(panes, ERAS, MILESTONES);
 
-    // Primary (labeled) ticks
-    primary.forEach(w=>{
-      const leftPct = (posFromYear(w.year)*100) + '%';
-      const tick = document.createElement('button');
-      tick.type = 'button';
-      tick.className = 'tick primary';
-      tick.style.left = leftPct;
-      tick.title = `${w.year} — ${w.author}: ${w.title}`;
-      tick.setAttribute('aria-label', `${w.year}: ${w.author} — ${w.title}`);
-      tick.addEventListener('click', ()=> goToYear(w.year, true));
-      frag.appendChild(tick);
+  // Render milestone ticks
+  renderTicks(tlTrack, MILESTONES, posFromYear);
 
-      const lbl = document.createElement('div');
-      lbl.className = 'tick-label';
-      lbl.textContent = String(w.year);
-      Object.assign(lbl.style, {
-        position:'absolute',
-        top:'calc(100% + 26px)',
-        left:leftPct,
-        transform:'translate(-50%,0)',
-        fontSize:'11px',
-        fontWeight:'800',
-        color:'#333',
-        whiteSpace:'nowrap',
-        pointerEvents:'none',
-        zIndex:'1'
-      });
-      frag.appendChild(lbl);
-    });
-
-    tlTrack.appendChild(frag);
-  }
-
-  // -------- State & rendering --------
-  let i = 0;                               // current era index
-  let pos = posFromYear(ERAS[0]?.anchor ?? MIN_YEAR);
+  // State
+  let i = 0; // current era index
+  let pos = posFromYear(ERAS[0].anchor);
   let animRAF = null;
   let dragging = false;
 
-  const setHeight = ()=> { viewport.style.height = panes[i].scrollHeight + 'px'; };
-  const ro = new ResizeObserver(setHeight);
-  panes.forEach(p=> ro.observe(p));
+  // a11y slider range
+  tlThumb.setAttribute('aria-valuemin', '0');
+  tlThumb.setAttribute('aria-valuemax', String(ERAS.length - 1));
 
-  function renderPosition(p){
-    const pct = (p*100) + '%';
+  // Height sync to active pane
+  const setHeight = () => { viewport.style.height = panes[i].scrollHeight + 'px'; };
+  const ro = new ResizeObserver(setHeight);
+  panes.forEach(p => ro.observe(p));
+  window.addEventListener('resize', setHeight);
+
+  // Rendering
+  function renderPosition(p) {
+    const pct = (p * 100) + '%';
     tlFill.style.width = pct;
     tlThumb.style.left = pct;
     tlYear.style.left  = pct;
 
-    const y = Math.round(yearFromPos(p));
-    tlYear.textContent = (y <= 0 ? `${Math.abs(y)} BC` : `${y} AD`);
+    const y = yearFromPos(p);
+    tlYear.textContent = fmtYear(y);
 
     const idx = eraIndexFromYear(y);
-    eraBanner.textContent = ERAS[idx]?.label ?? '';
+    eraBanner.textContent = ERAS[idx].label;
+
     tlThumb.setAttribute('aria-valuenow', String(idx));
-    tlThumb.setAttribute('aria-valuetext', `${ERAS[idx]?.label ?? ''} — ${tlYear.textContent}`);
+    tlThumb.setAttribute('aria-valuetext', `${ERAS[idx].label} — ${fmtYear(y)}`);
   }
 
-  function setEraByYear(y){
+  function setEraByYear(y) {
     const idx = eraIndexFromYear(y);
-    if(idx !== i){
+    if (idx !== i) {
       i = idx;
-      trackElAll.style.transform = `translateX(${-100 * i}%)`;
-      panes[i]?.scrollTo?.({top:0, behavior:'auto'});
+      trackEl.style.transform = `translateX(${-100 * i}%)`;
+      panes[i]?.scrollTo?.({ top: 0, behavior: 'auto' });
       setHeight();
     }
   }
 
-  function goToYear(targetYear, animate){
+  function goToYear(targetYear, animate) {
     const start = pos;
     const end   = posFromYear(targetYear);
     const D     = animate ? 360 : 0;
@@ -231,72 +169,223 @@ async function initEraTimeline(scope){
       pos = start + (end - start) * e;
       renderPosition(pos);
       setEraByYear(yearFromPos(pos));
-      if(t < 1) animRAF = requestAnimationFrame(step);
+      if (t < 1) animRAF = requestAnimationFrame(step);
     };
 
     animRAF = requestAnimationFrame(step);
   }
 
-  // -------- Interactions --------
-  tlTrack.addEventListener('click', e=>{
-    if(e.target.classList.contains('tick')) return;
+  // Interactions
+  tlTrack.addEventListener('click', e => {
+    // ticks handle their own click
+    if (e.target && e.target.classList && e.target.classList.contains('tick')) return;
     const r = tlTrack.getBoundingClientRect();
     const p = clamp01((e.clientX - r.left) / r.width);
     goToYear(yearFromPos(p), true);
   });
 
-  tlThumb.addEventListener('pointerdown', e=>{
-    dragging = true; tl.classList.add('is-dragging');
+  tlThumb.addEventListener('pointerdown', e => {
+    dragging = true;
+    timeline.classList.add('is-dragging');
     tlThumb.setPointerCapture?.(e.pointerId);
     cancelAnimationFrame(animRAF);
     e.preventDefault();
   });
-  window.addEventListener('pointermove', e=>{
-    if(!dragging) return;
+  window.addEventListener('pointermove', e => {
+    if (!dragging) return;
     const r = tlTrack.getBoundingClientRect();
     pos = clamp01((e.clientX - r.left) / r.width);
     renderPosition(pos);
     setEraByYear(yearFromPos(pos));
   });
-  const endDrag = ()=>{
-    if(!dragging) return;
-    dragging = false; tl.classList.remove('is-dragging');
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    timeline.classList.remove('is-dragging');
     goToYear(yearFromPos(pos), true);
   };
   window.addEventListener('pointerup', endDrag);
   window.addEventListener('pointercancel', endDrag);
 
-  // Keyboard: step between **primary** milestones by year
-  tlThumb.addEventListener('keydown', e=>{
+  // Keyboard: step through primary milestones
+  tlThumb.addEventListener('keydown', e => {
     const currentYear = Math.round(yearFromPos(pos));
-    const primYears = primary.map(w=>w.year).sort((a,b)=>a-b);
+    const primaryYears = MILESTONES
+      .filter(m => m.primary)
+      .map(m => m.year)
+      .sort((a,b) => a - b);
+
     const nearestIndex = (() => {
-      let idx = primYears.findIndex(y=> y >= currentYear);
-      if(idx === -1) idx = primYears.length - 1;
+      let idx = primaryYears.findIndex(y => y >= currentYear);
+      if (idx === -1) idx = primaryYears.length - 1;
       return idx;
     })();
 
-    if(e.key === 'ArrowRight'){
-      const next = Math.min(primYears.length-1, nearestIndex + 1);
-      if (primYears.length) goToYear(primYears[next], true);
+    if (e.key === 'ArrowRight') {
+      const next = Math.min(primaryYears.length - 1, nearestIndex + 1);
+      goToYear(primaryYears[next], true);
       e.preventDefault();
     }
-    if(e.key === 'ArrowLeft'){
+    if (e.key === 'ArrowLeft') {
       const prev = Math.max(0, nearestIndex - 1);
-      if (primYears.length) goToYear(primYears[prev], true);
+      goToYear(primaryYears[prev], true);
       e.preventDefault();
     }
-    if(e.key === 'Home'){ goToYear(ERAS[0]?.start ?? MIN_YEAR, true); e.preventDefault(); }
-    if(e.key === 'End'){  goToYear(ERAS.at(-1)?.end ?? MAX_YEAR, true); e.preventDefault(); }
+    if (e.key === 'Home') { goToYear(ERAS[0].start, true); e.preventDefault(); }
+    if (e.key === 'End')  { goToYear(ERAS[ERAS.length - 1].end, true); e.preventDefault(); }
   });
 
-  // -------- Init --------
-  renderTicks();
-  const initYear = ERAS[0]?.anchor ?? MIN_YEAR;
+  // Init
+  const initYear = ERAS[0].anchor ?? ERAS[0].start;
   setEraByYear(initYear);
   pos = posFromYear(initYear);
   renderPosition(pos);
   setHeight();
 
-  window.addEventListener('resize', setHeight);
+  // Make tick buttons functional AFTER init
+  tlTrack.querySelectorAll('.tick').forEach(btn => {
+    const y = Number(btn.getAttribute('data-year'));
+    btn.addEventListener('click', () => goToYear(y, true));
+  });
+}
+
+/* ---------------- Helpers ---------------- */
+
+/** Ensure the .era-track has one .era-pane per era in order; create/remove as needed. */
+function syncPanesToEras(trackEl, ERAS) {
+  let panes = Array.from(trackEl.querySelectorAll('.era-pane'));
+  const diff = ERAS.length - panes.length;
+
+  if (diff > 0) {
+    // Need more panes
+    const last = panes[panes.length - 1] || null;
+    for (let n = 0; n < diff; n++) {
+      const pane = document.createElement('section');
+      pane.className = 'era-pane';
+      pane.setAttribute('role', 'region');
+      pane.innerHTML = `
+        <h3 class="era-title">Loading…</h3>
+        <div class="era-content" aria-busy="true"></div>
+      `;
+      trackEl.appendChild(pane);
+    }
+  } else if (diff < 0) {
+    // Too many panes
+    for (let n = 0; n < Math.abs(diff); n++) {
+      const p = trackEl.lastElementChild;
+      if (p && p.classList.contains('era-pane')) p.remove();
+    }
+  }
+
+  // Final pass: set ids/labels for a11y
+  panes = Array.from(trackEl.querySelectorAll('.era-pane'));
+  panes.forEach((pane, idx) => {
+    pane.id = `pane-${idx}`;
+    pane.setAttribute('aria-label', `Era ${idx + 1}`);
+    const h3 = pane.querySelector('.era-title') || pane.querySelector('h3') || document.createElement('h3');
+    if (!h3.classList.contains('era-title')) h3.classList.add('era-title');
+    if (!pane.contains(h3)) pane.prepend(h3);
+    let content = pane.querySelector('.era-content');
+    if (!content) {
+      content = document.createElement('div');
+      content.className = 'era-content';
+      pane.appendChild(content);
+    }
+  });
+}
+
+/** Populate each era pane:
+ *  - Set title to the era label
+ *  - Inject 1–2 paragraph blocks summarizing its milestones (no bullet lists)
+ */
+function populateEraContent(panes, ERAS, MILESTONES) {
+  panes.forEach((pane, idx) => {
+    const era = ERAS[idx];
+    const titleEl = pane.querySelector('.era-title');
+    const contentEl = pane.querySelector('.era-content');
+
+    if (titleEl) titleEl.textContent = era.label;
+    if (!contentEl) return;
+
+    // Filter milestones belonging to this era (by era_label match OR by year bounds)
+    const inEra = MILESTONES.filter(m =>
+      (m.era_label && m.era_label.toLowerCase() === era.label.toLowerCase()) ||
+      (m.year >= era.start && m.year < era.end)
+    ).sort((a,b) => a.year - b.year);
+
+    // Build paragraph(s), not lists
+    contentEl.innerHTML = '';
+    if (!inEra.length) {
+      const p = document.createElement('p');
+      p.textContent = `No milestones recorded for ${era.label} yet.`;
+      contentEl.appendChild(p);
+      return;
+    }
+
+    // Long eras: split into a couple of paragraphs for readability
+    const chunkSize = Math.ceil(inEra.length / Math.min(2, Math.ceil(inEra.length / 10) || 1));
+    for (let c = 0; c < inEra.length; c += chunkSize) {
+      const slice = inEra.slice(c, c + chunkSize);
+      const p = document.createElement('p');
+
+      // Compose "Year — Label" segments separated by " · "
+      const segs = slice.map(m => {
+        const label = m.url ? `<a href="${escapeAttr(m.url)}" target="_blank" rel="noopener">${escapeHtml(m.label)}</a>` : escapeHtml(m.label);
+        return `${m.year} — ${label}`;
+      });
+
+      p.innerHTML = segs.join(' · ');
+      contentEl.appendChild(p);
+    }
+  });
+}
+
+/** Create tick marks on the rail. Primary ticks get year labels. */
+function renderTicks(tlTrack, MILESTONES, posFromYear) {
+  // Avoid double-render
+  if (tlTrack.querySelector('.tick')) {
+    tlTrack.querySelectorAll('.tick, .tick-label').forEach(n => n.remove());
+  }
+
+  const frag = document.createDocumentFragment();
+
+  MILESTONES.forEach(m => {
+    const leftPct = (posFromYear(m.year) * 100) + '%';
+
+    // Tick button
+    const tick = document.createElement('button');
+    tick.type = 'button';
+    tick.className = 'tick' + (m.primary ? ' primary' : '');
+    tick.style.left = leftPct;
+    tick.setAttribute('title', `${m.year} — ${m.label}`);
+    tick.setAttribute('aria-label', `${m.year}: ${m.label}`);
+    tick.setAttribute('data-year', String(m.year));
+    frag.appendChild(tick);
+
+    // Year label under rail for primary ticks
+    if (m.primary) {
+      const lbl = document.createElement('div');
+      lbl.className = 'tick-label';
+      lbl.textContent = String(m.year);
+      lbl.style.left = leftPct;
+      frag.appendChild(lbl);
+    }
+  });
+
+  tlTrack.appendChild(frag);
+}
+
+/* ---------------- Small utils ---------------- */
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function escapeAttr(str) {
+  return escapeHtml(str).replace(/"/g, '&quot;');
 }
