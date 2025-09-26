@@ -1,95 +1,87 @@
-// Single timeline. Click a year => show ONLY that year's works.
-// Expects data in ./data.json (override path via data-json attribute on this script).
+// Timeline powered by JSON. Click/drag to a year to show ONLY that year's works.
+// The JSON path comes from <script data-json="data.json">, default ./data.json.
 
 (async function () {
   const scriptEl = document.currentScript;
   const dataPath = scriptEl?.getAttribute('data-json') || './data.json';
 
-  // DOM
-  const tl = document.getElementById('timeline');
-  const track = document.getElementById('tlTrack');
-  const fill = document.getElementById('tlFill');
-  const knob = document.getElementById('tlThumb');
-  const yearBadge = document.getElementById('tlYear');
-  const banner = document.getElementById('eraBanner');
-  const yearHeading = document.getElementById('yearHeading');
-  const worksWrap = document.getElementById('works');
+  // DOM refs
+  const timeline = document.getElementById('timeline');
+  const track    = document.getElementById('tlTrack');
+  const fill     = document.getElementById('tlFill');
+  const knob     = document.getElementById('tlThumb');
+  const yrBadge  = document.getElementById('tlYear');
+  const banner   = document.getElementById('banner');
+  const yearH2   = document.getElementById('yearHeading');
+  const worksEl  = document.getElementById('works');
 
-  if (!tl || !track || !fill || !knob || !yearBadge || !banner || !yearHeading || !worksWrap) return;
+  if (!timeline || !track || !fill || !knob || !yrBadge || !yearH2 || !worksEl) return;
 
-  // Load data
+  // Fetch data
   let raw;
   try {
     const res = await fetch(dataPath, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     raw = await res.json();
   } catch (err) {
-    console.error('Failed to load Data.json:', err);
+    console.error('Failed to load data.json:', err);
     banner.textContent = 'Failed to load data';
     return;
   }
 
-  // Accept either {items:[...]} or {milestones:[...]} or a plain array
-  const items = Array.isArray(raw) ? raw
-               : Array.isArray(raw.items) ? raw.items
-               : Array.isArray(raw.milestones) ? raw.milestones
-               : [];
+  // Accept either array or {items:[...]}
+  const items = Array.isArray(raw) ? raw : Array.isArray(raw.items) ? raw.items : [];
+  if (!items.length) { banner.textContent = 'No data'; return; }
 
-  // Normalize + group by exact year
-  const sanitize = (n) => Number(String(n).trim().replace(/[^\-0-9]/g, ''));
-  const map = new Map();
-  items.forEach(it => {
-    const year = sanitize(it.year);
-    if (Number.isNaN(year)) return;
-    const obj = {
-      year,
-      author: it.author || '',
-      title: it.title || '',
-      work: it.work || it.title || '',
-      view: it.view || '',
-      note: it.note || it.notes || '',
-      url: it.url || '',
-      image: it.image || '',
-      primary: !!it.primary
+  // Normalize & group by exact year
+  const cleanYear = (y) => Number(String(y).trim().replace(/[^\-0-9]/g, ''));
+  const byYear = new Map();
+  items.forEach(r => {
+    const y = cleanYear(r.year);
+    if (Number.isNaN(y)) return;
+    const entry = {
+      year: y,
+      author: r.author || '',
+      work: r.work || r.title || '',
+      view: r.view || '',
+      note: r.note || r.notes || '',
+      url: r.url || '',
+      image: r.image || '',
+      primary: !!r.primary
     };
-    if (!map.has(year)) map.set(year, []);
-    map.get(year).push(obj);
+    if (!byYear.has(y)) byYear.set(y, []);
+    byYear.get(y).push(entry);
   });
 
-  if (map.size === 0) {
-    banner.textContent = 'No data';
-    return;
-  }
+  if (byYear.size === 0) { banner.textContent = 'No valid year entries'; return; }
 
-  const years = [...map.keys()].sort((a,b)=>a-b);
-  const MIN = years[0];
-  const MAX = years[years.length-1];
+  const years = [...byYear.keys()].sort((a,b)=>a-b);
+  const MIN = years[0], MAX = years[years.length-1];
+
+  const clamp01 = t => Math.max(0, Math.min(1, t));
   const posFromYear = y => (MAX === MIN) ? 0.5 : (y - MIN) / (MAX - MIN);
   const yearFromPos = p => Math.round(MIN + p * (MAX - MIN));
   const fmtYear = y => (y <= 0 ? `${Math.abs(y)} BC` : `${y} AD`);
-  const clamp01 = t => Math.max(0, Math.min(1, t));
 
-  // Build ticks. Add labels that don't collide (≥ 46px apart).
+  // Build ticks + non-overlapping labels
   let lastLabelX = -Infinity;
-  const rectFor = () => track.getBoundingClientRect();
-  const labelMinGap = 46;
+  const minPxBetweenLabels = 46;
+  const rect = () => track.getBoundingClientRect();
 
-  years.forEach((y, idx) => {
+  years.forEach(y => {
     const p = posFromYear(y) * 100;
 
-    // tick button
     const tick = document.createElement('button');
     tick.type = 'button';
-    tick.className = 'tick' + (map.get(y).some(x=>x.primary) ? ' primary' : '');
+    tick.className = 'tick' + (byYear.get(y).some(v => v.primary) ? ' primary' : '');
     tick.style.left = p + '%';
-    tick.setAttribute('aria-label', `Go to year ${fmtYear(y)}`);
+    tick.setAttribute('aria-label', `Go to ${fmtYear(y)}`);
     tick.addEventListener('click', () => goToYear(y, true));
     track.appendChild(tick);
 
-    // label (avoid overlap by checking pixel distance)
-    const r = rectFor();
-    const x = r.left + r.width * (p/100);
-    if (x - lastLabelX >= labelMinGap) {
+    const r = rect();
+    const x = r.left + r.width * (p / 100);
+    if (x - lastLabelX >= minPxBetweenLabels) {
       const lbl = document.createElement('div');
       lbl.className = 'tick-label';
       lbl.style.left = p + '%';
@@ -100,66 +92,62 @@
   });
 
   // State
-  let idx = 0;               // index in years[]
-  let dragging = false;
+  let index = 0; // index in years[]
 
-  // Render helpers
-  function renderKnobToYear(y, animate=true) {
-    idx = Math.max(0, Math.min(years.length-1, years.indexOf(y)));
-    const p = posFromYear(years[idx]) * 100;
+  function renderYear(y, animate = true) {
+    index = years.indexOf(y);
+    if (index < 0) index = 0;
+    const p = posFromYear(years[index]) * 100;
     if (animate) {
       knob.style.left = p + '%';
       fill.style.width = p + '%';
-      yearBadge.style.left = p + '%';
+      yrBadge.style.left = p + '%';
     } else {
-      knob.style.transition = 'none';
-      fill.style.transition = 'none';
-      yearBadge.style.transition = 'none';
-      knob.style.left = p + '%';
-      fill.style.width = p + '%';
-      yearBadge.style.left = p + '%';
-      // force reflow then restore
-      void knob.offsetWidth;
-      knob.style.transition = '';
-      fill.style.transition = '';
-      yearBadge.style.transition = '';
+      // temporarily remove transitions for an instant set
+      const t1 = knob.style.transition, t2 = fill.style.transition, t3 = yrBadge.style.transition;
+      knob.style.transition = fill.style.transition = yrBadge.style.transition = 'none';
+      knob.style.left = p + '%'; fill.style.width = p + '%'; yrBadge.style.left = p + '%';
+      void knob.offsetWidth; // reflow
+      knob.style.transition = t1; fill.style.transition = t2; yrBadge.style.transition = t3;
     }
-    yearBadge.textContent = fmtYear(years[idx]);
+    yrBadge.textContent = fmtYear(years[index]);
+    yearH2.textContent = fmtYear(years[index]);
     banner.textContent = 'Year view';
-    renderDetails(years[idx]);
+    renderWorks(years[index]);
+
+    // a11y
     knob.setAttribute('aria-valuemin', '0');
-    knob.setAttribute('aria-valuemax', String(years.length-1));
-    knob.setAttribute('aria-valuenow', String(idx));
-    knob.setAttribute('aria-valuetext', fmtYear(years[idx]));
+    knob.setAttribute('aria-valuemax', String(years.length - 1));
+    knob.setAttribute('aria-valuenow', String(index));
+    knob.setAttribute('aria-valuetext', fmtYear(years[index]));
   }
 
-  function renderDetails(y) {
-    const works = map.get(y) || [];
-    yearHeading.textContent = fmtYear(y);
-    worksWrap.innerHTML = '';
-
-    works.forEach(w => {
+  function renderWorks(y) {
+    const list = byYear.get(y) || [];
+    worksEl.innerHTML = '';
+    if (!list.length) {
+      const p = document.createElement('p'); p.textContent = 'No entries for this year.'; worksEl.appendChild(p); return;
+    }
+    list.forEach(w => {
       const card = document.createElement('article');
       card.className = 'work';
 
       const img = document.createElement('img');
       img.className = 'thumb';
-      img.alt = w.author ? `${w.author}` : 'Artwork';
+      img.alt = w.author || 'Image'; 
       img.src = w.image || 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
       card.appendChild(img);
 
       const body = document.createElement('div');
 
       const h3 = document.createElement('h3');
-      h3.innerHTML = `${w.author ? `${escapeHtml(w.author)} — ` : ''}<em>${escapeHtml(w.work || w.title)}</em>`;
+      h3.innerHTML = `${esc(w.author)} — <em>${esc(w.work)}</em>`;
       body.appendChild(h3);
 
-      if (w.view || w.note) {
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = [w.view, w.note].filter(Boolean).join(' · ');
-        body.appendChild(meta);
-      }
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = [w.view, w.note].filter(Boolean).join(' · ');
+      body.appendChild(meta);
 
       if (w.url) {
         const p = document.createElement('p');
@@ -172,87 +160,61 @@
       }
 
       card.appendChild(body);
-      worksWrap.appendChild(card);
+      worksEl.appendChild(card);
     });
-
-    if (works.length === 0) {
-      const p = document.createElement('p');
-      p.textContent = 'No entries for this year.';
-      worksWrap.appendChild(p);
-    }
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => (
-      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]
-    ));
-  }
+  function esc(s){ return String(s || '').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
-  // Interactions
-  function goToYear(y, animate) { renderKnobToYear(y, animate); }
-
-  // clicking anywhere on rail -> nearest year
+  // click anywhere on rail -> go to nearest available year
   track.addEventListener('click', (e) => {
-    if (e.target.classList.contains('tick')) return; // ticks already handled
-    const r = track.getBoundingClientRect();
+    if (e.target.classList.contains('tick')) return; // ticks already handle
+    const r = rect();
     const p = clamp01((e.clientX - r.left) / r.width);
     const y = yearFromPos(p);
-    // find nearest real year
-    let nearest = years[0];
-    let best = Math.abs(nearest - y);
-    for (const v of years) {
-      const d = Math.abs(v - y);
-      if (d < best) { best = d; nearest = v; }
-    }
-    goToYear(nearest, true);
+    goToNearest(y, true);
   });
 
-  // dragging knob
+  // dragging
+  let dragging = false;
   knob.addEventListener('pointerdown', (e) => {
-    dragging = true; tl.classList.add('dragging');
+    dragging = true; timeline.classList.add('dragging');
     knob.setPointerCapture?.(e.pointerId);
     e.preventDefault();
   });
   window.addEventListener('pointermove', (e) => {
     if (!dragging) return;
-    const r = track.getBoundingClientRect();
+    const r = rect();
     const p = clamp01((e.clientX - r.left) / r.width);
-    // live move (no snap) but find nearest displayed year for details
     const yRaw = yearFromPos(p);
-    let nearest = years[0], best = Math.abs(nearest - yRaw);
-    for (const v of years) { const d = Math.abs(v - yRaw); if (d < best){best=d; nearest=v;} }
-    // render without transition
-    const px = (posFromYear(nearest) * 100) + '%';
-    knob.style.left = px;
-    fill.style.width = px;
-    yearBadge.style.left = px;
-    yearBadge.textContent = fmtYear(nearest);
-    renderDetails(nearest);
+    const y = nearestYear(yRaw);
+    // live render without transitions
+    renderYear(y, false);
   });
   const endDrag = () => {
     if (!dragging) return;
-    dragging = false; tl.classList.remove('dragging');
-    // ensure we snap to the *current* nearest year (already rendered)
-    const current = yearHeading.textContent.replace(/[^\-0-9]/g,'');
-    const y = Number(current) || years[0];
-    goToYear(y, true);
+    dragging = false; timeline.classList.remove('dragging');
+    renderYear(years[index], true); // settle with animation at current year
   };
   window.addEventListener('pointerup', endDrag);
   window.addEventListener('pointercancel', endDrag);
 
   // keyboard
   knob.addEventListener('keydown', (e) => {
-    const move = (delta) => {
-      const ni = Math.max(0, Math.min(years.length-1, idx + delta));
-      goToYear(years[ni], true);
-    };
-    if (e.key === 'ArrowRight') { move(+1); e.preventDefault(); }
-    if (e.key === 'ArrowLeft')  { move(-1); e.preventDefault(); }
-    if (e.key === 'Home')       { goToYear(years[0], true); e.preventDefault(); }
-    if (e.key === 'End')        { goToYear(years[years.length-1], true); e.preventDefault(); }
+    const step = (d)=>{ index = Math.max(0, Math.min(years.length-1, index + d)); renderYear(years[index], true); };
+    if (e.key === 'ArrowRight') { step(+1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { step(-1); e.preventDefault(); }
+    if (e.key === 'Home')       { renderYear(years[0], true); e.preventDefault(); }
+    if (e.key === 'End')        { renderYear(years[years.length-1], true); e.preventDefault(); }
   });
 
-  // init at the FIRST year in the file
-  goToYear(years[0], false);
+  function nearestYear(y){
+    let n = years[0], best = Math.abs(n - y);
+    for (const v of years){ const d = Math.abs(v - y); if (d < best){ best = d; n = v; } }
+    return n;
+  }
+  function goToNearest(y, animate){ renderYear(nearestYear(y), animate); }
 
+  // init at first year
+  renderYear(years[0], false);
 })();
