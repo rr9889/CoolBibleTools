@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ---------- Load & init ---------- */
 async function initFromJSON() {
-  const data = await loadJSON(['./Data.json', './data.json']);
+  const data = await loadJSON(['./data.json']);
   if (!data) return false;
 
   const scope      = document; // timeline-only page
@@ -356,4 +356,5 @@ function escapeHTML(s){
     m==='&'?'&amp;':m==='<'?'&lt;':m==='>'?'&gt;':m==='"'?'&quot;':'&#39;'
   ));
 }
+
 
