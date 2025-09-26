@@ -1,7 +1,8 @@
-/* js.js — timeline-only page
-   - Loads Data.json (fallback to data.json)
+/* js.js — timeline-only page (robust JSON loading + smooth timeline)
+   - Reads JSON URL from <script data-json="..."> or window.DATA_JSON_URL
+   - Falls back to common filenames and parent paths
    - Renders eras, content, and milestone ticks
-   - Smooth click/drag/keyboard timeline interaction
+   - Smooth click/drag/keyboard interaction
 */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -13,10 +14,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ---------- Load & init ---------- */
 async function initFromJSON() {
-  const data = await loadJSON(['./data.json']);
-  if (!data) return false;
-
-  const scope      = document; // timeline-only page
+  // DOM
+  const scope      = document;
   const trackEl    = scope.querySelector('.era-track');
   const viewport   = scope.querySelector('.era-viewport');
   const tl         = scope.querySelector('#timeline');
@@ -28,12 +27,26 @@ async function initFromJSON() {
 
   if (!trackEl || !viewport || !tl || !tlTrack || !tlFill || !tlThumb || !tlYear || !eraBanner) return false;
 
+  // Determine JSON URL from <script data-json="..."> or window.DATA_JSON_URL
+  const thisScript = document.currentScript || Array.from(document.scripts).find(s => /js\.js(\?|$)/.test(s.src));
+  const explicit = (thisScript && thisScript.dataset && thisScript.dataset.json) || (typeof window !== 'undefined' && window.DATA_JSON_URL) || null;
+
+  const candidates = [
+    explicit,
+    './Data.json', './data.json', 'Data.json', 'data.json',
+    '../Data.json', '../data.json',
+    '/Data.json', '/data.json'
+  ].filter(Boolean);
+
+  const data = await loadJSON(candidates);
+  if (!data) return false;
+
   /* Normalize eras & works */
   const ERAS = (data.eras || []).slice().sort((a,b)=>a.start-b.start);
   const LEG  = data.stance_legend || {};
   const WORKS = (data.works || []).slice().sort((a,b)=>a.year-b.year);
 
-  // Group works by eraId for fast access
+  // Group works by eraId
   const worksByEra = new Map();
   ERAS.forEach(e => worksByEra.set(e.id, []));
   WORKS.forEach(w => {
@@ -41,7 +54,7 @@ async function initFromJSON() {
     worksByEra.get(w.eraId).push(w);
   });
 
-  // Ensure we have the right number of panes and fill content
+  // Ensure pane count equals eras, fill content
   ensurePaneCount(trackEl, ERAS.length);
   const panes = Array.from(trackEl.querySelectorAll('.era-pane')).slice(0, ERAS.length);
   panes.forEach((pane, idx) => {
@@ -55,7 +68,7 @@ async function initFromJSON() {
     body.innerHTML = buildEraHTML(worksByEra.get(era.id) || [], LEG);
   });
 
-  // CSS grid column count == eras
+  // CSS grid column count
   trackEl.style.setProperty('--count', String(ERAS.length));
 
   /* Timeline math */
@@ -68,6 +81,7 @@ async function initFromJSON() {
   const yearFromPos   = p => lerp(MIN_YEAR, MAX_YEAR, p);
   const ease          = t => (t<.5)?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const fmtYear       = y => (y <= 0 ? `${Math.abs(y)} BC` : `${Math.round(y)} AD`);
+  const leftPct       = y => ((y - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
 
   const eraIndexFromYear = y => {
     for (let k=0;k<ERAS.length;k++){
@@ -77,7 +91,7 @@ async function initFromJSON() {
     return (y >= ERAS.at(-1).end) ? ERAS.length-1 : 0;
   };
 
-  // Choose a nice anchor year per era (primary works avg -> fallback mid of era)
+  // Choose an anchor per era (avg of primary works, else middle of era)
   const anchors = ERAS.map(e => {
     const list = (worksByEra.get(e.id) || []);
     const prim = list.filter(w => w.primary);
@@ -88,11 +102,11 @@ async function initFromJSON() {
     return Math.round((e.start + e.end)/2);
   });
 
-  /* Render ticks from works (dedupe by year label) */
-  renderTicks(tlTrack, WORKS);
+  /* Render ticks (dedup by year; clicking jumps) */
+  renderTicks(tlTrack, WORKS, (year)=> goToYear(year, true), leftPct);
 
   /* State */
-  let i = 0;                       // current era index
+  let i = 0;
   let pos = posFromYear(anchors[0]);
   let animRAF = null;
   let dragging = false;
@@ -209,20 +223,25 @@ async function loadJSON(candidates){
   for (const url of candidates){
     try{
       const res = await fetch(url, {cache:'no-store'});
+      console.log('[Data.json loader] trying:', url, res.status);
       if (!res.ok) continue;
       const txt = await res.text();
       // Defensive: strip BOM & tolerate trailing commas
       const cleaned = txt.replace(/^\uFEFF/, '')
                          .replace(/,\s*([}\]])/g, '$1');
-      return JSON.parse(cleaned);
-    }catch(_e){ /* try next */ }
+      const obj = JSON.parse(cleaned);
+      console.log('[Data.json loader] loaded:', url);
+      return obj;
+    }catch(err){
+      console.warn('Failed to load', url, err);
+    }
   }
   return null;
 }
 
 function ensurePaneCount(trackEl, count){
   let panes = Array.from(trackEl.querySelectorAll('.era-pane'));
-  // add if needed
+  // add
   while (panes.length < count){
     const pane = document.createElement('section');
     pane.className = 'era-pane';
@@ -231,7 +250,7 @@ function ensurePaneCount(trackEl, count){
     trackEl.appendChild(pane);
     panes.push(pane);
   }
-  // remove extras
+  // remove
   while (panes.length > count){
     panes.pop().remove();
   }
@@ -274,7 +293,6 @@ function buildEraHTML(works, legend){
       const s = stancePhrase(w.stance);
       const link = w.url ? `<a href="${w.url}" target="_blank" rel="noopener noreferrer">${title}</a>` : title;
 
-      // Paragraph-first; optional thumb image below paragraph if provided
       const img = w.image ? `
         <figure>
           <img src="${w.image}" alt="${author} — ${title}" loading="lazy">
@@ -285,8 +303,9 @@ function buildEraHTML(works, legend){
     .join('');
 }
 
-function renderTicks(tlTrack, works){
-  // Avoid duplicates by year (prefer primary if any duplicate)
+/* Render ticks; clicking a tick calls goTo(year) directly */
+function renderTicks(tlTrack, works, goToYearCb, leftPct){
+  // Dedupe by year (prefer primary)
   const byYear = new Map();
   for (const w of works){
     if (!byYear.has(w.year)) byYear.set(w.year, w);
@@ -294,10 +313,6 @@ function renderTicks(tlTrack, works){
   }
   const items = Array.from(byYear.values()).sort((a,b)=>a.year-b.year);
   if (!items.length) return;
-
-  const MIN = Math.min(...items.map(x=>x.year));
-  const MAX = Math.max(...items.map(x=>x.year));
-  const leftPct = y => ((y - MIN) / (MAX - MIN)) * 100;
 
   const frag = document.createDocumentFragment();
   for (const m of items){
@@ -307,36 +322,27 @@ function renderTicks(tlTrack, works){
     tick.style.left = leftPct(m.year) + '%';
     tick.title = `${m.year} — ${m.author}: ${m.title}`;
     tick.setAttribute('aria-label', tick.title);
-    tick.addEventListener('click', () => {
-      // bubble up to main handler by dispatching a custom event with the target year
-      const ev = new CustomEvent('timeline:goto', {detail:{year:m.year}, bubbles:true});
-      tlTrack.dispatchEvent(ev);
-    });
+    tick.addEventListener('click', () => goToYearCb(m.year));
     frag.appendChild(tick);
 
     if (m.primary){
       const lbl = document.createElement('div');
       lbl.className = 'tick-label';
+      lbl.style.position = 'absolute';
+      lbl.style.top = 'calc(100% + 26px)';
       lbl.style.left = leftPct(m.year) + '%';
+      lbl.style.transform = 'translate(-50%,0)';
+      lbl.style.fontSize = '11px';
+      lbl.style.fontWeight = '800';
+      lbl.style.color = '#333';
+      lbl.style.whiteSpace = 'nowrap';
+      lbl.style.pointerEvents = 'none';
+      lbl.style.zIndex = '1';
       lbl.textContent = String(m.year);
       frag.appendChild(lbl);
     }
   }
   tlTrack.appendChild(frag);
-
-  // Listen for custom goto events (from ticks)
-  tlTrack.addEventListener('timeline:goto', (e)=>{
-    const year = e.detail?.year;
-    if (typeof year === 'number') {
-      // delegate to click on rail at the computed position
-      const fakeX = tlTrack.getBoundingClientRect().left + (leftPct(year)/100)*tlTrack.offsetWidth;
-      const p = Math.max(0, Math.min(1, (fakeX - tlTrack.getBoundingClientRect().left) / tlTrack.offsetWidth));
-      const goEvent = new CustomEvent('timeline:goto:pos', {detail:{p}, bubbles:true});
-      tlTrack.dispatchEvent(goEvent);
-    }
-  });
-  // Bridge: allow main init to hook this (overridden in initFromJSON)
-  tlTrack.addEventListener('timeline:goto:pos', ()=>{/* no-op, hooked in init */});
 }
 
 function nearestIndex(arrSortedAsc, value){
@@ -346,7 +352,6 @@ function nearestIndex(arrSortedAsc, value){
     const mid = (lo + hi) >> 1;
     if (arrSortedAsc[mid] < value) lo = mid + 1; else hi = mid;
   }
-  // choose closer of lo and lo-1
   if (lo > 0 && Math.abs(arrSortedAsc[lo-1] - value) <= Math.abs(arrSortedAsc[lo] - value)) return lo-1;
   return lo;
 }
@@ -356,5 +361,3 @@ function escapeHTML(s){
     m==='&'?'&amp;':m==='<'?'&lt;':m==='>'?'&gt;':m==='"'?'&quot;':'&#39;'
   ));
 }
-
-
