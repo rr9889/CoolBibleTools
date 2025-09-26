@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
-    // Basic validation
-    if (!data || !Array.isArray(data.eras) || !Array.isArray(data.milestones)) {
-      throw new Error('Invalid JSON shape: expected { eras:[], milestones:[] }');
+    // Basic validation - look for 'works' instead of 'milestones'
+    if (!data || !Array.isArray(data.eras) || !Array.isArray(data.works)) {
+      throw new Error('Invalid JSON shape: expected { eras:[], works:[] }');
     }
 
     initTimelineFromData(document, data);
@@ -58,17 +58,20 @@ function initTimelineFromData(root, data) {
     }))
     .sort((a,b) => a.start - b.start);
 
-  // Prepare milestones; sort by year
-  const MILESTONES = [...data.milestones]
-    .map(m => ({
-      id: m.id || `${m.year}-${m.label}`,
-      year: Number(m.year),
-      label: String(m.label),
-      era_label: String(m.era_label || ''),
-      primary: !!m.primary,
-      view: String(m.view || ''),
-      url: m.url || '',
-      image: m.image || ''
+  // Convert works to milestones format and prepare milestones; sort by year
+  const MILESTONES = [...data.works]
+    .map(w => ({
+      id: w.id || `${w.year}-${w.author}`,
+      year: Number(w.year),
+      label: `${w.author}: ${w.title}`,
+      era_label: ERAS.find(era => w.eraId === era.id)?.label || '',
+      primary: !!w.primary,
+      view: String(w.stance || ''),
+      url: w.url || '',
+      image: w.image || '',
+      author: w.author || '',
+      title: w.title || '',
+      stance: w.stance || ''
     }))
     .sort((a,b) => a.year - b.year);
 
@@ -307,11 +310,12 @@ function populateEraContent(panes, ERAS, MILESTONES) {
     if (titleEl) titleEl.textContent = era.label;
     if (!contentEl) return;
 
-    // Filter milestones belonging to this era (by era_label match OR by year bounds)
-    const inEra = MILESTONES.filter(m =>
-      (m.era_label && m.era_label.toLowerCase() === era.label.toLowerCase()) ||
-      (m.year >= era.start && m.year < era.end)
-    ).sort((a,b) => a.year - b.year);
+    // Filter milestones belonging to this era by matching era ID
+    const inEra = MILESTONES.filter(m => {
+      // Find the era that corresponds to this pane index
+      const eraForMilestone = ERAS.find(e => e.id === idx);
+      return m.era_label === era.label || (m.year >= era.start && m.year < era.end);
+    }).sort((a,b) => a.year - b.year);
 
     // Build paragraph(s), not lists
     contentEl.innerHTML = '';
@@ -328,9 +332,9 @@ function populateEraContent(panes, ERAS, MILESTONES) {
       const slice = inEra.slice(c, c + chunkSize);
       const p = document.createElement('p');
 
-      // Compose "Year — Label" segments separated by " · "
+      // Compose "Year — Author: Title" segments separated by " · "
       const segs = slice.map(m => {
-        const label = m.url ? `<a href="${escapeAttr(m.url)}" target="_blank" rel="noopener">${escapeHtml(m.label)}</a>` : escapeHtml(m.label);
+        const label = m.url ? `<a href="${escapeAttr(m.url)}" target="_blank" rel="noopener">${escapeHtml(m.author)}: ${escapeHtml(m.title)}</a>` : `${escapeHtml(m.author)}: ${escapeHtml(m.title)}`;
         return `${m.year} — ${label}`;
       });
 
@@ -357,8 +361,8 @@ function renderTicks(tlTrack, MILESTONES, posFromYear) {
     tick.type = 'button';
     tick.className = 'tick' + (m.primary ? ' primary' : '');
     tick.style.left = leftPct;
-    tick.setAttribute('title', `${m.year} — ${m.label}`);
-    tick.setAttribute('aria-label', `${m.year}: ${m.label}`);
+    tick.setAttribute('title', `${m.year} — ${m.author}: ${m.title}`);
+    tick.setAttribute('aria-label', `${m.year}: ${m.author}: ${m.title}`);
     tick.setAttribute('data-year', String(m.year));
     frag.appendChild(tick);
 
