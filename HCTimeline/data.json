@@ -6,86 +6,6 @@
     { "label": "19th–18th", "start": 1700, "end": 1900, "anchor": 1855 },
     { "label": "21st–20th", "start": 1900, "end": 2100, "anchor": 1983 }
   ],
-  "milestones": [
-    { "year": 55, "label": "1 Corinthians composed", "primary": true, "era": 0 },
-    { "year": 190, "label": "Clement of Alexandria — Paedagogus", "primary": true, "era": 0 },
-    { "year": 200, "label": "Tertullian — On the Veiling of Virgins", "primary": true, "era": 0 },
-    { "year": 215, "label": "Hippolytus — Apostolic Tradition", "primary": false, "era": 0 },
-    { "year": 230, "label": "Didascalia Apostolorum", "primary": false, "era": 0 },
-    { "year": 340, "label": "Council of Gangra (can. 17)", "primary": true, "era": 0 },
-    { "year": 380, "label": "Apostolic Constitutions", "primary": false, "era": 0 },
-    { "year": 400, "label": "Chrysostom / Jerome era", "primary": true, "era": 0 },
-
-    { "year": 620, "label": "Isidore of Seville, Etymologiae XIX", "primary": true, "era": 1 },
-    { "year": 1012, "label": "Burchard of Worms, Decretum", "primary": false, "era": 1 },
-    { "year": 1140, "label": "Gratian, Decretum (canon-law synthesis)", "primary": true, "era": 1 },
-    { "year": 1150, "label": "Glossa Ordinaria (standard Bible gloss)", "primary": false, "era": 1 },
-    { "year": 1234, "label": "Gregory IX, Decretals (Liber Extra)", "primary": false, "era": 1 },
-    { "year": 1270, "label": "Aquinas, Summa II–II q.169", "primary": true, "era": 1 },
-    { "year": 1271, "label": "Aquinas, Commentary on 1 Corinthians", "primary": false, "era": 1 },
-
-    { "year": 1522, "label": "Luther NT (assumes veil)", "primary": false, "era": 2 },
-    { "year": 1537, "label": "Bullinger, Decades (Sermon 7)", "primary": false, "era": 2 },
-    { "year": 1556, "label": "Calvin — 1 Corinthians (Commentary)", "primary": true, "era": 2 },
-    { "year": 1563, "label": "Council of Trent concludes", "primary": true, "era": 2 },
-    { "year": 1599, "label": "Geneva Bible Notes on 1 Cor 11", "primary": false, "era": 2 },
-    { "year": 1637, "label": "Cornelius à Lapide — 1 Cor commentary", "primary": true, "era": 2 },
-
-    { "year": 1706, "label": "Matthew Henry — Commentary", "primary": false, "era": 3 },
-    { "year": 1748, "label": "John Gill — NT Exposition", "primary": false, "era": 3 },
-    { "year": 1855, "label": "Victorian debates on modesty/veiling", "primary": false, "era": 3 },
-    { "year": 1872, "label": "Charles Hodge — 1 Corinthians", "primary": true, "era": 3 },
-    { "year": 1883, "label": "H. A. W. Meyer — 1 Corinthians (Eng.)", "primary": false, "era": 3 },
-    { "year": 1889, "label": "Frédéric Godet — 1 Corinthians", "primary": false, "era": 3 },
-    { "year": 1895, "label": "The Woman’s Bible, Vol. I", "primary": true, "era": 3 },
-    { "year": 1898, "label": "The Woman’s Bible, Vol. II", "primary": true, "era": 3 },
-
-    { "year": 1911, "label": "Catholic Encyclopedia: Head-dress of Women", "primary": false, "era": 4 },
-    { "year": 1917, "label": "1917 Code of Canon Law (veils required)", "primary": true, "era": 4 },
-    { "year": 1918, "label": "Charles Augustine — Code Commentary", "primary": false, "era": 4 },
-    { "year": 1927, "label": "Woywod — Practical Code Commentary", "primary": false, "era": 4 },
-    { "year": 1933, "label": "A. T. Robertson — Word Pictures (1 Cor)", "primary": false, "era": 4 },
-    { "year": 1937, "label": "R. C. H. Lenski — 1 Corinthians", "primary": true, "era": 4 },
-    { "year": 1957, "label": "Bouscaren & Ellis — Canon Law (1917)", "primary": false, "era": 4 },
-    { "year": 1957, "label": "The Rudder (Orthodox canons) — Eng. trans.", "primary": false, "era": 4 },
-
-    { "year": 1965, "label": "Abel Isaksson — hair-only thesis", "primary": true, "era": 4 },
-    { "year": 1968, "label": "NOW resolution (symbol of inequality)", "primary": false, "era": 4 },
-    { "year": 1969, "label": "Milwaukee head-covering protest", "primary": false, "era": 4 },
-    { "year": 1983, "label": "1983 Code of Canon Law (no universal rule)", "primary": true, "era": 4 },
-    { "year": 1987, "label": "Gordon Fee — NICNT 1 Corinthians", "primary": true, "era": 4 },
-    { "year": 2000, "label": "Anthony Thiselton — NIGTC 1 Corinthians", "primary": true, "era": 4 },
-    { "year": 2001, "label": "Kraybill & Bowman — Anabaptist practice", "primary": false, "era": 4 },
-    { "year": 2003, "label": "David Garland — BECNT 1 Corinthians", "primary": true, "era": 4 },
-    { "year": 2015, "label": "Head Covering revival / movement (2010s+)", "primary": false, "era": 4 }
-  ],
-  "content": [
-    {
-      "eraIndex": 0,
-      "title": "Antiquity",
-      "html": "<p>From the earliest Christian centuries, women’s head covering appears as expected decorum in prayer and often in public. <a href=\"https://www.newadvent.org/fathers/02093.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Clement of Alexandria</a> (c. 190) urges that women be “entirely covered unless at home,” tying attire to modesty and self-restraint. Not long after, <a href=\"https://www.newadvent.org/fathers/0404.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Tertullian</a> (c. 200) remarks that “the Corinthians veil their virgins,” and he argues that married women, widows, and virgins alike should be veiled in church.</p><p>Early church orders codify the expectation. The <a href=\"http://www.bombaxo.com/hippolytus.html\" target=\"_blank\" rel=\"noopener noreferrer\">Apostolic Tradition</a> attributed to Hippolytus (c. 215–235) directs that women “have their heads covered with an opaque cloth, not thin linen,” indicating a substantial covering rather than a token scarf. Greek preaching echoes this: in <a href=\"https://www.newadvent.org/fathers/220126.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Homily 26 on 1 Corinthians</a>, John Chrysostom roots veiling in God’s order (“nature”). Western Latin witnesses such as <a href=\"https://www.newadvent.org/fathers/3001147.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Jerome</a> describe regional cap-and-veil usages.</p>"
-    },
-    {
-      "eraIndex": 1,
-      "title": "Medieval",
-      "html": "<p>Medieval theologians interpret 1 Corinthians 11 within a moral framework of modesty, order, and reverence. In the <a href=\"https://www.newadvent.org/summa/3169.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Summa Theologiae</a> (c. 1270), <a href=\"https://www.newadvent.org/summa/3169.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Thomas Aquinas</a> treats clothing under the virtue of modesty and considers appearing unveiled at the sacred mysteries a fault in dress. His <a href=\"https://isidore.co/aquinas/english/SS1Cor.htm#111\" target=\"_blank\" rel=\"noopener noreferrer\">Commentary on 1 Corinthians</a> reads the veil as a sign-value sustaining public order in the liturgy.</p><p>Beyond church commentary, law and custom regulate head covering across much of Europe. Sumptuary legislation shapes fabrics and expense; regional practice stigmatizes the bare head in specific contexts. Religious women formally “take the veil,” while laywomen commonly cover for public moments and Mass, embedding the practice in social and devotional life.</p>"
-    },
-    {
-      "eraIndex": 2,
-      "title": "17th–16th centuries",
-      "html": "<p>Reformation and Catholic Reform authors generally understand Paul to require a material covering in worship. <a href=\"https://www.ccel.org/ccel/calvin/calcom39.xii.i.html\" target=\"_blank\" rel=\"noopener noreferrer\">John Calvin</a> frames veiling as an ecclesial norm that serves the community’s good and public decorum. In the Catholic tradition, <a href=\"https://www.ecatholic2000.com/lapide/untitled-141.shtml\" target=\"_blank\" rel=\"noopener noreferrer\">Cornelius à Lapide</a> (†1637) reads the “authority” of 1 Cor 11:10 as a metonym for the veil, distinguishing Christian worship from pagan bareheaded custom.</p><p>The era’s exegesis appeals to “nature” (including hair’s symbolic role) while maintaining a separate, material sign for prayer. The <em>Geneva Bible Notes</em> (1599) argue that unveiling in public worship removes the sign of subjection and brings shame. Outside commentary literature, <a href=\"https://oll.libertyfund.org/titles/locke-the-works-vol-7-essays-and-notes-on-st-pauls-epistles\" target=\"_blank\" rel=\"noopener noreferrer\">John Locke</a> acknowledges that women pray and prophesy in assembly but presumes the veil as an ordinary sign of order.</p>"
-    },
-    {
-      "eraIndex": 3,
-      "title": "19th–18th centuries",
-      "html": "<p>Across Europe and the Atlantic world, women typically cover in public and at church; in Spain the <em>mantilla</em> becomes a durable emblem of reverence and identity. Influential Protestant and Catholic commentators—Matthew Henry, John Gill, Henry Alford, Charles Hodge, H. A. W. Meyer, and Frédéric Godet—continue to uphold veiling as an apostolic custom. Representative works remain widely cited in later editions and translations (e.g., Hodge’s <a href=\"https://biblicalstudies.org.uk/pdf/hodge-corinthians/hodge-1corinthians.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">Exposition of 1 Corinthians</a> and Meyer’s <a href=\"https://biblehub.com/commentaries/meyer/1_corinthians/11.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Critical Commentary</a>).</p><p>Yet the period also registers dissent. Victorian moralists sometimes critique fashionable translucency that leaves hair conspicuous, and late-century feminist writers—most notably the circle around Elizabeth Cady Stanton’s <em>The Woman’s Bible</em> (1895, 1898)—challenge Pauline normativity, reframing the passage as culturally conditioned rather than permanently binding.</p>"
-    },
-    {
-      "eraIndex": 4,
-      "title": "21st–20th centuries",
-      "html": "<p>In the Roman Catholic Church, the <strong>1917 Code of Canon Law</strong> reflected long-standing discipline that women cover their heads at worship; the <strong>1983 Code</strong> abrogated the earlier law and contains no universal head-covering requirement. In the 1960s and 1970s, practice declined sharply across the West as wider cultural shifts intersected with religious change; activist moments included the 1968 resolution of the National Organization for Women and the 1969 Milwaukee protest, both highlighting headwear as a symbol in debates over women’s roles.</p><p>Scholarly discussion in this period introduced a minority “hair-only” interpretation (e.g., <a href=\"https://archive.org/details/marriageministry0000isak\" target=\"_blank\" rel=\"noopener noreferrer\">Isaksson, 1965</a>), proposing that long hair itself is the covering envisioned by Paul; however, many major commentaries—such as Gordon Fee’s <a href=\"https://books.google.com/books/about/The_First_Epistle_to_the_Corinthians.html?id=XlBp10nUTXAC\" target=\"_blank\" rel=\"noopener noreferrer\"><em>The First Epistle to the Corinthians</em></a>, Anthony Thiselton’s <a href=\"https://www.eerdmans.com/9780802824493/the-first-epistle-to-the-corinthians/\" target=\"_blank\" rel=\"noopener noreferrer\"><em>NIGTC</em> volume</a>, and David Garland’s <a href=\"https://books.google.com/books/about/1_Corinthians_Baker_Exegetical_Commentar.html?id=6sa-AgAAQBAJ\" target=\"_blank\" rel=\"noopener noreferrer\"><em>BECNT</em> volume</a>—continue to read a material veil in light of the passage’s language and rhetorical flow. Outside the West and among Conservative or Old-Order Anabaptists, head covering remains customary as a visible sign of discipleship and community order; since the 2010s, some Catholics and Lutherans have seen a devotional revival of voluntary veiling.</p>"
-    }
-  ],
   "works": [
     { "eraIndex": 0, "year": 190, "author": "Clement of Alexandria", "title": "Paedagogus (The Instructor), III.11", "type": "Patristic treatise", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/02093.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
     { "eraIndex": 0, "year": 200, "author": "Tertullian", "title": "De virginibus velandis", "type": "Patristic treatise", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/0404.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
@@ -137,3 +57,4 @@
     { "eraIndex": 4, "year": 2015, "author": "Various", "title": "Head Covering Movement (revival)", "type": "Online movement", "view": "material_veil_required", "url": "https://www.headcoveringmovement.com/", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" }
   ]
 }
+
