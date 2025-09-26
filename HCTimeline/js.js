@@ -7,10 +7,46 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   const ok = await initFromJSON();
-  if (!ok) {
-    console.error('Timeline init failed: could not load JSON or required DOM nodes missing.');
-  }
+  if (!ok) console.error('Timeline init failed: could not load JSON or required DOM nodes missing.');
 });
+
+async function initFromJSON() {
+  // Pick up the JSON URL from the script tag or fallback candidates
+  const thisScript = document.currentScript || Array.from(document.scripts).find(s => /js\.js(\?|$)/.test(s.src));
+  const explicit   = (thisScript?.dataset?.json || window.DATA_JSON_URL || '').trim();
+
+  const candidates = [
+    explicit,
+    './data.json',
+    'data.json',
+    '/CoolBibleTools/HCTimeline/data.json'
+  ].filter(Boolean);
+
+  const data = await loadJSON(candidates);
+  if (!data) return false;
+
+  // ... keep your existing init code that uses `data` ...
+  // (no changes needed below this point)
+  return true;
+}
+
+async function loadJSON(candidates){
+  for (const url of candidates){
+    try{
+      if (!url) continue;
+      const res = await fetch(url, { cache:'no-store' });
+      console.log('[Data.json loader] trying:', url, res.status);
+      if (!res.ok) continue;
+      const txt = await res.text();
+      const cleaned = txt.replace(/^\uFEFF/, '').replace(/,\s*([}\]])/g, '$1'); // strip BOM & trailing commas
+      return JSON.parse(cleaned);
+    }catch(err){
+      console.warn('Failed to load', url, err);
+    }
+  }
+  return null;
+}
+
 
 /* ---------- Load & init ---------- */
 async function initFromJSON() {
@@ -361,3 +397,4 @@ function escapeHTML(s){
     m==='&'?'&amp;':m==='<'?'&lt;':m==='>'?'&gt;':m==='"'?'&quot;':'&#39;'
   ));
 }
+
