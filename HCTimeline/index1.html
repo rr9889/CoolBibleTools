@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Head Covering Timeline — 1 Cor 11:2–16</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Timeline of key literature and practice on 1 Corinthians 11:2–16, driven by Data.json." />
+  <link rel="stylesheet" href="./css.css">
+</head>
+<body>
+
+  <main id="timeline-page" aria-label="Head Covering Timeline">
+    <section class="era-card" id="era-card">
+
+      <!-- Timeline rail + draggable knob -->
+      <header class="era-head">
+        <div class="timeline" id="timeline">
+          <div class="era-banner" id="eraBanner">Loading…</div>
+          <div class="track" id="tlTrack">
+            <div class="fill" id="tlFill"></div>
+            <div
+              class="thumb"
+              id="tlThumb"
+              role="slider"
+              aria-valuemin="0"
+              aria-valuemax="0"
+              aria-valuenow="0"
+              aria-label="Era"
+              tabindex="0"></div>
+            <div class="year-badge" id="tlYear">—</div>
+            <!-- milestone ticks injected by JS from Data.json -->
+          </div>
+        </div>
+      </header>
+
+      <!-- Sliding panes (ERAS) — kept empty; JS uses Data.json to control count/order -->
+      <div class="era-viewport" aria-live="polite">
+        <div class="era-track">
+          <!-- Placeholders to ensure layout works before data loads.
+               JS will slice to ERAS length and can choose to inject content later. -->
+          <section class="era-pane" id="pane-0" role="region" aria-label="Era 1">
+            <h3 class="era-title">Loading…</h3>
+            <div class="era-content" aria-busy="true"></div>
+          </section>
+
+          <section class="era-pane" id="pane-1" role="region" aria-label="Era 2">
+            <h3 class="era-title">Loading…</h3>
+            <div class="era-content" aria-busy="true"></div>
+          </section>
+
+          <section class="era-pane" id="pane-2" role="region" aria-label="Era 3">
+            <h3 class="era-title">Loading…</h3>
+            <div class="era-content" aria-busy="true"></div>
+          </section>
+
+          <section class="era-pane" id="pane-3" role="region" aria-label="Era 4">
+            <h3 class="era-title">Loading…</h3>
+            <div class="era-content" aria-busy="true"></div>
+          </section>
+
+          <section class="era-pane" id="pane-4" role="region" aria-label="Era 5">
+            <h3 class="era-title">Loading…</h3>
+            <div class="era-content" aria-busy="true"></div>
+          </section>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <noscript>
+    <p style="padding:1rem;max-width:60ch;margin:0 auto;">
+      This timeline requires JavaScript to load <code>Data.json</code> and render milestones.
+    </p>
+  </noscript>
+
+  <script src="js.js"></script>
+</body>
+</html>
