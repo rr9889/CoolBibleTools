@@ -4,78 +4,45 @@
   <meta charset="utf-8" />
   <title>Head Covering Timeline — 1 Cor 11:2–16</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Timeline of key literature and practice on 1 Corinthians 11:2–16, driven by Data.json." />
+  <meta name="description" content="Click a year to see only works from that year." />
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./css.css">
 </head>
 <body>
 
-  <!-- Timeline-only layout -->
-  <main id="timeline-page" aria-label="Head Covering Timeline">
-    <section class="era-card" id="era-card">
-      <!-- Timeline rail + draggable knob -->
-      <header class="era-head">
-        <div class="timeline" id="timeline">
-          <div class="era-banner" id="eraBanner">Loading…</div>
-          <div class="track" id="tlTrack" aria-hidden="false">
-            <div class="fill" id="tlFill"></div>
+  <main id="page">
+    <h1 class="site-title">Head Covering Timeline</h1>
 
-            <!-- Draggable knob -->
-            <div
-              class="thumb"
-              id="tlThumb"
-              role="slider"
-              aria-valuemin="0"
-              aria-valuemax="0"
-              aria-valuenow="0"
-              aria-label="Era position"
-              tabindex="0"></div>
+    <!-- Timeline -->
+    <section class="timeline" id="timeline" aria-label="Year timeline">
+      <div class="banner" id="eraBanner">Select a year</div>
 
-            <!-- Dynamic year readout -->
-            <div class="year-badge" id="tlYear" aria-live="polite">—</div>
-            <!-- Milestone ticks injected by JS from Data.json -->
-          </div>
-        </div>
-      </header>
+      <div class="rail" id="tlTrack">
+        <div class="fill" id="tlFill" style="width:0%"></div>
 
-      <!-- Sliding panes (populated from Data.json) -->
-      <div class="era-viewport" aria-live="polite">
-        <div class="era-track">
-          <!-- Placeholders (JS will overwrite titles/content and set --count) -->
-          <section class="era-pane" id="pane-0" role="region" aria-label="Era 1">
-            <h3 class="era-title">Loading…</h3>
-            <div class="era-content" aria-busy="true"></div>
-          </section>
-          <section class="era-pane" id="pane-1" role="region" aria-label="Era 2">
-            <h3 class="era-title">Loading…</h3>
-            <div class="era-content" aria-busy="true"></div>
-          </section>
-          <section class="era-pane" id="pane-2" role="region" aria-label="Era 3">
-            <h3 class="era-title">Loading…</h3>
-            <div class="era-content" aria-busy="true"></div>
-          </section>
-          <section class="era-pane" id="pane-3" role="region" aria-label="Era 4">
-            <h3 class="era-title">Loading…</h3>
-            <div class="era-content" aria-busy="true"></div>
-          </section>
-          <section class="era-pane" id="pane-4" role="region" aria-label="Era 5">
-            <h3 class="era-title">Loading…</h3>
-            <div class="era-content" aria-busy="true"></div>
-          </section>
-        </div>
+        <button
+          class="knob"
+          id="tlThumb"
+          role="slider"
+          aria-valuemin="0"
+          aria-valuemax="0"
+          aria-valuenow="0"
+          aria-label="Selected year"
+          tabindex="0"></button>
+
+        <div class="year" id="tlYear">—</div>
+        <!-- ticks injected by JS -->
       </div>
+    </section>
+
+    <!-- Year details -->
+    <section class="details" id="details" aria-live="polite">
+      <h2 id="yearHeading">—</h2>
+      <div id="works"></div>
     </section>
   </main>
 
-  <noscript>
-    <p style="padding:1rem;max-width:60ch;margin:0 auto;">
-      This timeline requires JavaScript to load <code>Data.json</code> and render milestones.
-    </p>
-  </noscript>
-
-  <!-- Your JS fetches ./Data.json and populates the timeline -->
-<script src="./js.js" defer data-json="./data.json"></script>
+  <!-- IMPORTANT: the data-json attribute tells JS where to fetch -->
+  <script src="./js.js" defer data-json="./data.json"></script>
 </body>
 </html>
-
-
-
