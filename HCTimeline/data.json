@@ -15,9 +15,7 @@
     "mixed_or_discusses": "Descriptive, surveys multiple views, or is mixed/ambiguous"
   },
   "works": [
-    /* =======================
-       ANTIQUITY (id: 0)
-       ======================= */
+
     {
       "eraId": 0,
       "year": 55,
@@ -104,10 +102,6 @@
       "url": "https://www.newadvent.org/fathers/3001147.htm",
       "image": "https://upload.wikimedia.org/wikipedia/commons/3/37/El_Greco_-_St_Jerome_as_a_Scholar_-_WGA10625.jpg"
     },
-
-    /* =======================
-       MEDIEVAL (id: 1)
-       ======================= */
     {
       "eraId": 1,
       "year": 620,
@@ -174,10 +168,6 @@
       "url": "https://isidore.co/aquinas/english/SS1Cor.htm#111",
       "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Codex_Burchardi_Thomas_Aquinas.jpg"
     },
-
-    /* =======================
-       16th–17th (id: 2)
-       ======================= */
     {
       "eraId": 2,
       "year": 1537,
@@ -226,9 +216,6 @@
       "primary": true
     },
 
-    /* =======================
-       18th–19th (id: 3)
-       ======================= */
     {
       "eraId": 3,
       "year": 1706,
@@ -305,9 +292,6 @@
       "primary": true
     },
 
-    /* =======================
-       20th–21st (id: 4)
-       ======================= */
     {
       "eraId": 4,
       "year": 1911,
