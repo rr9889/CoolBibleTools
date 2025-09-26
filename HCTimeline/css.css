@@ -1,5 +1,3 @@
-/* Minimal, timeline-first layout (no external fonts) */
-
 :root{
   --bg:#fff; --fg:#111; --muted:#6a6a6a; --line:#e6e6e6; --focus:#000;
   --shadow:0 1px 2px rgba(0,0,0,.04), 0 6px 18px rgba(0,0,0,.06);
@@ -8,7 +6,7 @@
 
   --rail-h: 6px;
   --knob: 30px;
-  --clear: 96px;  /* room below rail for year badge & tick labels */
+  --clear: 96px;          /* room below rail for year badge & labels */
 }
 
 *{box-sizing:border-box}
@@ -21,7 +19,7 @@ a:focus,button:focus{outline:3px solid var(--focus);outline-offset:3px;border-ra
 
 /* ===== Timeline ===== */
 .timeline{user-select:none;margin:0 auto var(--clear);width:min(96vw,1300px)}
-.timeline .banner{
+.banner{
   width:max-content;margin:0 auto 12px;padding:4px 12px;border:1px solid var(--line);
   border-radius:12px;font-weight:900;background:#fff;box-shadow:var(--shadow)
 }
@@ -31,7 +29,7 @@ a:focus,button:focus{outline:3px solid var(--focus);outline-offset:3px;border-ra
 }
 .fill{position:absolute;left:0;top:0;height:var(--rail-h);background:#000;border-radius:999px;width:0%}
 
-/* ticks */
+/* ticks + labels */
 .tick{
   position:absolute;top:50%;transform:translate(-50%,-50%);width:2px;height:16px;background:#222;opacity:.35;border-radius:2px;
 }
