@@ -1,60 +1,164 @@
 {
-  "eras": [
-    { "label": "Antiquity", "start": 50, "end": 600, "anchor": 190 },
-    { "label": "Medieval", "start": 600, "end": 1500, "anchor": 1270 },
-    { "label": "17th–16th", "start": 1500, "end": 1700, "anchor": 1599 },
-    { "label": "19th–18th", "start": 1700, "end": 1900, "anchor": 1855 },
-    { "label": "21st–20th", "start": 1900, "end": 2100, "anchor": 1983 }
-  ],
-  "works": [
-    { "eraIndex": 0, "year": 190, "author": "Clement of Alexandria", "title": "Paedagogus (The Instructor), III.11", "type": "Patristic treatise", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/02093.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 200, "author": "Tertullian", "title": "De virginibus velandis", "type": "Patristic treatise", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/0404.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 215, "author": "Hippolytus (attrib.)", "title": "Apostolic Tradition", "type": "Church order", "view": "material_veil_required", "url": "http://www.bombaxo.com/hippolytus.html", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 230, "author": "Didascalia Apostolorum", "title": "Church order (Syriac/Latin)", "type": "Church order", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/Didascalia_Apostolorum", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 340, "author": "Council of Gangra", "title": "Canon 17", "type": "Council canon", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/3804.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 380, "author": "Apostolic Constitutions", "title": "Book I–VIII", "type": "Church order", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/3201.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 400, "author": "John Chrysostom", "title": "Homily 26 on 1 Corinthians", "type": "Homily", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/220126.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 0, "year": 400, "author": "Jerome", "title": "Letter 147", "type": "Letter", "view": "material_veil_required", "url": "https://www.newadvent.org/fathers/3001147.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-
-    { "eraIndex": 1, "year": 620, "author": "Isidore of Seville", "title": "Etymologiae XIX (on dress/veils)", "type": "Encyclopedic", "view": "material_veil_expected", "url": "https://penelope.uchicago.edu/Thayer/L/Roman/Texts/Isidore/19*.html", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1012, "author": "Burchard of Worms", "title": "Decretum (Corrector)", "type": "Penitential/canon law", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/Burchard_of_Worms", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1140, "author": "Gratian", "title": "Decretum", "type": "Canon law synthesis", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/Gratian%27s_Decretum", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1150, "author": "Glossa Ordinaria", "title": "Bible gloss on 1 Cor 11", "type": "Biblical gloss", "view": "material_veil_expected", "url": "https://en.wikipedia.org/wiki/Glossa_Ordinaria", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1234, "author": "Gregory IX", "title": "Decretals (Liber Extra)", "type": "Canon law", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/Decretals_of_Gregory_IX", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1270, "author": "Thomas Aquinas", "title": "Summa Theologiae II–II q.169", "type": "Scholastic theology", "view": "material_veil_required", "url": "https://www.newadvent.org/summa/3169.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 1, "year": 1271, "author": "Thomas Aquinas", "title": "Commentary on 1 Corinthians 11", "type": "Biblical commentary", "view": "material_veil_required", "url": "https://isidore.co/aquinas/english/SS1Cor.htm#111", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-
-    { "eraIndex": 2, "year": 1522, "author": "Martin Luther", "title": "NT translation/sermons (assumes veil)", "type": "Bible/sermons", "view": "material_veil_expected", "url": "https://en.wikipedia.org/wiki/Luther_Bible", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1537, "author": "Heinrich Bullinger", "title": "Decades (Sermon 7)", "type": "Theology/sermons", "view": "material_veil_expected", "url": "https://www.heritagebooks.org/products/the-decades-of-henry-bullinger-2-volumes-bullinger.html", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1556, "author": "John Calvin", "title": "Commentary on 1 Corinthians", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://www.ccel.org/ccel/calvin/calcom39.xii.i.html", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1563, "author": "Council of Trent", "title": "Decrees (disciplinary continuity)", "type": "Council decrees", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/Council_of_Trent", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1599, "author": "Geneva Bible Notes", "title": "Notes on 1 Cor 11", "type": "Study notes", "view": "material_veil_expected", "url": "https://www.bible-researcher.com/geneva.html", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1637, "author": "Cornelius à Lapide", "title": "Commentary on 1 Corinthians", "type": "Biblical commentary", "view": "material_veil_required", "url": "https://www.ecatholic2000.com/lapide/untitled-141.shtml", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 2, "year": 1707, "author": "John Locke", "title": "Paraphrase and Notes on St Paul", "type": "Biblical notes", "view": "material_veil_expected", "url": "https://oll.libertyfund.org/titles/locke-the-works-vol-7-essays-and-notes-on-st-pauls-epistles", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-
-    { "eraIndex": 3, "year": 1706, "author": "Matthew Henry", "title": "Commentary on the Whole Bible", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://biblehub.com/commentaries/mhc/1_corinthians/11.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1748, "author": "John Gill", "title": "Exposition of the NT (1 Cor)", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://biblehub.com/commentaries/gill/1_corinthians/11.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1855, "author": "Various", "title": "The Christian Lady’s Magazine (debates)", "type": "Magazine debate", "view": "material_veil_expected", "url": "https://books.google.com/books?id=9o4EAAAAQAAJ", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1872, "author": "Charles Hodge", "title": "An Exposition of 1 Corinthians", "type": "Biblical commentary", "view": "cultural_symbol", "url": "https://biblicalstudies.org.uk/pdf/hodge-corinthians/hodge-1corinthians.pdf", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1883, "author": "H. A. W. Meyer", "title": "Critical and Exegetical (Eng.)", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://biblehub.com/commentaries/meyer/1_corinthians/11.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1889, "author": "Frédéric Godet", "title": "Commentary on 1 Corinthians", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://archive.org/details/commentaryonstpa02godeuoft", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1895, "author": "Elizabeth Cady Stanton (ed.)", "title": "The Woman’s Bible, Vol. I", "type": "Feminist critique", "view": "no_requirement", "url": "https://en.wikipedia.org/wiki/The_Woman%27s_Bible", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 3, "year": 1898, "author": "Elizabeth Cady Stanton (ed.)", "title": "The Woman’s Bible, Vol. II", "type": "Feminist critique", "view": "no_requirement", "url": "https://en.wikipedia.org/wiki/The_Woman%27s_Bible", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-
-    { "eraIndex": 4, "year": 1911, "author": "Catholic Encyclopedia", "title": "Head-dress of Women", "type": "Encyclopedia entry", "view": "material_veil_expected", "url": "https://www.newadvent.org/cathen/07173a.htm", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1917, "author": "Roman Catholic Church", "title": "Code of Canon Law (1917) c.1262 §2", "type": "Canon law", "view": "material_veil_required", "url": "https://en.wikipedia.org/wiki/1917_Code_of_Canon_Law", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1933, "author": "A. T. Robertson", "title": "Word Pictures in the New Testament (1 Cor)", "type": "Biblical notes", "view": "material_veil_expected", "url": "https://archive.org/details/wordpicturesinne03robeuoft", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1937, "author": "R. C. H. Lenski", "title": "The Interpretation of St. Paul’s 1 Corinthians", "type": "Biblical commentary", "view": "material_veil_expected", "url": "https://archive.org/details/interpretationof00lens_0", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1957, "author": "Bouscaren & Ellis", "title": "Canon Law: A Text and Commentary", "type": "Canon law", "view": "material_veil_required", "url": "https://archive.org/details/canonlawtextcomm00ladi", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1957, "author": "Orthodox Church", "title": "The Rudder (Pedalion) — Eng. trans.", "type": "Canon law (Orthodox)", "view": "material_veil_expected", "url": "https://archive.org/details/rudderpedalionof00agapuoft", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1965, "author": "Abel Isaksson", "title": "Marriage and Ministry in the New Temple", "type": "Monograph", "view": "hair_only", "url": "https://archive.org/details/marriageministry0000isak", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1968, "author": "National Organization for Women", "title": "1968 Resolution", "type": "Activism", "view": "no_requirement", "url": "https://now.org/wp-content/uploads/2020/10/NOW-1968-Resolutions.pdf", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1983, "author": "Roman Catholic Church", "title": "Code of Canon Law (1983)", "type": "Canon law", "view": "no_requirement", "url": "https://www.vatican.va/archive/ENG1104/_P2.HTM", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 1987, "author": "Gordon D. Fee", "title": "The First Epistle to the Corinthians (NICNT)", "type": "Biblical commentary", "view": "cultural_symbol", "url": "https://books.google.com/books?id=XlBp10nUTXAC", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 2000, "author": "Anthony C. Thiselton", "title": "The First Epistle to the Corinthians (NIGTC)", "type": "Biblical commentary", "view": "cultural_symbol", "url": "https://www.eerdmans.com/9780802824493/the-first-epistle-to-the-corinthians/", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 2001, "author": "Kraybill & Bowman", "title": "On the Backroad to Heaven", "type": "Ethnography", "view": "material_veil_expected", "url": "https://www.press.jhu.edu/books/title/2077/backroad-heaven", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 2003, "author": "David E. Garland", "title": "1 Corinthians (BECNT)", "type": "Biblical commentary", "view": "cultural_symbol", "url": "https://books.google.com/books?id=6sa-AgAAQBAJ", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" },
-    { "eraIndex": 4, "year": 2015, "author": "Various", "title": "Head Covering Movement (revival)", "type": "Online movement", "view": "material_veil_required", "url": "https://www.headcoveringmovement.com/", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/No_image_3x4.svg" }
+  "items": [
+    {
+      "year": 55,
+      "author": "Paul",
+      "work": "1 Corinthians written",
+      "view": "scriptural basis",
+      "note": "Passage addressing head covering (1 Cor 11:2–16).",
+      "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+11%3A2-16",
+      "image": "",
+      "primary": true
+    },
+    {
+      "year": 190,
+      "author": "Clement of Alexandria",
+      "work": "Paedagogus (The Instructor), III.11",
+      "view": "material-veil",
+      "note": "Urges women be entirely covered unless at home.",
+      "url": "https://www.newadvent.org/fathers/02093.htm",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/9/92/Clement_of_Alexandria_%28fra_Angelico%29.jpg",
+      "primary": true
+    },
+    {
+      "year": 200,
+      "author": "Tertullian",
+      "work": "De virginibus velandis",
+      "view": "material-veil",
+      "note": "Argues virgins and married women alike should be veiled in church.",
+      "url": "https://www.newadvent.org/fathers/0404.htm",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tertullian.jpg",
+      "primary": true
+    },
+    {
+      "year": 215,
+      "author": "Hippolytus (attrib.)",
+      "work": "Apostolic Tradition",
+      "view": "material-veil",
+      "note": "Instructs women to cover with an opaque cloth in the assembly.",
+      "url": "http://www.bombaxo.com/hippolytus.html",
+      "image": "",
+      "primary": false
+    },
+    {
+      "year": 230,
+      "author": "Didascalia Apostolorum",
+      "work": "Church order",
+      "view": "material-veil",
+      "note": "Directs women to be veiled during prayer in church.",
+      "url": "",
+      "image": "",
+      "primary": false
+    },
+    {
+      "year": 340,
+      "author": "Council of Gangra",
+      "work": "Canon 17",
+      "view": "discipline",
+      "note": "Condemns women casting off veils under pretext of asceticism.",
+      "url": "",
+      "image": "",
+      "primary": true
+    },
+    {
+      "year": 380,
+      "author": "Apostolic Constitutions",
+      "work": "Books I–VIII",
+      "view": "material-veil",
+      "note": "Reiterates head-covering norms in worship.",
+      "url": "",
+      "image": "",
+      "primary": false
+    },
+    {
+      "year": 400,
+      "author": "John Chrysostom",
+      "work": "Homily 26 on 1 Corinthians",
+      "view": "material-veil",
+      "note": "Roots the custom in God’s order ('nature').",
+      "url": "https://www.newadvent.org/fathers/220126.htm",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/John_Chrysostom_La_Ferla.jpg",
+      "primary": true
+    },
+    {
+      "year": 400,
+      "author": "Jerome",
+      "work": "Letter 147",
+      "view": "material-veil",
+      "note": "Describes regional cap-and-veil usages; unveiling not becoming.",
+      "url": "https://www.newadvent.org/fathers/3001147.htm",
+      "image": "",
+      "primary": false
+    },
+    {
+      "year": 1270,
+      "author": "Thomas Aquinas",
+      "work": "Summa Theologiae II–II q.169",
+      "view": "modesty/discipline",
+      "note": "Treats unveiling at sacred rites as a fault in dress.",
+      "url": "https://www.newadvent.org/summa/3169.htm",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Thomas_Aquinas_by_Fra_Bartolommeo.jpg",
+      "primary": true
+    },
+    {
+      "year": 1556,
+      "author": "John Calvin",
+      "work": "Commentary on 1 Corinthians",
+      "view": "material-veil (ecclesial decorum)",
+      "note": "Frames veiling as fitting ecclesial norm for public decorum.",
+      "url": "https://www.ccel.org/ccel/calvin/calcom39.xii.i.html",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6c/John_Calvin_Museum.jpg",
+      "primary": true
+    },
+    {
+      "year": 1895,
+      "author": "Elizabeth Cady Stanton (ed.)",
+      "work": "The Woman’s Bible, Vol. I",
+      "view": "hair-only/cultural",
+      "note": "Landmark feminist critique rejecting Pauline head-covering normativity.",
+      "url": "https://archive.org/details/womansbible00unkngoog",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Elizabeth_Cady_Stanton.jpg",
+      "primary": true
+    },
+    {
+      "year": 1917,
+      "author": "Code of Canon Law",
+      "work": "1917 CIC, c.1262 §2",
+      "view": "legal requirement",
+      "note": "Women to cover head in church (Roman Catholic discipline).",
+      "url": "",
+      "image": "",
+      "primary": true
+    },
+    {
+      "year": 1965,
+      "author": "Abel Isaksson",
+      "work": "Marriage and Ministry in the New Temple",
+      "view": "hair-only",
+      "note": "Influential 'hair-as-covering' thesis.",
+      "url": "https://archive.org/details/marriageministry0000isak",
+      "image": "",
+      "primary": true
+    },
+    {
+      "year": 1983,
+      "author": "Code of Canon Law",
+      "work": "1983 CIC (can. 6 §1)",
+      "view": "legal change",
+      "note": "Abrogates 1917 law; no universal head-covering rule.",
+      "url": "https://www.vatican.va/archive/cod-iuris-canonici/eng/documents/cic_lib1-cann001-007_en.html#TITLE_I.",
+      "image": "",
+      "primary": true
+    },
+    {
+      "year": 1987,
+      "author": "Gordon D. Fee",
+      "work": "NICNT: 1 Corinthians",
+      "view": "material-veil (contextualized)",
+      "note": "Argues for a material veil in Corinth but principle contextual.",
+      "url": "https://books.google.com/books?id=LA2LBAAAQBAJ",
+      "image": "",
+      "primary": true
+    }
   ]
 }
-
