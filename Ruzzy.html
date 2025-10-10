@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ryan Reeves Resume</title>
+  <style>
+    /* Supreme Court–style margins, print friendly */
+    body{
+      font-family: Calibri, Arial, sans-serif;  /* Main font for entire document (change to Times, Georgia, etc.) */
+      font-size: 11pt;                          /* Base text size for body (increase for larger text throughout) */
+      line-height: 1.2;                         /* Line spacing multiplier (1.2 = 20% more than font size) */
+      color: #000;                              /* Text color - black (change to #333 for softer black) */
+      margin: 0.5in;                            /* Page margins on screen (0.5 inches all sides, increase for more whitespace) */
+      max-width: 8.5in;                         /* Maximum width of content (standard letter width for printing) */
+    }
+    @page{ margin: 1in; }                       /* Margins when printing (1 inch all sides, adjust for print layout) */
+
+    /* Header - Your name at the top */
+    h1{
+      font-family: Arial, Calibri, sans-serif;  /* Font for your name (try Georgia, Times for different look) */
+      color: rgb(44,62,80);                     /* Name color - dark blue-gray (change to #000 for black) */
+      font-size: 24pt;                          /* Size of your name (increase for more prominence) */
+      font-weight: bold;                        /* Makes name bold (change to 'normal' for regular weight) */
+      text-align: center;                       /* Centers name (change to 'left' for left-aligned) */
+      margin: 0 0 3pt 0;                        /* Space around name: top right bottom left (increase bottom for more space below) */
+      display: flex;                            /* Enables flexbox for name and credential alignment */
+      justify-content: center;                  /* Centers the name and credential horizontally */
+      align-items: baseline;                    /* Aligns name and credential on same baseline */
+      gap: 6pt;                                 /* Space between name and credential (adjust for more/less space) */
+    }
+    h1 .credential{
+      font-size: 14pt;                          /* Size of APP credential (smaller than name, increase if needed) */
+      font-weight: normal;                      /* Makes credential normal weight (not bold) */
+      color: rgb(44,62,80);                     /* Credential color - matches name color */
+      font-style: italic;                       /* Makes credential italic for distinction */
+    }
+    h1 .credential a{
+      color: rgb(44,62,80);                     /* Link color - matches credential color */
+      text-decoration: none;                    /* Removes underline from credential link */
+    }
+    h1 .credential a:hover{
+      text-decoration: underline;               /* Adds underline when hovering over credential */
+    }
+    .contact{
+      font-size: 10pt;                          /* Size of contact info line (increase for larger contact text) */
+      text-align: center;                       /* Centers contact info (change to 'left' to match left-aligned name) */
+      margin: 0 0 10pt 0;                       /* Space below contact info (increase for more separation from Profile) */
+    }
+    .contact a{
+      color: #000;                              /* Color of clickable links in contact (change to blue for visible links) */
+      text-decoration: none;                    /* Removes underline from links (change to 'underline' to show underlines) */
+    }
+    .contact a:hover{
+      text-decoration: underline;               /* Adds underline when hovering over links (remove line to disable hover effect) */
+    }
+
+    /* Section titles - PROFILE, EDUCATION, etc. */
+    h2{
+      font-size: 12pt;                          /* Size of section headings (increase for more prominent sections) */
+      font-family: Arial, Calibri, sans-serif;  /* Font for section headings */
+      font-weight: 900;                         /* Makes headings extra bold (900 is heaviest, 700 is normal bold) */
+      text-transform: uppercase;                /* Makes headings ALL CAPS (remove to use normal case) */
+      color: rgb(44,62,80);                     /* Heading color - dark blue-gray */
+      margin: 12pt 0 4pt 0;                     /* Space: 12pt above, 4pt below (adjust for section spacing) */
+      padding-bottom: 3pt;                      /* Space between text and underline (increase for more gap) */
+      border-bottom: 1px solid #d6d9dd;         /* Underline below heading: thickness style color (increase '1px' for thicker line) */
+    }
+
+    /* Job titles, degree names */
+    h3{
+      font-family: Arial, Calibri, sans-serif;  /* Font for job/degree titles */
+      font-size: 11pt;                          /* Size of job titles (same as body text, increase to make prominent) */
+      font-weight: bold;                        /* Makes job titles bold */
+      color: rgb(44,62,80);                     /* Job title color */
+      margin: 6pt 0 0 0;                        /* Space: 6pt above title (increase for more separation between jobs) */
+    }
+    .position{
+      font-size: 11pt;                          /* Size of company/school + dates line */
+      margin: 0 0 4pt 0;                        /* Space: 4pt below position line (increase for more space before bullets) */
+    }
+
+    /* Bullet point lists */
+    ul{
+      margin: 0 0 0 16pt;                       /* Space: 16pt left indent (increase for more indent, decrease for less) */
+      padding: 0;                               /* No additional padding */
+      list-style-type: disc;                    /* Bullet style - solid circles (change to 'circle', 'square', 'none') */
+    }
+    li{ margin: 3pt 0; }                        /* Space between bullet points (increase for more spacing) */
+
+    .profile{ margin: 0 0 12pt 0; }             /* Space below profile paragraph (increase for more separation from Education) */
+
+    /* Certification cards */
+    .cert-grid{
+      display: flex;              /* Enables flexbox layout for automatic card arrangement */
+      flex-wrap: wrap;            /* Allows cards to wrap to next line when they don't fit */
+      gap: 4pt;                   /* Space between cards (increase for more space, decrease for tighter) */
+      margin-top: 2pt;            /* Space above the entire card grid (distance from CERTIFICATIONS heading) */
+    }
+    .cert-card{
+      flex: 0 0 calc(50% - 2pt);  /* Makes each card exactly 50% width (ensures uniform sizes, 2pt accounts for gap) */
+      border: 1px solid #d6d9dd;  /* Border thickness and color (increase '1px' for thicker border) */
+      border-radius: 2px;         /* Rounds the corners (increase for more rounded, 0 for sharp corners) */
+      padding: 3pt 5pt;           /* Space inside card: 3pt top/bottom, 5pt left/right (increase for more breathing room) */
+      box-sizing: border-box;     /* Makes padding included in width calculation (keeps cards uniform) */
+      background: #fff;           /* Background color of cards (change to add color) */
+    }
+    .cert-name{ 
+      font-weight: bold;          /* Makes certification name bold */
+      margin: 0;                  /* No space around cert name (increase bottom number like '0 0 2pt 0' to add space) */
+      color: rgb(44,62,80);       /* Text color for cert name (dark blue-gray) */
+      font-size: 9pt;             /* Text size for cert name (increase for larger text) */
+      line-height: 1.15;          /* Line spacing multiplier (1.15 = 15% more than font size, increase for more space) */
+    }
+    .cert-issuer{ 
+      margin: 0;                  /* No space around issuer name */
+      font-size: 9pt;             /* Text size for issuer (increase for larger text) */
+      color: #000;                /* Text color for issuer (black) */
+      line-height: 1.15;          /* Line spacing multiplier (matches cert name) */
+    }
+
+    /* Thick + thin divider (under header) - Not currently used but available */
+    hr{ border: 0; padding: 0; }                /* Removes default border styling from horizontal rules */
+    hr.thin{
+      display: block;                           /* Makes element display as a block */
+      height: 1px;                              /* Thickness of thin line (increase for thicker) */
+      margin: 10pt 0 0 0;                       /* Space: 10pt above line */
+      background: #d6d9dd;                      /* Line color - light gray */
+    }
+    hr.thick{
+      display: block;                           /* Makes element display as a block */
+      height: 3px;                              /* Thickness of thick line (increase for thicker accent) */
+      width: 84px;                              /* Length of line (increase for longer accent line) */
+      background: #2c3e50;                      /* Line color - dark blue-gray */
+      margin: -2px 0 12pt 0;                    /* Positioning: -2px overlaps with thin line, 12pt space below */
+      border-radius: 2px;                       /* Rounds the ends of the line (increase for more rounding, 0 for square) */
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    <span>RYAN REEVES</span>
+    <span class="credential"><a href="https://www.asisonline.org/certification/associate-protection-professional-app/" target="_blank">APP®</a></span>
+  </h1>
+  <p class="contact">Ottawa, ON | <a href="tel:+16135014827">613-501-4827</a> | <a href="mailto:ryanzr10@gmail.com">ryanzr10@gmail.com</a> | <a href="https://www.linkedin.com/in/ryan-r-440b222b2/" target="_blank">LinkedIn</a></p>
+
+  <h2>PROFILE</h2>
+  <p class="profile">
+Public Safety professional with practical experience in security services and administrative support. 
+Skilled in managing access control, maintaining sensitive databases, and collaborating effectively. 
+Strong track record in high-pressure environments, delivering consistent, high-quality service.
+Proficient in Microsoft Office Suite and data visualization tools.
+Obtained Secret clearance with federal government.
+ </p>
+
+<h2>EDUCATION</h2>
+<h3>Bachelor of Public Safety (Honours)</h3>
+<p class="position">Algonquin College, Ottawa, ON | 2024 – 2027</p>
+<ul>
+  <li>Applied public safety theory in scenario labs to plan responses to man-made and natural hazards using standard emergency command principles</li>
+  <li>Produced case analyses and short briefings that strengthened investigative reasoning and analytical problem solving</li>
+  <li>Evaluated geopolitical and socio-technical trends and translated findings into concrete risk implications for communities</li>
+  <li>Selected coursework: Incident Management System, Risk and Hazard Analysis, Critical Infrastructure Protection, GIS for Public Safety</li>
+</ul>
+  <h3>Police Foundations Diploma</h3>
+  <p class="position">Algonquin College, Ottawa, ON | 2022 – 2024</p>
+<ul>
+  <li>Completed in-depth studies in Criminal Law, Criminology, Psychology, Sociology, and Physical Fitness</li>
+  <li>Practiced professional note-taking, report writing, and scenario de-escalation in labs and role play</li>
+  <li>Achieved Dean's Honour List, graduated with a cumulative GPA of 3.58</li></ul>
+</ul>
+
+
+  <h2>PROFESSIONAL EXPERIENCE</h2>
+  <h3>Junior Security Officer</h3>
+  <p class="position">Administrative Tribunals Support Service, Ottawa, ON | Aug 2025 – Dec 2025</p>
+<ul>
+  <li>Administered access cards and keys for employees and contractors, maintained reconciliations, and resolved access issues promptly</li>
+  <li>Coordinated visitor and contractor escorts to restricted areas in accordance with policy, reducing operational disruption</li>
+  <li>Prepared and submitted security screening packages, scheduled fingerprints, and tracked cases to closure</li>
+  <li>Triaged shared mailbox and ticket queue, prioritized requests, updated trackers and SOPs, and documented actions clearly</li>
+  <li>Drafted incident and service reports that met privacy and records requirements</li>
+</ul>
+  <h3>Security Guard</h3>
+  <p class="position">Commissionaires Ottawa, Ottawa, ON | Jun 2022 – Present</p>
+<ul>
+  <li>Verified identities and authorizations at checkpoints using access control software to prevent unauthorized entry</li>
+  <li>Recorded clear daily activity and incident notes that supported investigations and service reporting</li>
+  <li>Supported emergency procedures and drills, assisted evacuations, and delivered professional client service</li>
+</ul>
+
+
+<h2>COMMUNITY INVOLVEMENT</h2>
+<h3>Personal Disaster Assistance Responder</h3>
+<p class="position">Canadian Red Cross, Ottawa, ON | Jul 2025 – Present</p>
+<ul>
+  <li>Completed training in needs assessments and arrange emergency lodging, food, clothing, and transportation per CRC guidelines</li>
+  <li>Educated in maintaing accurate client files in EMIS, issue assistance cards, and document services for audit readiness</li>
+  <li>Followed safety procedures and PPE use, protect confidentiality, respect cultural considerations</li>
+</ul>
+  <h3>Youth Leader</h3>
+  <p class="position">Kanata Baptist Church, Ottawa, ON | Jan 2024 – Mar 2025</p>
+  <ul>
+    <li>Mentored youth aged 12–17 in spiritual development and community building initiatives</li>
+    <li>Provided regular progress updates to parents regarding youth development and concerns</li>
+    <li>Supervised group activities and team-building exercises</li>
+  </ul>
+<h2>CERTIFICATIONS</h2>
+<div class="cert-grid">
+  <div class="cert-card">
+    <p class="cert-name">Associate Protection Professional (APP&reg;)</p>
+    <p class="cert-issuer">ASIS International (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Incident Management System 200</p>
+    <p class="cert-issuer">Emergency Management Ontario (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Fundamentals of Physical Security</p>
+    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Security Screening</p>
+    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Understanding Protection in Operations</p>
+    <p class="cert-issuer">Canadian Red Cross (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">WMD/Terrorism Awareness</p>
+    <p class="cert-issuer">Federal Emergency Management Agency (2024)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Emergency and Disaster Preparedness</p>
+    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Psychological First Aid, Caring for Others</p>
+    <p class="cert-issuer">Canadian Red Cross (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Emergency First Aid + CPR + AED</p>
+    <p class="cert-issuer">St John Ambulance Canada (2025)</p>
+  </div>
+  <div class="cert-card">
+    <p class="cert-name">Ontario Security Guard License</p>
+    <p class="cert-issuer">Ministry of the Solicitor General (2022)</p>
+  </div>
+</div>
+</body>
+</html>
