@@ -79,6 +79,14 @@
       font-size: 11pt;                          /* Size of company/school + dates line */
       margin: 0 0 4pt 0;                        /* Space: 4pt below position line (increase for more space before bullets) */
     }
+    .position a{
+      color: #000;                              /* Color of organization links (change to blue for visible links) */
+      text-decoration: none;                    /* Removes underline from links */
+    }
+    .position a:hover{
+      text-decoration: underline;               /* Adds underline when hovering over organization links */
+      color: rgb(44,62,80);                     /* Changes color on hover for visual feedback */
+    }
 
     /* Bullet point lists */
     ul{
@@ -104,6 +112,15 @@
       padding: 3pt 5pt;           /* Space inside card: 3pt top/bottom, 5pt left/right (increase for more breathing room) */
       box-sizing: border-box;     /* Makes padding included in width calculation (keeps cards uniform) */
       background: #fff;           /* Background color of cards (change to add color) */
+      transition: border-color 0.2s; /* Smooth color transition on hover */
+    }
+    .cert-card:hover{
+      border-color: rgb(44,62,80); /* Changes border color on hover for visual feedback */
+    }
+    .cert-card a{
+      text-decoration: none;      /* Removes underline from certification links */
+      color: inherit;             /* Inherits color from parent elements */
+      display: block;             /* Makes entire card clickable */
     }
     .cert-name{ 
       font-weight: bold;          /* Makes certification name bold */
@@ -155,7 +172,7 @@ Obtained Secret clearance with federal government.
 
 <h2>EDUCATION</h2>
 <h3>Bachelor of Public Safety (Honours)</h3>
-<p class="position">Algonquin College, Ottawa, ON | 2024 – 2027</p>
+<p class="position"><a href="https://www.algonquincollege.com/" target="_blank">Algonquin College</a>, Ottawa, ON | 2024 – 2027</p>
 <ul>
   <li>Applied public safety theory in scenario labs to plan responses to man-made and natural hazards using standard emergency command principles</li>
   <li>Produced case analyses and short briefings that strengthened investigative reasoning and analytical problem solving</li>
@@ -163,17 +180,17 @@ Obtained Secret clearance with federal government.
   <li>Selected coursework: Incident Management System, Risk and Hazard Analysis, Critical Infrastructure Protection, GIS for Public Safety</li>
 </ul>
   <h3>Police Foundations Diploma</h3>
-  <p class="position">Algonquin College, Ottawa, ON | 2022 – 2024</p>
+  <p class="position"><a href="https://www.algonquincollege.com/" target="_blank">Algonquin College</a>, Ottawa, ON | 2022 – 2024</p>
 <ul>
   <li>Completed in-depth studies in Criminal Law, Criminology, Psychology, Sociology, and Physical Fitness</li>
   <li>Practiced professional note-taking, report writing, and scenario de-escalation in labs and role play</li>
-  <li>Achieved Dean's Honour List, graduated with a cumulative GPA of 3.58</li></ul>
+  <li>Achieved Dean's Honour List, graduated with a cumulative GPA of 3.58</li>
 </ul>
 
 
   <h2>PROFESSIONAL EXPERIENCE</h2>
   <h3>Junior Security Officer</h3>
-  <p class="position">Administrative Tribunals Support Service, Ottawa, ON | Aug 2025 – Dec 2025</p>
+  <p class="position"><a href="https://www.canada.ca/en/administrative-tribunals-support-service.html" target="_blank">Administrative Tribunals Support Service</a>, Ottawa, ON | Aug 2025 – Dec 2025</p>
 <ul>
   <li>Administered access cards and keys for employees and contractors, maintained reconciliations, and resolved access issues promptly</li>
   <li>Coordinated visitor and contractor escorts to restricted areas in accordance with policy, reducing operational disruption</li>
@@ -182,7 +199,7 @@ Obtained Secret clearance with federal government.
   <li>Drafted incident and service reports that met privacy and records requirements</li>
 </ul>
   <h3>Security Guard</h3>
-  <p class="position">Commissionaires Ottawa, Ottawa, ON | Jun 2022 – Present</p>
+  <p class="position"><a href="https://www.commissionaires-ottawa.on.ca/" target="_blank">Commissionaires Ottawa</a>, Ottawa, ON | Jun 2022 – Present</p>
 <ul>
   <li>Verified identities and authorizations at checkpoints using access control software to prevent unauthorized entry</li>
   <li>Recorded clear daily activity and incident notes that supported investigations and service reporting</li>
@@ -192,14 +209,14 @@ Obtained Secret clearance with federal government.
 
 <h2>COMMUNITY INVOLVEMENT</h2>
 <h3>Personal Disaster Assistance Responder</h3>
-<p class="position">Canadian Red Cross, Ottawa, ON | Jul 2025 – Present</p>
+<p class="position"><a href="https://www.redcross.ca/" target="_blank">Canadian Red Cross</a>, Ottawa, ON | Jul 2025 – Present</p>
 <ul>
   <li>Completed training in needs assessments and arrange emergency lodging, food, clothing, and transportation per CRC guidelines</li>
   <li>Educated in maintaing accurate client files in EMIS, issue assistance cards, and document services for audit readiness</li>
   <li>Followed safety procedures and PPE use, protect confidentiality, respect cultural considerations</li>
 </ul>
   <h3>Youth Leader</h3>
-  <p class="position">Kanata Baptist Church, Ottawa, ON | Jan 2024 – Mar 2025</p>
+  <p class="position"><a href="https://kbc.ca/" target="_blank">Kanata Baptist Church</a>, Ottawa, ON | Jan 2024 – Mar 2025</p>
   <ul>
     <li>Mentored youth aged 12–17 in spiritual development and community building initiatives</li>
     <li>Provided regular progress updates to parents regarding youth development and concerns</li>
@@ -208,44 +225,64 @@ Obtained Secret clearance with federal government.
 <h2>CERTIFICATIONS</h2>
 <div class="cert-grid">
   <div class="cert-card">
-    <p class="cert-name">Associate Protection Professional (APP&reg;)</p>
-    <p class="cert-issuer">ASIS International (2025)</p>
+    <a href="https://www.asisonline.org/certification/associate-protection-professional-app/" target="_blank">
+      <p class="cert-name">Associate Protection Professional (APP&reg;)</p>
+      <p class="cert-issuer">ASIS International (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Incident Management System 200</p>
-    <p class="cert-issuer">Emergency Management Ontario (2025)</p>
+    <a href="https://www.ontario.ca/document/incident-management-system-ims-guidance-version-2" target="_blank">
+      <p class="cert-name">Incident Management System 200</p>
+      <p class="cert-issuer">Emergency Management Ontario (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Fundamentals of Physical Security</p>
-    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    <a href="https://www.csps-efpc.gc.ca/" target="_blank">
+      <p class="cert-name">Fundamentals of Physical Security</p>
+      <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Security Screening</p>
-    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    <a href="https://www.csps-efpc.gc.ca/" target="_blank">
+      <p class="cert-name">Security Screening</p>
+      <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Understanding Protection in Operations</p>
-    <p class="cert-issuer">Canadian Red Cross (2025)</p>
+    <a href="https://www.redcross.ca/" target="_blank">
+      <p class="cert-name">Understanding Protection in Operations</p>
+      <p class="cert-issuer">Canadian Red Cross (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">WMD/Terrorism Awareness</p>
-    <p class="cert-issuer">Federal Emergency Management Agency (2024)</p>
+    <a href="https://teex.org/class/awr160/" target="_blank">
+      <p class="cert-name">WMD/Terrorism Awareness</p>
+      <p class="cert-issuer">Federal Emergency Management Agency (2024)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Emergency and Disaster Preparedness</p>
-    <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    <a href="https://www.csps-efpc.gc.ca/" target="_blank">
+      <p class="cert-name">Emergency and Disaster Preparedness</p>
+      <p class="cert-issuer">Canada School of Public Service (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Psychological First Aid, Caring for Others</p>
-    <p class="cert-issuer">Canadian Red Cross (2025)</p>
+    <a href="https://www.redcross.ca/" target="_blank">
+      <p class="cert-name">Psychological First Aid, Caring for Others</p>
+      <p class="cert-issuer">Canadian Red Cross (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Emergency First Aid + CPR + AED</p>
-    <p class="cert-issuer">St John Ambulance Canada (2025)</p>
+    <a href="https://www.sja.ca/" target="_blank">
+      <p class="cert-name">Emergency First Aid + CPR + AED</p>
+      <p class="cert-issuer">St John Ambulance Canada (2025)</p>
+    </a>
   </div>
   <div class="cert-card">
-    <p class="cert-name">Ontario Security Guard License</p>
-    <p class="cert-issuer">Ministry of the Solicitor General (2022)</p>
+    <a href="https://www.ontario.ca/page/security-guard-and-private-investigator-licences" target="_blank">
+      <p class="cert-name">Ontario Security Guard License</p>
+      <p class="cert-issuer">Ministry of the Solicitor General (2022)</p>
+    </a>
   </div>
 </div>
 </body>
