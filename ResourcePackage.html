@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insider risk resources - Canada.ca</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insider risk resources - Canada.ca</title>
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/wet-boew.min.css">
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Lato, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #333;
+    background: #f5f5f5;
+  }
+
+  /* Main content */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 12px;
+    background: #fff;
+    min-height: 500px;
+  }
+
+  h1 {
+    font-family: Lato, sans-serif;
+    font-size: 2.6em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+    border: none;
+  }
+
+  .page-intro {
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+    color: #555;
+    line-height: 1.65;
+  }
+
+  /* Sections */
+  h2 {
+    font-family: Lato, sans-serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #333;
+    margin: 1.5em 0 0.8em;
+    padding-bottom: 0.4em;
+    border-bottom: 3px solid #af3c43;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  /* Resource list with covers (compact) */
+  .resource-list { margin-bottom: 1.4em; }
+  .resource-card {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 10px 8px 10px 28px;
+    position: relative;
+    border-bottom: 1px solid #e1e4e7;
+  }
+  .resource-card:last-child { border-bottom: 0; }
+
+  .resource-number {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-weight: 700;
+    color: #335075;
+    font-size: 0.95em;
+    width: 22px;
+    text-align: right;
+  }
+
+  .cover {
+    width: 72px;
+    height: 96px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    background: #f5f5f5;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    overflow: hidden;
+  }
+  .cover a { display: grid; place-items: center; width: 100%; height: 100%; text-decoration: none; }
+  .cover svg { width: 56px; height: 56px; }
+  .cover.cat-blue { background: linear-gradient(180deg, #d7e9f7, #b3d7f2); }
+  .cover.cat-green{ background: linear-gradient(180deg, #d8eeca, #c3e5ae); }
+  .cover.cat-gold { background: linear-gradient(180deg, #fef6da, #fdeab6); }
+  .cover.cat-grey { background: linear-gradient(180deg, #f5f5f5, #e3e3e3); }
+
+  .resource-title {
+    font-family: Lato, sans-serif;
+    font-weight: 700;
+    font-size: 1em;
+    color: #295376;
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+  .resource-title a { 
+    color: #295376; 
+    text-decoration: underline;
+  }
+  .resource-title a:hover {
+    color: #0535d2;
+  }
+  .resource-title a:visited {
+    color: #7834bc;
+  }
+
+  .resource-meta {
+    font-size: 0.85em;
+    color: #555;
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+
+  .resource-desc {
+    color: #333;
+    line-height: 1.65;
+    font-size: 0.95em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Country pills */
+  .country-pill {
+    display: inline-block;
+    font-size: 0.75em;
+    font-weight: 700;
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Split/paired card helpers */
+  .resource-card--split { padding: 10px 8px 10px 28px; }
+  .resource-card--split .split-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .resource-card--split .mini-card {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+  .cover.cover--mini { width: 56px; height: 72px; }
+  .cover.cover--mini svg { width: 42px; height: 42px; }
+  .mini-title { 
+    font-family: Lato, sans-serif;
+    font-weight: 700; 
+    font-size: 0.95em; 
+    color: #295376; 
+    margin-bottom: 2px; 
+    line-height: 1.4; 
+  }
+  .mini-title a { color: #295376; text-decoration: underline; }
+  .mini-title a:hover { color: #0535d2; }
+  .mini-title a:visited { color: #7834bc; }
+  .mini-meta { font-size: 0.8em; color: #555; margin-bottom: 3px; font-style: italic; }
+  .mini-desc { font-size: 0.9em; line-height: 1.65; color: #333; }
+
+  /* Print styles */
+  @media print {
+    body { background: #fff; }
+    main { padding: 0; }
+    a { text-decoration: none; color: #000; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: 10pt; color: #000; }
+    .resource-card { break-inside: avoid; page-break-inside: avoid; }
+    .resource-desc { -webkit-line-clamp: unset; overflow: visible; }
+    h1 { font-size: 20pt; }
+    h2 { font-size: 16pt; border-bottom: 2pt solid #000; }
+  }
+
+  @media screen and (max-width: 768px) {
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.4em; }
+    .resource-card {
+      grid-template-columns: 56px 1fr;
+      gap: 8px;
+      padding: 8px 6px 8px 24px;
+    }
+    .cover { width: 56px; height: 72px; }
+    .cover svg { width: 42px; height: 42px; }
+    .resource-number { top: 8px; font-size: 0.9em; width: 20px; }
+    .resource-title { font-size: 0.95em; }
+    .resource-meta { font-size: 0.78em; }
+    .resource-desc { font-size: 0.92em; -webkit-line-clamp: 3; }
+    .resource-card--split .split-grid { grid-template-columns: 1fr; }
+    .resource-card--split .mini-card { grid-template-columns: 48px 1fr; }
+    .cover.cover--mini { width: 48px; height: 64px; }
+    .cover.cover--mini svg { width: 36px; height: 36px; }
+  }
+</style>
+</head>
+<body>
+<!-- Main content -->
+<main role="main" property="mainContentOfPage">
+  <h1 id="wb-cont" property="name">Insider risk resources</h1>
+  <p class="page-intro">Reference set for building and governing an insider-risk program in federal organizations.</p>
+
+  <!-- BOOKS (core primers) -->
+  <h2>Books (core primers)</h2>
+  <div class="resource-list">
+    <div class="resource-card">
+      <span class="resource-number">1.</span>
+      <div class="cover cat-green">
+        <a href="https://www.routledge.com/Insider-Risk-and-Personnel-Security-An-introduction/Martin/p/book/9781032358543" target="_blank" rel="noopener" aria-label="Open Martin Insider Risk and Personnel Security">
+          <svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/><rect x="16" y="16" width="32" height="8" fill="#d7f3e4"/><rect x="16" y="30" width="28" height="6" fill="#e8fbf1"/><rect x="16" y="42" width="20" height="6" fill="#e8fbf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.routledge.com/Insider-Risk-and-Personnel-Security-An-introduction/Martin/p/book/9781032358543" target="_blank" rel="noopener">Insider Risk and Personnel Security: An introduction</a></div>
+        <div class="resource-meta">Paul Martin — Routledge, 2024</div>
+        <p class="resource-desc">Terminology and lifecycle model to lift into policy and onboarding.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">2.</span>
+      <div class="cover cat-green">
+        <a href="https://www.routledge.com/The-Psychology-of-Insider-Risk-Detection-Investigation-and-Case-Management/Shaw/p/book/9781032482484" target="_blank" rel="noopener" aria-label="Open Shaw Psychology of Insider Risk">
+          <svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/><rect x="16" y="14" width="32" height="8" fill="#d7f3e4"/><rect x="16" y="28" width="32" height="6" fill="#e8fbf1"/><rect x="16" y="40" width="26" height="6" fill="#e8fbf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.routledge.com/The-Psychology-of-Insider-Risk-Detection-Investigation-and-Case-Management/Shaw/p/book/9781032482484" target="_blank" rel="noopener">The Psychology of Insider Risk</a></div>
+        <div class="resource-meta">Eric D. Shaw — CRC Press/Taylor &amp; Francis, 2023</div>
+        <p class="resource-desc">Critical Pathway, indicators, triage language, case handling.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">3.</span>
+      <div class="cover cat-green">
+        <a href="https://www.routledge.com/Insider-Threat-A-Systemic-Approach/Skorich-Manning/p/book/9780367519216" target="_blank" rel="noopener" aria-label="Open Skorich and Manning Insider Threat systematic approach">
+          <svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/><rect x="16" y="16" width="32" height="8" fill="#d7f3e4"/><rect x="16" y="30" width="24" height="6" fill="#e8fbf1"/><rect x="16" y="42" width="30" height="6" fill="#e8fbf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.routledge.com/Insider-Threat-A-Systemic-Approach/Skorich-Manning/p/book/9780367519216" target="_blank" rel="noopener">Insider Threat: A Systemic Approach</a></div>
+        <div class="resource-meta">Pierre Skorich &amp; Matthew Manning — Routledge, 2024</div>
+        <p class="resource-desc">Systems lens for metrics, maturity, and evaluation.</p>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-number">4.</span>
+      <div class="cover cat-grey">
+        <a href="https://www.vitalsource.com/products/national-security-law-2-e-craig-forcese-leah-west-v9781552216118" target="_blank" rel="noopener" aria-label="Open Forcese and West National Security Law">
+          <svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><rect x="16" y="18" width="32" height="6" fill="#e5ebf1"/><rect x="16" y="28" width="32" height="6" fill="#e5ebf1"/><rect x="16" y="38" width="22" height="6" fill="#e5ebf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.vitalsource.com/products/national-security-law-2-e-craig-forcese-leah-west-v9781552216118" target="_blank" rel="noopener">National Security Law (2nd ed.)</a></div>
+        <div class="resource-meta">Craig Forcese &amp; Leah West — Irwin Law, 2021</div>
+        <p class="resource-desc">Canadian legal frame for information sharing, screening, accountability.</p>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-number">5.</span>
+      <div class="cover cat-grey">
+        <a href="https://www.vitalsource.com/products/information-governance-robert-f-smallwood-v9781119491408" target="_blank" rel="noopener" aria-label="Open Smallwood Information Governance">
+          <svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><rect x="16" y="16" width="32" height="8" fill="#e5ebf1"/><rect x="16" y="30" width="28" height="6" fill="#e5ebf1"/><rect x="16" y="42" width="22" height="6" fill="#e5ebf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.vitalsource.com/products/information-governance-robert-f-smallwood-v9781119491408" target="_blank" rel="noopener">Information Governance (2nd ed.)</a></div>
+        <div class="resource-meta">Robert F. Smallwood — Wiley, 2019–2020</div>
+        <p class="resource-desc">Access discipline, retention, and audit trails for case integrity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANADA (policy, law, guidance) -->
+  <h2>Canada — policy, law, guidance</h2>
+  <div class="resource-list">
+    <div class="resource-card">
+      <span class="resource-number">6.</span>
+      <div class="cover cat-blue">
+        <a href="https://www.canada.ca/en/government/system/digital-government/online-security-privacy/security-policy/government-canada-cyber-security-event-management-plan.html" target="_blank" rel="noopener" aria-label="Open GC CSEMP">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/><rect x="14" y="14" width="36" height="6" fill="#b5c9e6"/><rect x="14" y="24" width="36" height="6" fill="#d4e1f5"/><rect x="14" y="34" width="36" height="6" fill="#d4e1f5"/><rect x="14" y="44" width="22" height="6" fill="#d4e1f5"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.canada.ca/en/government/system/digital-government/online-security-privacy/security-policy/government-canada-cyber-security-event-management-plan.html" target="_blank" rel="noopener">Government of Canada Cyber Security Event Management Plan (GC CSEMP)</a></div>
+        <div class="resource-meta">TBS/Canada.ca — 2025</div>
+        <p class="resource-desc">Escalation pathways and roles for cyber-linked insider events.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">7.</span>
+      <div class="cover cat-grey">
+        <a href="https://publications.gc.ca/collections/collection_2024/sct-tbs/BT39-24-2024-eng.pdf" target="_blank" rel="noopener" aria-label="Open Policy on Privacy Protection">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><circle cx="32" cy="30" r="10" fill="#e9eef2"/><rect x="24" y="40" width="16" height="8" rx="2" fill="#d9e2ea"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://publications.gc.ca/collections/collection_2024/sct-tbs/BT39-24-2024-eng.pdf" target="_blank" rel="noopener">Policy on Privacy Protection</a></div>
+        <div class="resource-meta">TBS — 2024</div>
+        <p class="resource-desc">Policy anchor for handling personal information in monitoring and cases.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">8.</span>
+      <div class="cover cat-grey">
+        <a href="https://publications.gc.ca/collections/collection_2024/sct-tbs/BT39-10-1-2024-eng.pdf" target="_blank" rel="noopener" aria-label="Open Directive on Privacy Practices">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><rect x="16" y="18" width="32" height="6" fill="#e5ebf1"/><rect x="16" y="28" width="32" height="6" fill="#e5ebf1"/><rect x="16" y="38" width="20" height="6" fill="#e5ebf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://publications.gc.ca/collections/collection_2024/sct-tbs/BT39-10-1-2024-eng.pdf" target="_blank" rel="noopener">Directive on Privacy Practices</a></div>
+        <div class="resource-meta">TBS — 2024</div>
+        <p class="resource-desc">PIAs and operational privacy controls for user-level analytics and logs.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">9.</span>
+      <div class="cover cat-grey">
+        <a href="https://publications.gc.ca/collections/collection_2025/sct-tbs/BT39-85-2025-eng.pdf" target="_blank" rel="noopener" aria-label="Open Directive on Security Screening">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><path d="M20 28h24v14a6 6 0 0 1-6 6H26a6 6 0 0 1-6-6V28z" fill="#e8f1ff"/><path d="M26 28v-5a6 6 0 0 1 12 0v5" stroke="#b5c9e6" stroke-width="2" fill="none"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://publications.gc.ca/collections/collection_2025/sct-tbs/BT39-85-2025-eng.pdf" target="_blank" rel="noopener">Directive on Security Screening</a></div>
+        <div class="resource-meta">TBS — 2025</div>
+        <p class="resource-desc">Role-based screening requirements for employees and appointees.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">10.</span>
+      <div class="cover cat-blue">
+        <a href="https://www.tpsgc-pwgsc.gc.ca/esc-src/personnel/index-eng.html" target="_blank" rel="noopener" aria-label="Open PSPC Personnel Security Screening">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/><rect x="14" y="18" width="36" height="6" fill="#d4e1f5"/><rect x="14" y="28" width="22" height="6" fill="#d4e1f5"/><rect x="14" y="38" width="30" height="6" fill="#b5c9e6"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.tpsgc-pwgsc.gc.ca/esc-src/personnel/index-eng.html" target="_blank" rel="noopener">Personnel Security Screening (Contract Security Program)</a></div>
+        <div class="resource-meta">PSPC — 2025</div>
+        <p class="resource-desc">Vendor/contractor screening and clauses for service contracts.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">11.</span>
+      <div class="cover cat-green">
+        <a href="https://ised-isde.canada.ca/site/science/sites/default/files/documents/1063-guidance_for_research_organizations_and_funders_on_developing_a_research_security_plan-august2024.pdf" target="_blank" rel="noopener" aria-label="Open ISED Research Security Plan Guidance">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/><rect x="14" y="14" width="36" height="8" fill="#d7f3e4"/><rect x="14" y="28" width="28" height="6" fill="#e8fbf1"/><rect x="14" y="40" width="22" height="6" fill="#e8fbf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://ised-isde.canada.ca/site/science/sites/default/files/documents/1063-guidance_for_research_organizations_and_funders_on_developing_a_research_security_plan-august2024.pdf" target="_blank" rel="noopener">Guidance for Developing a Research Security Plan</a></div>
+        <div class="resource-meta">ISED — 2024</div>
+        <p class="resource-desc">Adaptable roles, risk assessment, and incident response wording.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">12.</span>
+      <div class="cover cat-grey">
+        <a href="https://rcmp.ca/en/lead-security-agency-physical-security/gcpsg-006-2024-access-management-guide" target="_blank" rel="noopener" aria-label="Open RCMP GCPSG-006 Access Management Guide">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><rect x="14" y="14" width="36" height="6" fill="#e5ebf1"/><rect x="14" y="24" width="24" height="6" fill="#e5ebf1"/><rect x="14" y="34" width="30" height="6" fill="#e5ebf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://rcmp.ca/en/lead-security-agency-physical-security/gcpsg-006-2024-access-management-guide" target="_blank" rel="noopener">GCPSG-006 Access Management Guide</a></div>
+        <div class="resource-meta">RCMP Lead Security Agency — 2024</div>
+        <p class="resource-desc">Facility and identity controls supporting insider-risk measures.</p>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-number">13.</span>
+      <div class="cover cat-grey">
+        <a href="https://www.priv.gc.ca/en/privacy-topics/privacy-impact-assessments/" target="_blank" rel="noopener" aria-label="Open OPC PIA Guide">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#cfd6dc"/><rect x="14" y="18" width="36" height="6" fill="#e5ebf1"/><rect x="14" y="28" width="28" height="6" fill="#e5ebf1"/><rect x="14" y="38" width="22" height="6" fill="#e5ebf1"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.priv.gc.ca/en/privacy-topics/privacy-impact-assessments/" target="_blank" rel="noopener">Guide to the Privacy Impact Assessment process</a></div>
+        <div class="resource-meta">Office of the Privacy Commissioner — reference</div>
+        <p class="resource-desc">Use before enabling user-level analytics or monitoring that touches personal information.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THREAT CONTEXT (Canada) -->
+  <h2>Canada — Threat context</h2>
+  <div class="resource-list">
+    <div class="resource-card">
+      <span class="resource-number">14.</span>
+      <div class="cover cat-gold">
+        <a href="https://www.canada.ca/content/dam/csis-scrs/images/2024publicreport/newest/Public_Report_2024-ENG.pdf" target="_blank" rel="noopener" aria-label="Open CSIS Public Report 2024">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#f1d9a6"/><rect x="14" y="14" width="36" height="8" fill="#ffe8b8"/><rect x="14" y="28" width="36" height="6" fill="#fff3d6"/><rect x="14" y="40" width="26" height="6" fill="#fff3d6"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.canada.ca/content/dam/csis-scrs/images/2024publicreport/newest/Public_Report_2024-ENG.pdf" target="_blank" rel="noopener">CSIS Public Report 2024</a></div>
+        <div class="resource-meta">CSIS — posted 2025</div>
+        <p class="resource-desc">Foreign interference and economic espionage risks to institutions.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">15.</span>
+      <div class="cover cat-gold">
+        <a href="https://www.nsicop-cpsnr.ca/reports/rp-2024-06-03/special-report-foreign-interference.pdf" target="_blank" rel="noopener" aria-label="Open NSICOP Special Report on Foreign Interference">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#f1d9a6"/><rect x="14" y="16" width="36" height="6" fill="#ffe8b8"/><rect x="14" y="26" width="24" height="6" fill="#fff3d6"/><rect x="14" y="36" width="30" height="6" fill="#fff3d6"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://www.nsicop-cpsnr.ca/reports/rp-2024-06-03/special-report-foreign-interference.pdf" target="_blank" rel="noopener">NSICOP Special Report on Foreign Interference</a></div>
+        <div class="resource-meta">NSICOP — 2024</div>
+        <p class="resource-desc">Examples and governance gaps relevant to tribunals.</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <span class="resource-number">16.</span>
+      <div class="cover cat-gold">
+        <a href="https://foreigninterferencecommission.ca/fileadmin/PIFI_-_Final_Report_Vol._4__2025_.pdf" target="_blank" rel="noopener" aria-label="Open Public Inquiry into Foreign Interference Final Report Volume 4">
+          <svg viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#f1d9a6"/><rect x="14" y="16" width="36" height="8" fill="#ffe8b8"/><rect x="14" y="30" width="18" height="6" fill="#fff3d6"/><rect x="14" y="40" width="34" height="6" fill="#fff3d6"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="resource-title"><a href="https://foreigninterferencecommission.ca/fileadmin/PIFI_-_Final_Report_Vol._4__2025_.pdf" target="_blank" rel="noopener">Public Inquiry into Foreign Interference — Final Report (Vol. 4)</a></div>
+        <div class="resource-meta">Commission of Inquiry — 2025</div>
+        <p class="resource-desc">Findings on intelligence flow and recommendations for information protection.</p>
+      </div>
+    </div>
+  </div>
+<!-- CANADA — federal & provincial frameworks & exemplars -->
+<h2>Canada — federal &amp; provincial frameworks &amp; exemplars</h2>
+<div class="resource-list">
+
+  <div class="resource-card">
+    <span class="resource-number">17.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.cyber.gc.ca/sites/default/files/itsap.10.003-e.pdf" target="_blank" rel="noopener" aria-label="Open Cyber Centre ITSAP.10.003 Insider threats PDF">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="8" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="32" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="24" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.cyber.gc.ca/sites/default/files/itsap.10.003-e.pdf" target="_blank" rel="noopener">How to protect your organization from insider threats (ITSAP.10.003)</a>
+      </div>
+      <div class="resource-meta">Canadian Centre for Cyber Security — 2024</div>
+      <p class="resource-desc">GoC-branded primer with actionable safeguards; ideal for awareness and baseline controls.</p>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <span class="resource-number">18.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.publicsafety.gc.ca/cnt/rsrcs/pblctns/nhncng-crtcl-nfrstrctr/nhncng-crtcl-nfrstrctr-en.pdf" target="_blank" rel="noopener" aria-label="Open Public Safety Canada - Enhancing CI resilience to insider risk">
+        <svg viewBox="0 0 64 64">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="8" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="30" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.publicsafety.gc.ca/cnt/rsrcs/pblctns/nhncng-crtcl-nfrstrctr/nhncng-crtcl-nfrstrctr-en.pdf" target="_blank" rel="noopener">Enhancing Canada’s Critical Infrastructure Resilience to Insider Risk</a>
+      </div>
+      <div class="resource-meta">Public Safety Canada — 2025</div>
+      <p class="resource-desc">Federal guidance page for owners/operators on defining, reducing, and responding to insider risk.</p>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <span class="resource-number">19.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.publicsafety.gc.ca/cnt/rsrcs/pblctns/nhncng-crtcl-nfrstrctr/nnx-b-en.pdf" target="_blank" rel="noopener" aria-label="Open Public Safety Canada - 8 Recommended Security Actions">
+        <svg viewBox="0 0 64 64">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="8" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="26" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="28" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.publicsafety.gc.ca/cnt/rsrcs/pblctns/nhncng-crtcl-nfrstrctr/nnx-b-en.pdf" target="_blank" rel="noopener">8 Recommended Security Actions to Reduce Insider Risk</a>
+      </div>
+      <div class="resource-meta">Public Safety Canada — 2025</div>
+      <p class="resource-desc">Concise, actionable checklist you can lift into SOPs and quarterly assurance checks.</p>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <span class="resource-number">20.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.canada.ca/en/department-national-defence/services/protection-security/insider-threat-manager-aid.html" target="_blank" rel="noopener" aria-label="Open DND/CAF Insider Threat Manager Aid">
+        <svg viewBox="0 0 64 64">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="8" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="24" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="30" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.canada.ca/en/department-national-defence/services/protection-security/insider-threat-manager-aid.html" target="_blank" rel="noopener">Insider Threat — Manager Aid</a>
+      </div>
+      <div class="resource-meta">Department of National Defence / CAF — 2024 posting</div>
+      <p class="resource-desc">Operational guidance for managers on identifying indicators and acting appropriately.</p>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <span class="resource-number">21.</span>
+    <div class="cover cat-blue">
+      <a href="https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1858_web.pdf" target="_blank" rel="noopener" aria-label="Open CNSC REGDOC-2.12.2 Site Access Security Clearance">
+        <svg viewBox="0 0 64 64">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="18" width="36" height="6" fill="#b5c9e6"/>
+          <rect x="14" y="30" width="32" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="42" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1858_web.pdf" target="_blank" rel="noopener">Preventive and Protective Measures against Insider Threats</a>
+      </div>
+      <div class="resource-meta">CNSC / IAEA — 2020</div>
+      <p class="resource-desc">Provides guidance for States on fulfilling their obligations and commitments with respect to binding and non‑binding international instruments.</p>
+    </div>
+  </div>
+</div><!-- /.resource-list -->
+<!-- /CANADA — federal & provincial frameworks & exemplars -->
+
+  <!-- INTERNATIONAL frameworks & exemplars -->
+<!-- Add this tiny CSS anywhere in your <style> block -->
+<style>
+  .country-pill {
+    display:inline-block; font-size:.78em; font-weight:700;
+    background:#eef2f7; color:#26415a; border:1px solid #d9dee6;
+    border-radius:999px; padding:2px 8px; margin-left:6px; vertical-align:middle;
+  }
+</style>
+
+<!-- INTERNATIONAL frameworks & exemplars -->
+<h2>International program frameworks &amp; exemplars</h2>
+<div class="resource-list">
+
+  <!-- United States (premium pick) -->
+  <div class="resource-card">
+    <span class="resource-number">22.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.dni.gov/files/NCSC/documents/nittf/20240926_NITTF-Insider-Threat-Guide.pdf"
+         target="_blank" rel="noopener"
+         aria-label="Open NITTF Insider Threat Guide (2024)">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="6" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="28" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.dni.gov/files/NCSC/documents/nittf/20240926_NITTF-Insider-Threat-Guide.pdf" target="_blank" rel="noopener">
+          Insider Threat Guide
+        </a>
+        <span class="country-pill">US</span>
+      </div>
+      <div class="resource-meta">NITTF / ODNI — 2024</div>
+      <p class="resource-desc">Single, consolidated premium guide for program charter, governance, training, privacy guardrails, and operations.</p>
+    </div>
+  </div>
+
+  <!-- United Kingdom (premium pick) -->
+  <div class="resource-card">
+    <span class="resource-number">23.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.npsa.gov.uk/specialised-guidance/insider-risk-guidance/insider-risk-mitigation-framework"
+         target="_blank" rel="noopener"
+         aria-label="Open NPSA Insider Risk Mitigation Framework">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="6" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="30" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://www.npsa.gov.uk/specialised-guidance/insider-risk-guidance/insider-risk-mitigation-framework" target="_blank" rel="noopener">
+          Insider Risk Mitigation Framework
+        </a>
+        <span class="country-pill">UK</span>
+      </div>
+      <div class="resource-meta">NPSA — current</div>
+      <p class="resource-desc">Authoritative framework covering governance, role-based risk assessment, training, and control menus.</p>
+    </div>
+  </div>
+
+  <!-- NATO / CCDCOE (premium pick) -->
+  <div class="resource-card">
+    <span class="resource-number">24.</span>
+    <div class="cover cat-blue">
+      <a href="https://ccdcoe.org/uploads/2018/10/Insider_Threat_Study_CCDCOE.pdf"
+         target="_blank" rel="noopener"
+         aria-label="NATO CCDCOE">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="18" width="36" height="6" fill="#b5c9e6"/>
+          <rect x="14" y="30" width="26" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="30" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title">
+        <a href="https://ccdcoe.org/uploads/2018/10/Insider_Threat_Study_CCDCOE.pdf" target="_blank" rel="noopener">
+          Insider Threat Detection Study
+        </a>
+        <span class="country-pill">NATO / CCDCOE</span>
+      </div>
+      <div class="resource-meta">CCDCOE — 2015</div>
+      <p class="resource-desc">Cross-disciplinary study with program components, detection indicators, and legal scenario analysis for defence/government contexts.</p>
+    </div>
+  </div>
+
+</div><!-- /.resource-list -->
+<!-- /INTERNATIONAL frameworks & exemplars -->
+
+<!-- /INTERNATIONAL frameworks & exemplars -->
+<!-- COURSES & TRAINING (CULLED) -->
+<h2>Training courses</h2>
+<div class="resource-list">
+
+  <!-- Canada (keep) -->
+  <div class="resource-card">
+    <span class="resource-number">26.</span>
+    <div class="cover cat-green">
+      <a href="https://www.cyber.gc.ca/en/education-community/learning-hub/courses/mitigating-insider-threats" target="_blank" rel="noopener" aria-label="Open Canadian Centre for Cyber Security - Mitigating insider threats course">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/>
+          <rect x="14" y="16" width="36" height="8" fill="#d7f3e4"/>
+          <rect x="14" y="28" width="28" height="6" fill="#e8fbf1"/>
+          <rect x="14" y="40" width="22" height="6" fill="#e8fbf1"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title"><a href="https://www.cyber.gc.ca/en/education-community/learning-hub/courses/mitigating-insider-threats" target="_blank" rel="noopener">Mitigating insider threats</a></div>
+      <div class="resource-meta">Canadian Centre for Cyber Security — Learning Hub</div>
+      <p class="resource-desc">Practical safeguards for preventing, detecting, and investigating insider wrongdoing.</p>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <span class="resource-number">27.</span>
+    <div class="cover cat-green">
+      <a href="https://www.publicsafety.gc.ca/cnt/ntnl-scrt/cntr-trrrsm/cntr-prlfrtn/sfgrdng-scnc/sfgrdng-scnc-wrkshp-en.aspx" target="_blank" rel="noopener" aria-label="Open Public Safety Canada - Safeguarding Science workshop">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#b9e3c9"/>
+          <rect x="14" y="16" width="36" height="8" fill="#d7f3e4"/>
+          <rect x="14" y="28" width="30" height="6" fill="#e8fbf1"/>
+          <rect x="14" y="40" width="22" height="6" fill="#e8fbf1"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title"><a href="https://www.publicsafety.gc.ca/cnt/ntnl-scrt/cntr-trrrsm/cntr-prlfrtn/sfgrdng-scnc/sfgrdng-scnc-wrkshp-en.aspx" target="_blank" rel="noopener">Safeguarding Science – Research Security Workshop</a></div>
+      <div class="resource-meta">Public Safety Canada — Research Security Centre</div>
+      <p class="resource-desc">Research-security risks, foreign interference, and mitigations (virtual &amp; in-person).</p>
+    </div>
+  </div>
+
+  <!-- Canada certification path (consolidated) -->
+  <div class="resource-card">
+    <span class="resource-number">28.</span>
+    <div class="cover cat-gold">
+      <a href="https://www.cinrmcoe-cdecgrin.ca/product-page/cinrm-grinc-professional-certificate-exam" target="_blank" rel="noopener" aria-label="Open CINRM | GRINC Professional Certificate examination">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#f1d9a6"/>
+          <rect x="14" y="16" width="36" height="8" fill="#ffe8b8"/>
+          <rect x="14" y="30" width="22" height="6" fill="#fff3d6"/>
+          <rect x="14" y="42" width="30" height="6" fill="#fff3d6"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title"><a href="https://www.cinrmcoe-cdecgrin.ca/product-page/cinrm-grinc-professional-certificate-exam" target="_blank" rel="noopener">CINRM | GRINC Professional Certificate (exam)</a></div>
+      <div class="resource-meta">CInRM CoE &amp; Carleton NPSIA-PT&amp;D</div>
+      <p class="resource-desc">Canadian certification; exam requires three Practical Certificates (screening &amp; risk factors, investigations, program integration/OSINT).</p>
+    </div>
+  </div>
+
+  <!-- United Kingdom (keep) -->
+  <div class="resource-card">
+    <span class="resource-number">29.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.npsa.gov.uk/insider-risk-mitigation-digital-learning" target="_blank" rel="noopener" aria-label="Open NPSA Insider Risk Mitigation Digital Learning">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="16" width="36" height="8" fill="#b5c9e6"/>
+          <rect x="14" y="28" width="34" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="40" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title"><a href="https://www.npsa.gov.uk/insider-risk-mitigation-digital-learning" target="_blank" rel="noopener">Insider Risk Mitigation – Digital Learning (Modules 1–9)</a></div>
+      <div class="resource-meta">NPSA (UK)</div>
+      <p class="resource-desc">Free e-learning across governance, personnel security, case management, and controls.</p>
+    </div>
+  </div>
+
+  <!-- United States (keep as comprehensive benchmark) -->
+  <div class="resource-card">
+    <span class="resource-number">30.</span>
+    <div class="cover cat-blue">
+      <a href="https://www.cdse.edu/Training/Insider-Threat/" target="_blank" rel="noopener" aria-label="Open CDSE Insider Threat eLearning series">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="48" height="52" rx="4" fill="#fff" stroke="#c6d6ea"/>
+          <rect x="14" y="18" width="36" height="6" fill="#b5c9e6"/>
+          <rect x="14" y="30" width="30" height="6" fill="#d4e1f5"/>
+          <rect x="14" y="42" width="22" height="6" fill="#d4e1f5"/>
+        </svg>
+      </a>
+    </div>
+    <div>
+      <div class="resource-title"><a href="https://www.cdse.edu/Training/Insider-Threat/" target="_blank" rel="noopener">Insider Threat eLearning Series (INT101–INT311)</a></div>
+      <div class="resource-meta">CDSE (DCSA) — STEPP registration for credit</div>
+      <p class="resource-desc">Full curriculum from awareness to program management; use as a global benchmark.</p>
+    </div>
+  </div>
+
+</div><!-- /.resource-list -->
+<!-- /COURSES & TRAINING (CULLED) -->
+</body>
+</html>
+
+
+</div>
+<!-- /ACADEMIC (CANADA — FULL ACCESS) -->
+</body>
+</html>
