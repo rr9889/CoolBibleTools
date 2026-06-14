@@ -2,134 +2,741 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="A searchable index of Bible research tools and early Christian text resources."
+    >
+
+    <title>Cool Bible Tools</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
+        :root {
+            --background: #f7f7f5;
+            --surface: #ffffff;
+            --surface-hover: #f1eff4;
+            --text: #25232a;
+            --muted: #6d6874;
+            --border: #dedbe2;
+            --accent: #3b2a4a;
+            --accent-soft: #eee9f2;
+            --danger: #8f2d2d;
+            --radius: 12px;
+            --shadow: 0 8px 24px rgba(30, 24, 36, 0.06);
         }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            color-scheme: light;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .page {
+            width: min(920px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 56px 0 72px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(32px, 7vw, 50px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+        }
+
+        .intro {
+            max-width: 680px;
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .repo-link {
+            flex: 0 0 auto;
+            padding: 9px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .repo-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .search-panel {
+            margin-bottom: 24px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+        }
+
+        .search-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
         #searchBar {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--background);
+            color: var(--text);
+            font: inherit;
             font-size: 16px;
+            outline: none;
         }
+
+        #searchBar:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .search-help {
+            margin: 9px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            min-height: 32px;
+            margin-bottom: 12px;
+        }
+
+        .results-count {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .status {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: right;
+        }
+
         .file-list {
-            list-style: none;
+            display: grid;
+            gap: 12px;
+            margin: 0;
             padding: 0;
+            list-style: none;
         }
-        .file-item {
-            padding: 10px;
-            margin: 5px 0;
-            background: #f5f5f5;
-            border-radius: 5px;
-            cursor: pointer;
+
+        .file-link {
+            display: block;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: 0 2px 8px rgba(30, 24, 36, 0.025);
+            text-decoration: none;
+            transition:
+                border-color 150ms ease,
+                background 150ms ease,
+                transform 150ms ease,
+                box-shadow 150ms ease;
         }
-        .file-item:hover {
-            background: #e0e0e0;
+
+        .file-link:hover {
+            border-color: #bdb4c5;
+            background: var(--surface-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .file-link:focus-visible {
+            outline: 3px solid var(--accent-soft);
+            border-color: var(--accent);
+        }
+
+        .file-title {
+            margin: 0;
+            color: var(--text);
+            font-size: 18px;
+            line-height: 1.3;
+        }
+
+        .file-description {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .file-path {
+            display: block;
+            margin-top: 11px;
+            color: var(--accent);
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .message {
+            padding: 28px 20px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .message.error {
+            border-color: #d8b6b6;
+            color: var(--danger);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                width: min(100% - 24px, 920px);
+                padding-top: 32px;
+            }
+
+            .header-top {
+                display: block;
+            }
+
+            .repo-link {
+                display: inline-block;
+                margin-top: 18px;
+            }
+
+            .list-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .status {
+                text-align: left;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #17151a;
+                --surface: #211e24;
+                --surface-hover: #29242d;
+                --text: #f1edf3;
+                --muted: #b3acb7;
+                --border: #39333e;
+                --accent: #c9add9;
+                --accent-soft: #3a2c43;
+                --danger: #f0a4a4;
+                --shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+            }
+
+            html {
+                color-scheme: dark;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Home Directory</h1>
-    <input type="text" id="searchBar" placeholder="Search HTML files...">
-    <ul id="fileList" class="file-list"></ul>
+    <main class="page">
+        <header class="header">
+            <div class="header-top">
+                <div>
+                    <p class="eyebrow">Research index</p>
+                    <h1>Cool Bible Tools</h1>
+
+                    <p class="intro">
+                        Browse searchable tools, timelines, text studies,
+                        and research pages on the Bible and early Christianity.
+                    </p>
+                </div>
+
+                <a
+                    class="repo-link"
+                    href="https://github.com/rr9889/CoolBibleTools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    View repository
+                </a>
+            </div>
+        </header>
+
+        <section class="search-panel" aria-labelledby="searchLabel">
+            <label
+                class="search-label"
+                id="searchLabel"
+                for="searchBar"
+            >
+                Search the collection
+            </label>
+
+            <input
+                type="search"
+                id="searchBar"
+                placeholder="Search by title, topic, description, or filename"
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+            <p class="search-help">
+                Results are loaded from the public GitHub repository.
+            </p>
+        </section>
+
+        <section aria-labelledby="resultsHeading">
+            <div class="list-header">
+                <p
+                    class="results-count"
+                    id="resultsHeading"
+                    aria-live="polite"
+                >
+                    Loading pages
+                </p>
+
+                <p
+                    class="status"
+                    id="status"
+                    aria-live="polite"
+                >
+                    Reading repository files
+                </p>
+            </div>
+
+            <ul
+                id="fileList"
+                class="file-list"
+                aria-label="Repository pages"
+            >
+                <li class="message">Loading HTML pages...</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            This index updates automatically when HTML files are added
+            to the repository.
+        </footer>
+    </main>
 
     <script>
-        // GitHub repository details
-        const username = 'rr9889';
-        const repo = 'CoolBibleTools';
-        const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents`;
-        const baseUrl = `https://${username}.github.io/${repo}/`;
+        const username = "rr9889";
+        const repo = "CoolBibleTools";
+
+        const repositoryUrl =
+            `https://api.github.com/repos/${username}/${repo}`;
+
+        const pagesBaseUrl =
+            `https://${username}.github.io/${repo}/`;
+
+        const searchBar = document.getElementById("searchBar");
+        const fileList = document.getElementById("fileList");
+        const resultsHeading = document.getElementById("resultsHeading");
+        const statusElement = document.getElementById("status");
 
         let allFiles = [];
 
-        // Fetch files from GitHub repository
-        async function fetchFiles(url, path = '') {
+        function normalizeText(value = "") {
+            return value.replace(/\s+/g, " ").trim();
+        }
+
+        function encodePath(path) {
+            return path
+                .split("/")
+                .map(segment => encodeURIComponent(segment))
+                .join("/");
+        }
+
+        function createFallbackTitle(path) {
+            const filename = path.split("/").pop() || path;
+
+            return filename
+                .replace(/\.html?$/i, "")
+                .replace(/[-_]+/g, " ")
+                .replace(/\b\w/g, letter => letter.toUpperCase());
+        }
+
+        function getFolderName(path) {
+            const parts = path.split("/");
+
+            if (parts.length <= 1) {
+                return "Main directory";
+            }
+
+            return parts.slice(0, -1).join(" / ");
+        }
+
+        async function fetchPageDetails(rawUrl, path) {
+            const fallbackTitle = createFallbackTitle(path);
+
             try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                        // Optional: 'Authorization': 'token YOUR_PERSONAL_ACCESS_TOKEN'
-                    }
-                });
+                const response = await fetch(rawUrl);
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Page request failed: ${response.status}`);
                 }
 
-                const data = await response.json();
-
-                if (!Array.isArray(data)) {
-                    throw new Error('Unexpected API response: data is not an array');
-                }
-
-                // Process each item
-                for (const item of data) {
-                    if (item.type === 'file' && item.name.endsWith('.html')) {
-                        const title = await fetchTitle(item.download_url);
-                        allFiles.push({
-                            name: title || item.name, // Use title if available, fallback to filename
-                            url: `${baseUrl}${path}${item.name}`,
-                            filename: item.name // Store filename for search
-                        });
-                    } else if (item.type === 'dir') {
-                        await fetchFiles(item.url, `${path}${item.name}/`);
-                    }
-                }
-                displayFiles(allFiles);
-            } catch (error) {
-                console.error('Error fetching files:', error);
-                const fileList = document.getElementById('fileList');
-                fileList.innerHTML = `<li>Error: ${error.message}</li>`;
-            }
-        }
-
-        // Fetch the <title> from an HTML file
-        async function fetchTitle(downloadUrl) {
-            try {
-                const response = await fetch(downloadUrl);
-                if (!response.ok) return null;
                 const html = await response.text();
-                const match = html.match(/<title>(.*?)<\/title>/i);
-                return match ? match[1] : null;
+                const parser = new DOMParser();
+                const documentData = parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+                const title = normalizeText(
+                    documentData.querySelector("title")?.textContent
+                ) || fallbackTitle;
+
+                const description = normalizeText(
+                    documentData
+                        .querySelector('meta[name="description"]')
+                        ?.getAttribute("content")
+                );
+
+                return {
+                    title,
+                    description
+                };
             } catch (error) {
-                console.error('Error fetching title:', error);
-                return null;
+                console.warn(`Could not read metadata for ${path}`, error);
+
+                return {
+                    title: fallbackTitle,
+                    description: ""
+                };
             }
         }
 
-        // Display files in the list
-        function displayFiles(files) {
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
-            files.forEach(file => {
-                const li = document.createElement('li');
-                li.className = 'file-item';
-                li.textContent = file.name;
-                li.addEventListener('click', () => {
-                    window.open(file.url, '_blank');
-                });
-                fileList.appendChild(li);
-            });
+        async function mapWithLimit(items, limit, callback) {
+            const results = new Array(items.length);
+            let nextIndex = 0;
+
+            async function worker() {
+                while (nextIndex < items.length) {
+                    const currentIndex = nextIndex;
+                    nextIndex += 1;
+
+                    results[currentIndex] = await callback(
+                        items[currentIndex],
+                        currentIndex
+                    );
+                }
+            }
+
+            const workerCount = Math.min(limit, items.length);
+
+            await Promise.all(
+                Array.from(
+                    { length: workerCount },
+                    () => worker()
+                )
+            );
+
+            return results;
         }
 
-        // Search functionality
-        const searchBar = document.getElementById('searchBar');
-        searchBar.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredFiles = allFiles.filter(file => 
-                file.name.toLowerCase().includes(searchTerm) ||
-                file.filename.toLowerCase().includes(searchTerm)
-            );
+        async function loadRepositoryFiles() {
+            try {
+                resultsHeading.textContent = "Loading pages";
+                statusElement.textContent = "Checking repository";
+
+                const repoResponse = await fetch(repositoryUrl, {
+                    headers: {
+                        Accept: "application/vnd.github+json"
+                    }
+                });
+
+                if (!repoResponse.ok) {
+                    throw new Error(
+                        `GitHub request failed with status ${repoResponse.status}`
+                    );
+                }
+
+                const repoData = await repoResponse.json();
+                const defaultBranch = repoData.default_branch;
+
+                const treeUrl =
+                    `${repositoryUrl}/git/trees/` +
+                    `${encodeURIComponent(defaultBranch)}?recursive=1`;
+
+                const treeResponse = await fetch(treeUrl, {
+                    headers: {
+                        Accept: "application/vnd.github+json"
+                    }
+                });
+
+                if (!treeResponse.ok) {
+                    throw new Error(
+                        `Repository tree request failed with status ${treeResponse.status}`
+                    );
+                }
+
+                const treeData = await treeResponse.json();
+
+                if (!Array.isArray(treeData.tree)) {
+                    throw new Error("The repository file list was not found.");
+                }
+
+                const htmlFiles = treeData.tree
+                    .filter(item => {
+                        const path = item.path.toLowerCase();
+
+                        return (
+                            item.type === "blob" &&
+                            path.endsWith(".html") &&
+                            path !== "index.html" &&
+                            path !== "404.html"
+                        );
+                    })
+                    .sort((a, b) =>
+                        a.path.localeCompare(
+                            b.path,
+                            undefined,
+                            { sensitivity: "base" }
+                        )
+                    );
+
+                if (htmlFiles.length === 0) {
+                    allFiles = [];
+                    displayFiles([]);
+
+                    statusElement.textContent =
+                        "No HTML files were found";
+
+                    return;
+                }
+
+                statusElement.textContent =
+                    `Reading 0 of ${htmlFiles.length} pages`;
+
+                let completed = 0;
+
+                allFiles = await mapWithLimit(
+                    htmlFiles,
+                    8,
+                    async item => {
+                        const encodedPath = encodePath(item.path);
+
+                        const rawUrl =
+                            `https://raw.githubusercontent.com/` +
+                            `${username}/${repo}/` +
+                            `${encodeURIComponent(defaultBranch)}/` +
+                            encodedPath;
+
+                        const details = await fetchPageDetails(
+                            rawUrl,
+                            item.path
+                        );
+
+                        completed += 1;
+
+                        statusElement.textContent =
+                            `Reading ${completed} of ` +
+                            `${htmlFiles.length} pages`;
+
+                        return {
+                            title: details.title,
+                            description: details.description,
+                            path: item.path,
+                            folder: getFolderName(item.path),
+                            filename:
+                                item.path.split("/").pop() || item.path,
+                            url: pagesBaseUrl + encodedPath
+                        };
+                    }
+                );
+
+                allFiles.sort((a, b) =>
+                    a.title.localeCompare(
+                        b.title,
+                        undefined,
+                        { sensitivity: "base" }
+                    )
+                );
+
+                displayFiles(allFiles);
+
+                statusElement.textContent =
+                    `Repository branch: ${defaultBranch}`;
+            } catch (error) {
+                console.error("Could not load repository files:", error);
+
+                allFiles = [];
+                resultsHeading.textContent = "Unable to load pages";
+                statusElement.textContent = "";
+
+                fileList.innerHTML = "";
+
+                const message = document.createElement("li");
+                message.className = "message error";
+                message.textContent =
+                    "The repository index could not be loaded. " +
+                    "GitHub may be unavailable or the public API limit " +
+                    "may have been reached.";
+
+                fileList.appendChild(message);
+            }
+        }
+
+        function displayFiles(files) {
+            fileList.innerHTML = "";
+
+            const total = files.length;
+
+            resultsHeading.textContent =
+                total === 1
+                    ? "1 page"
+                    : `${total} pages`;
+
+            if (total === 0) {
+                const message = document.createElement("li");
+                message.className = "message";
+
+                message.textContent =
+                    searchBar.value.trim()
+                        ? "No pages match your search."
+                        : "No HTML pages were found.";
+
+                fileList.appendChild(message);
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            files.forEach(file => {
+                const listItem = document.createElement("li");
+
+                const link = document.createElement("a");
+                link.className = "file-link";
+                link.href = file.url;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+
+                const title = document.createElement("h2");
+                title.className = "file-title";
+                title.textContent = file.title;
+
+                const description = document.createElement("p");
+                description.className = "file-description";
+
+                description.textContent =
+                    file.description ||
+                    `Open this page from ${file.folder}.`;
+
+                const path = document.createElement("span");
+                path.className = "file-path";
+                path.textContent = file.path;
+
+                link.append(title, description, path);
+                listItem.appendChild(link);
+                fragment.appendChild(listItem);
+            });
+
+            fileList.appendChild(fragment);
+        }
+
+        function filterFiles(searchTerm) {
+            const query = searchTerm.toLowerCase().trim();
+
+            if (!query) {
+                displayFiles(allFiles);
+                return;
+            }
+
+            const filteredFiles = allFiles.filter(file => {
+                const searchableText = [
+                    file.title,
+                    file.description,
+                    file.path,
+                    file.filename,
+                    file.folder
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+                return searchableText.includes(query);
+            });
+
             displayFiles(filteredFiles);
+        }
+
+        searchBar.addEventListener("input", event => {
+            filterFiles(event.target.value);
         });
 
-        // Initial fetch
-        fetchFiles(apiUrl);
+        searchBar.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                searchBar.value = "";
+                displayFiles(allFiles);
+                searchBar.blur();
+            }
+        });
+
+        loadRepositoryFiles();
     </script>
 </body>
 </html>
+```
