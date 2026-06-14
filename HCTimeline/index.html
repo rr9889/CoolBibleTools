@@ -1,48 +1,813 @@
+```html
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="A timeline of works related to head covering and 1 Corinthians 11:2–16."
+  >
+
   <title>Head Covering Timeline — 1 Cor 11:2–16</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Click a year to see only works from that year." />
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./css.css">
+
+  <style>
+    :root {
+      --background: #f6f5f2;
+      --surface: #ffffff;
+      --text: #29262d;
+      --muted: #706a75;
+      --border: #ddd9df;
+      --accent: #3b2a4a;
+      --accent-soft: #eee9f2;
+      --error: #9c2f2f;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    #page {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 70px;
+    }
+
+    .site-header {
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-title {
+      margin: 0;
+      font-size: clamp(32px, 7vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .intro {
+      max-width: 680px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .timeline {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .banner {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .year-output {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--accent);
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    #yearSlider {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    #yearSlider:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .details {
+      margin-top: 28px;
+    }
+
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    #yearHeading {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status.error {
+      color: var(--error);
+    }
+
+    #works {
+      display: grid;
+      gap: 14px;
+    }
+
+    .work-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .work-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .summary {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: minmax(120px, 180px) 1fr;
+      gap: 8px 18px;
+      margin: 18px 0 0;
+    }
+
+    dt {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    dd {
+      min-width: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    dd ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    pre {
+      max-width: 100%;
+      margin: 0;
+      padding: 10px;
+      overflow: auto;
+      border-radius: 7px;
+      background: var(--background);
+      white-space: pre-wrap;
+    }
+
+    .empty {
+      padding: 26px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #retryButton {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    #retryButton[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      #page {
+        width: min(100% - 22px, 900px);
+        padding-top: 28px;
+      }
+
+      .timeline {
+        padding: 18px;
+      }
+
+      .details-header {
+        display: block;
+      }
+
+      .status {
+        margin-top: 4px;
+      }
+
+      dl {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      dd {
+        margin-bottom: 10px;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #171519;
+        --surface: #211e23;
+        --text: #f2eef3;
+        --muted: #b9b1bb;
+        --border: #3c363e;
+        --accent: #d0b4df;
+        --accent-soft: #3c2e44;
+        --error: #f0a0a0;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <main
+    id="timelineApp"
+    data-json="./data.json"
+  >
+    <div id="page">
+      <header class="site-header">
+        <p class="eyebrow">1 Corinthians 11:2–16</p>
 
-  <main id="page">
-    <h1 class="site-title">Head Covering Timeline</h1>
+        <h1 class="site-title">
+          Head Covering Timeline
+        </h1>
 
-    <!-- Timeline -->
-    <section class="timeline" id="timeline" aria-label="Year timeline">
-      <div class="banner" id="eraBanner">Select a year</div>
+        <p class="intro">
+          Move through the timeline to view works linked to each year.
+        </p>
+      </header>
 
-      <div class="rail" id="tlTrack">
-        <div class="fill" id="tlFill" style="width:0%"></div>
+      <section
+        class="timeline"
+        aria-labelledby="timelineHeading"
+      >
+        <div class="banner" id="timelineHeading">
+          Select a year
+        </div>
+
+        <output
+          class="year-output"
+          id="yearOutput"
+          for="yearSlider"
+        >
+          —
+        </output>
+
+        <input
+          type="range"
+          id="yearSlider"
+          min="0"
+          max="0"
+          value="0"
+          step="1"
+          aria-label="Selected year"
+          disabled
+        >
+
+        <div class="range-labels">
+          <span id="rangeStart">—</span>
+          <span id="rangeEnd">—</span>
+        </div>
+      </section>
+
+      <section
+        class="details"
+        aria-live="polite"
+      >
+        <div class="details-header">
+          <h2 id="yearHeading">Loading</h2>
+          <p class="status" id="status">Loading data…</p>
+        </div>
+
+        <div id="works">
+          <p class="empty">Loading data…</p>
+        </div>
 
         <button
-          class="knob"
-          id="tlThumb"
-          role="slider"
-          aria-valuemin="0"
-          aria-valuemax="0"
-          aria-valuenow="0"
-          aria-label="Selected year"
-          tabindex="0"></button>
-
-        <div class="year" id="tlYear">—</div>
-        <!-- ticks injected by JS -->
-      </div>
-    </section>
-
-    <!-- Year details -->
-    <section class="details" id="details" aria-live="polite">
-      <h2 id="yearHeading">—</h2>
-      <div id="works"></div>
-    </section>
+          type="button"
+          id="retryButton"
+          hidden
+        >
+          Try again
+        </button>
+      </section>
+    </div>
   </main>
 
-  <!-- IMPORTANT: the data-json attribute tells JS where to fetch -->
-  <script src="./js.js" defer data-json="./data.json"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      const app = document.getElementById("timelineApp");
+      const yearSlider = document.getElementById("yearSlider");
+      const yearOutput = document.getElementById("yearOutput");
+      const rangeStart = document.getElementById("rangeStart");
+      const rangeEnd = document.getElementById("rangeEnd");
+      const yearHeading = document.getElementById("yearHeading");
+      const works = document.getElementById("works");
+      const status = document.getElementById("status");
+      const retryButton = document.getElementById("retryButton");
+
+      let years = [];
+      let recordsByYear = new Map();
+
+      function setStatus(message, type = "") {
+        status.textContent = message;
+        status.className = `status ${type}`.trim();
+      }
+
+      function unique(values) {
+        return [...new Set(values.filter(Boolean))];
+      }
+
+      function buildCandidateUrls(path) {
+        const suppliedPath = path || "./data.json";
+
+        const urls = [
+          new URL(suppliedPath, document.baseURI).href
+        ];
+
+        const pathParts = location.pathname
+          .split("/")
+          .filter(Boolean);
+
+        /*
+         * GitHub Pages project fallback:
+         * /CoolBibleTools/data.json
+         */
+        if (pathParts.length > 0) {
+          urls.push(
+            new URL(
+              `/${pathParts[0]}/data.json`,
+              location.origin
+            ).href
+          );
+        }
+
+        /*
+         * Root-site fallback:
+         * /data.json
+         */
+        urls.push(
+          new URL("/data.json", location.origin).href
+        );
+
+        return unique(urls);
+      }
+
+      async function fetchJson(path) {
+        const errors = [];
+
+        for (const url of buildCandidateUrls(path)) {
+          try {
+            const response = await fetch(url, {
+              cache: "no-store",
+              headers: {
+                Accept: "application/json"
+              }
+            });
+
+            if (!response.ok) {
+              throw new Error(
+                `${response.status} ${response.statusText}`
+              );
+            }
+
+            const text = await response.text();
+
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new Error(
+                "The fetched file is not valid JSON"
+              );
+            }
+          } catch (error) {
+            errors.push(`${url}: ${error.message}`);
+          }
+        }
+
+        throw new Error(errors.join(" | "));
+      }
+
+      function normalizePayload(payload) {
+        if (Array.isArray(payload)) {
+          return payload;
+        }
+
+        if (!payload || typeof payload !== "object") {
+          throw new Error(
+            "data.json must contain an array or object."
+          );
+        }
+
+        const arrayNames = [
+          "works",
+          "items",
+          "data",
+          "records",
+          "entries"
+        ];
+
+        for (const name of arrayNames) {
+          if (Array.isArray(payload[name])) {
+            return payload[name];
+          }
+        }
+
+        const entries = Object.entries(payload);
+
+        const groupedArrays = entries.filter(
+          ([, value]) => Array.isArray(value)
+        );
+
+        /*
+         * Supports this shape:
+         *
+         * {
+         *   "150": [{ ... }],
+         *   "200": [{ ... }]
+         * }
+         */
+        if (
+          groupedArrays.length > 0 &&
+          groupedArrays.length === entries.length
+        ) {
+          return groupedArrays.flatMap(
+            ([groupYear, items]) =>
+              items.map(item => ({
+                ...item,
+                year: item.year ?? groupYear
+              }))
+          );
+        }
+
+        throw new Error(
+          "No record list was found in data.json."
+        );
+      }
+
+      function extractYear(record) {
+        const possibleValues = [
+          record.year,
+          record.sortYear,
+          record.startYear,
+          record.date,
+          record.dating,
+          record.dateRange
+        ];
+
+        for (const value of possibleValues) {
+          if (
+            value !== null &&
+            value !== "" &&
+            Number.isFinite(Number(value))
+          ) {
+            return Number(value);
+          }
+
+          if (typeof value !== "string") {
+            continue;
+          }
+
+          /*
+           * Reads years from values such as:
+           * "150 CE"
+           * "c. 150 CE"
+           * "150–175 CE"
+           */
+          const match = value.match(/\b(\d{1,4})\b/);
+
+          if (match) {
+            return Number(match[1]);
+          }
+        }
+
+        return null;
+      }
+
+      function prepareRecords(records) {
+        recordsByYear = new Map();
+
+        records.forEach((record, index) => {
+          if (
+            !record ||
+            typeof record !== "object" ||
+            Array.isArray(record)
+          ) {
+            return;
+          }
+
+          const year = extractYear(record);
+
+          if (year === null) {
+            console.warn(
+              `Record ${index + 1} has no usable year:`,
+              record
+            );
+
+            return;
+          }
+
+          if (!recordsByYear.has(year)) {
+            recordsByYear.set(year, []);
+          }
+
+          recordsByYear.get(year).push(record);
+        });
+
+        years = [...recordsByYear.keys()]
+          .sort((a, b) => a - b);
+
+        if (years.length === 0) {
+          throw new Error(
+            "No records contain a usable year."
+          );
+        }
+      }
+
+      function titleCase(value) {
+        return String(value)
+          .replace(/[_-]+/g, " ")
+          .replace(
+            /\b\w/g,
+            letter => letter.toUpperCase()
+          );
+      }
+
+      function appendValue(container, value) {
+        if (Array.isArray(value)) {
+          const list = document.createElement("ul");
+
+          value.forEach(item => {
+            const listItem = document.createElement("li");
+
+            listItem.textContent =
+              item && typeof item === "object"
+                ? JSON.stringify(item)
+                : String(item);
+
+            list.appendChild(listItem);
+          });
+
+          container.appendChild(list);
+          return;
+        }
+
+        if (value && typeof value === "object") {
+          const pre = document.createElement("pre");
+          pre.textContent = JSON.stringify(value, null, 2);
+          container.appendChild(pre);
+          return;
+        }
+
+        container.append(String(value));
+      }
+
+      function createWorkCard(record) {
+        const article = document.createElement("article");
+        article.className = "work-card";
+
+        const title = document.createElement("h3");
+
+        title.textContent =
+          record.title ||
+          record.name ||
+          record.work ||
+          "Untitled work";
+
+        article.appendChild(title);
+
+        const summary =
+          record.description ||
+          record.summary ||
+          record.excerpt;
+
+        if (summary) {
+          const paragraph = document.createElement("p");
+          paragraph.className = "summary";
+          paragraph.textContent = summary;
+          article.appendChild(paragraph);
+        }
+
+        const hiddenKeys = new Set([
+          "id",
+          "title",
+          "name",
+          "work",
+          "year",
+          "sortYear",
+          "startYear",
+          "description",
+          "summary",
+          "excerpt"
+        ]);
+
+        const details = document.createElement("dl");
+
+        Object.entries(record).forEach(
+          ([key, value]) => {
+            if (
+              hiddenKeys.has(key) ||
+              value === null ||
+              value === undefined ||
+              value === ""
+            ) {
+              return;
+            }
+
+            const term = document.createElement("dt");
+            term.textContent = titleCase(key);
+
+            const description =
+              document.createElement("dd");
+
+            const isLink =
+              /^(url|link|sourceUrl)$/i.test(key) &&
+              typeof value === "string";
+
+            if (isLink) {
+              const anchor =
+                document.createElement("a");
+
+              anchor.href = value;
+              anchor.target = "_blank";
+              anchor.rel = "noopener noreferrer";
+              anchor.textContent = "Open source";
+
+              description.appendChild(anchor);
+            } else {
+              appendValue(description, value);
+            }
+
+            details.append(term, description);
+          }
+        );
+
+        if (details.children.length > 0) {
+          article.appendChild(details);
+        }
+
+        return article;
+      }
+
+      function renderYearByIndex(index) {
+        const safeIndex = Math.max(
+          0,
+          Math.min(index, years.length - 1)
+        );
+
+        const year = years[safeIndex];
+        const records = recordsByYear.get(year) || [];
+
+        yearSlider.value = String(safeIndex);
+        yearOutput.textContent = `${year} CE`;
+        yearHeading.textContent = `${year} CE`;
+
+        works.replaceChildren(
+          ...records.map(createWorkCard)
+        );
+
+        setStatus(
+          `${records.length} ${
+            records.length === 1 ? "work" : "works"
+          }`
+        );
+      }
+
+      function setupTimeline() {
+        yearSlider.min = "0";
+        yearSlider.max = String(years.length - 1);
+        yearSlider.step = "1";
+        yearSlider.disabled = false;
+
+        rangeStart.textContent = `${years[0]} CE`;
+
+        rangeEnd.textContent =
+          `${years[years.length - 1]} CE`;
+
+        renderYearByIndex(0);
+      }
+
+      async function loadData() {
+        retryButton.hidden = true;
+        yearSlider.disabled = true;
+        yearHeading.textContent = "Loading";
+        works.innerHTML =
+          '<p class="empty">Loading data…</p>';
+
+        setStatus("Loading data…");
+
+        try {
+          /*
+           * One file:
+           * data-json="./data.json"
+           *
+           * Several files:
+           * data-json="./data1.json, ./data2.json"
+           */
+          const configuredPaths =
+            (app.dataset.json || "./data.json")
+              .split(",")
+              .map(value => value.trim())
+              .filter(Boolean);
+
+          const payloads = await Promise.all(
+            configuredPaths.map(fetchJson)
+          );
+
+          const records = payloads.flatMap(
+            normalizePayload
+          );
+
+          prepareRecords(records);
+          setupTimeline();
+        } catch (error) {
+          console.error(error);
+
+          yearHeading.textContent =
+            "Data could not be loaded";
+
+          works.innerHTML = "";
+          setStatus(error.message, "error");
+          retryButton.hidden = false;
+        }
+      }
+
+      yearSlider.addEventListener(
+        "input",
+        event => {
+          renderYearByIndex(
+            Number(event.target.value)
+          );
+        }
+      );
+
+      retryButton.addEventListener(
+        "click",
+        loadData
+      );
+
+      loadData();
+    })();
+  </script>
 </body>
 </html>
+```
