@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>First-Century Texts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-back: #f7f7f7;
+      --border: #000000;
+      --border-light: #d0d0d0;
+      --text: #000000;
+      --text-muted: #555555;
+      --text-faint: #999999;
+      --card-w: 300px;
+      --card-h: 420px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 24px 64px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #000;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: #000;
+      margin: 14px auto 0;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+
+    .filter-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 5px 12px;
+      border: 1px solid var(--border-light);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .filter-btn:hover {
+      border-color: #000;
+      color: #000;
+    }
+
+    .filter-btn.active {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr));
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Card wrapper */
+    .card-wrap {
+      perspective: 1200px;
+      height: var(--card-h);
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+      cursor: pointer;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    /* Front face */
+    .front {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .front .corner-bl,
+    .front .corner-br {
+      display: none;
+    }
+
+    .category-chip {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 20px;
+    }
+
+    .front-title {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 600;
+      color: #000;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .front-date {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      font-weight: 400;
+    }
+
+    .flip-hint {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+      position: absolute;
+      bottom: 18px;
+    }
+
+    /* Back face */
+    .back {
+      background: var(--surface-back);
+      border: 1px solid var(--border);
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .back-header {
+      background: #000;
+      padding: 14px 18px 12px;
+      flex-shrink: 0;
+    }
+
+    .back-header .back-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .back-header .back-date {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 3px;
+    }
+
+    .back-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 18px 16px;
+      scrollbar-width: thin;
+      scrollbar-color: #bbb transparent;
+    }
+
+    .back-body::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .back-body::-webkit-scrollbar-thumb {
+      background: #ccc;
+    }
+
+    .back-body ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .back-body ul li {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #333;
+      padding-left: 12px;
+      position: relative;
+      border-left: 1px solid #ccc;
+    }
+
+    .back-body ul li strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    .back-body ul li em {
+      font-style: italic;
+      color: #555;
+    }
+
+    /* Scroll fade */
+    .scroll-fade {
+      height: 24px;
+      background: linear-gradient(to top, var(--surface-back), transparent);
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 0.9rem;
+      grid-column: 1 / -1;
+      padding: 40px;
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --card-w: 280px;
+        --card-h: 400px;
+      }
+
+      .grid {
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>First-Century Texts</h1>
+    <div class="divider"></div>
+  </header>
+
+  <div class="filter-bar" id="filterBar"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const texts = [
+      {
+        id: 1,
+        title: "1 Thessalonians",
+        date: "40–50 CE",
+        era: "40–50",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Traditional date of around 50 CE (Luckensmeyer, 2013).",
+          "Some scholars argue for a date in the early 40s (Donfried, 2010).",
+        ]
+      },
+      {
+        id: 2,
+        title: "Galatians",
+        date: "48–55 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Most scholars date Galatians between the late 40s and early 50s (Coogan, ed., New Oxford Annotated Bible).",
+          "ESV Study Bible (2008) proposes 48 AD.",
+          "Matera (1992) and Schreiner (2010) favor the mid-50s for a South Galatian destination.",
+        ]
+      },
+      {
+        id: 3,
+        title: "1 Corinthians",
+        date: "53–57 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Usually dated in the range of 53–57 CE (International Standard Bible Encyclopedia, 1915).",
+          "AD 53 has occasionally been proposed (Gardner, 2018).",
+          "Lockwood (2010) concludes early AD 55, reasoning from the Gallio inscription and Paul's Corinth stay.",
+          "Carrier (2014) dates the core creed in 1 Cor. 15:3-5 to the early 30s CE, within years of Jesus's death.",
+        ]
+      },
+      {
+        id: 4,
+        title: "2 Corinthians",
+        date: "55–57 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Written around 55 CE (EBSCO Research Starters).",
+          "A year or so after 1 Corinthians, placing it ca. AD 55/56 (Zondervan Academic).",
+        ]
+      },
+      {
+        id: 5,
+        title: "Romans",
+        date: "54–57 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Lüdemann argues for a date as early as 51/52 (or 54/55) (Dunn, 1988).",
+          "Bruce (1983) places it in late 55/early 56 or late 56/early 57.",
+        ]
+      },
+      {
+        id: 6,
+        title: "Philippians",
+        date: "55–62 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Possible provenances: Ephesus 52–55 AD, Caesarea Maritima 57–59 AD, or Rome ~62 AD (Harris, 1985).",
+          "Bormann (2012) dates it roughly simultaneous with Philemon, spring 55 CE.",
+          "Bird and Gupta (2020) suggest early 63 CE based on the conflict with Jewish Christ-believing proselytizers.",
+        ]
+      },
+      {
+        id: 7,
+        title: "Philemon",
+        date: "57–62 CE",
+        era: "50–60",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Composed around AD 57–62 (Cope, 1985).",
+          "Written between 54–64 CE (EBSCO Research Starters).",
+        ]
+      },
+      {
+        id: 9,
+        title: "Gospel of Thomas",
+        date: "100–150 CE",
+        era: "50–140",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.3 Sayings Collections",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a4a3b",
+        notes: [
+          "Usual dating at AD 140 (Snodgrass, 1989)",
+          "Some push it to 175–190 CE (Perrin, 2001).",
+          "End of the second century (180–200 CE) proposed by Siverstev (2000).",
+          "Not likely written later than AD 250 (Gathercole, 2014).",
+          "Hunt (1897) argued from internal evidence that the Greek fragments could date to the late 1st or early 2nd century (no later than 140 CE).",
+          "Davies (2002) contends the gospel was composed as early as the 50s CE.",
+          "King (2003) initially identified composition in the second half of the 2nd century; a Greek papyrus was dated to ~200 CE.",
+        ]
+      },
+      {
+        id: 10,
+        title: "Apocalypse of Adam",
+        date: "100–200 CE",
+        era: "50–150",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.5 Apocalypses and Visions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "A 1st-century CE date would not be surprising (Parrott, 1989).",
+          "Simple features of the Gnostic myth could suggest a 2nd-century CE origin (Jerusalem and Eretz Israel journal, 2020).",
+          "Cannot be dated before 100 CE due to a possible Mithra rock-birth allusion (Yamauchi, 1979).",
+          "Böhlig (1963), MacRae (1965), and Schenke (1962) debate whether the text is non-Christian/pre-Christian or Christian Gnostic based on Redeemer, baptism, and Sethian material.",
+          "Beltz (1970) dates it c. 297 CE as Manichaean — considered a weak position.",
+          "Doresse (1958) places it earlier than or sharing a Vorlage with the Gospel of the Egyptians (before 300 CE).",
+          "G. Macrae (1965) dates it anywhere between the 1st and 4th centuries CE, leaning earlier.",
+        ]
+      },
+      {
+        id: 11,
+        title: "Eugnostos the Blessed",
+        date: "100–175 CE",
+        era: "50–150",
+        section: "1. Discursive Texts",
+        subcategory: "1.3 Theological Treatises and Expositions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "Traditionally dated to the 2nd century in composition (Jenott, 2018).",
+          "Late 1st or early 2nd century CE (Brill Encyclopedia of Early Christianity).",
+          "Falkenberg (2010) says first half of the 2nd century CE, roughly 100–150 CE.",
+          "Parrott (1991) says 1st century BCE",
+          "Pasquier (2010) — 115–117 CE",
+          "Trakatellis (1991) says early 2nd century",
+          "Tardieu (1984) says 175 CE",
+          "Wurst (2010) says 140–180 CE",
+        ]
+      },
+      {
+        id: 12,
+        title: "Sophia of Jesus Christ",
+        date: "80–201 CE",
+        era: "80–301",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.4 Revelation Dialogues",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "Presupposes familiarity with Gnostic myth. Unlikely to predate the mid-2nd century (van den Broek, 2013).",
+          "Parrott (1991) dates it to the late first century or early second century (AD 80 to AD 130)",
+          "Michel Tardieu (1984) suggests a third-century date",
+          "Earliest MS (P.Oxy. 1081) has been dated to the fourth century"
+        ]
+      },
+      {
+        id: 13,
+        title: "Book of Hebrews",
+        date: "63–90 CE",
+        era: "50–95",
+        section: "1. Discursive Texts",
+        subcategory: "1.2 Homilies and Exhortations",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Second half of 63 or beginning of 64 CE (Fonck, Catholic Encyclopedia, 1910).",
+          "Between 70 and 100 AD (Attridge, 1989).",
+          "Around 65–70 CE (EBSCO Research Starters).",
+        ]
+      },
+      {
+        id: 14,
+        title: "Colossians",
+        date: "60–80 CE",
+        era: "50–80",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Written between 54 and 64 CE (EBSCO Research Starters).",
+          "62 AD assumed by the ESV Study Bible (2008).",
+          "Possibly as late as AD 90 (Mack, 1996).",
+        ]
+      },
+      {
+        id: 15,
+        title: "Didache",
+        date: "50–150 CE",
+        era: "50–150",
+        section: "1. Discursive Texts",
+        subcategory: "1.4 Community Manuals",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#4a3b2a",
+        notes: [
+          "Composition between 50 CE and later (Draper, 1996).",
+          "Earliest layer may originate in the Jerusalem Council decree of 49–50 CE (Garrow, 2017).",
+          "Milavec (2003) dates it 50–70 CE.",
+          "Milavec (2005) pushes composition beyond the 80s",
+          "Present form, late as 150 CE (Lightfoot & Harmer, Holmes ed., 2006).",
+        ]
+      },
+      {
+        id: 16,
+        title: "Gospel of Mark",
+        date: "65–80 CE",
+        era: "65–80",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#1a3a2a",
+        notes: [
+          "Hengel (1985, pp. 7–28) dates Mark immediately before 70 CE.",
+          "Collins (2007, pp. 11–14) dates Mark immediately before 70 CE.",
+          "Theissen (1992, pp. 258–262) dates Mark immediately after 70 CE.",
+          "Incigneri (2003, pp. 116–155) dates Mark immediately after 70 CE.",
+          "Head (2004) dates Mark immediately after 70 CE.",
+          "Kloppenborg (2005) dates Mark immediately after 70 CE.",
+          "Crossley (2004) argues for a much earlier date of approximately 35–45 CE.",
+          "The earliest fragment is dated between 150 and 250 CE by the Egypt Exploration Society (EES).",
+          "Papias (c. 60–130 CE) is an early witness for Markan authorship (Keith, 2016).",
+        ]
+      },
+      {
+        id: 17,
+        title: "Epistle of James",
+        date: "62–100 CE",
+        era: "70–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Brown (1997) dates James broadly to 70–110 CE, most likely the 80s–90s (Introduction to the New Testament, p. 726).",
+          "Allison (2013) favors about 100–120 CE (James: A Critical and Exegetical Commentary).",
+          "Johnson (2004) places it before James the Just's death in 62 CE (Brother of Jesus, Friend of God).",
+          "Earliest extant manuscripts date to the mid-to-late 3rd century (McCartney, 2009).",
+        ]
+      },
+      {
+        id: 18,
+        title: "Egerton Gospel",
+        date: "80–250 CE",
+        era: "80–250",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        color: "#2a4a3b",
+        notes: [
+          "Bell & Skeat (1935) concluded very early, likely AD 80–120.",
+          "Gronewald (1987) says the manuscript from a plausible date of AD 200.",
+          "Malik & Zelyck (2017) says the manuscript hand fits AD 150–250.",
+          "Zelyck (2019): manuscript date safest at 150–250 CE.",
+        ]
+      },
+      {
+        id: 19,
+        title: "Gospel of Peter",
+        date: "95–160 CE",
+        era: "70–160",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        color: "#2a4a3b",
+        notes: [
+          "Von Harnack (1893) roughly AD 100–125 (first quarter of the 2nd century).",
+          "Hilgenfeld (1893) end of the first century, roughly AD 95–100.",
+          "Lods (1893) before AD 150.",
+          "J. A. Robinson (1892) before AD 160.",
+          "McGiffert (1894) best around AD 120–135.",
+          "Kunze (1893) about AD 170.",
+        ]
+      },
+      {
+        id: 20,
+        title: "Fayyum Fragment",
+        date: "70–200 CE",
+        era: "70–200",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Fragmentary",
+        confidence: "Moderate",
+        color: "#2a4a3b",
+        notes: [
+          "Fourth gospel, P. Mich. Inv. 3521, to the early fourth century per palaeographical evidence (Kuhn, 1963)",
+          "Third century, possibly as early as the beginning of that century (TJ Kraus, 2008)",
+          "Plausible timeframe of the sixth or seventh century rather than a later one Miroshnikov (2022)",
+          "Items burried with it included a Portrait canvas which dates from 425 and 590 AD (95% probability)"
+        ]
+      },
+      {
+        id: 22,
+        title: "Gospel of Matthew",
+        date: "40–90 CE",
+        era: "40–90",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#1a3a2a",
+        notes: [
+          "Wenham (2020): 40s–50s CE.",
+          "Morris (1992): 50s–60s CE.",
+          "Carson (1984): 60s CE.",
+          "France (2007): Before 70 CE.",
+          "Hagner (1998): Before 70 CE.",
+          "Keener (2009): Late 70s CE.",
+          "Harrington (1991): 70s CE.",
+          "Ehrman (2008): 80–85 CE.",
+          "Davies & Allison (1998): 80–95 CE.",
+          "Turner (2008): 80s–90s CE.",
+        ],
+      },
+      {
+        id: 23,
+        title: "1 Peter",
+        date: "65–96 CE",
+        era: "80–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Post-70 use of 'Babylon' for Rome suggests a date after 70 CE (Senior & Harrington, 2008).",
+          "Written during Domitian's reign, AD 81–96 (Stanton, 2003).",
+          "A Petrine group in Rome between AD 75 and 95 (Elliott, 2000).",
+          "Traditional view: the apostle Peter wrote it in Rome prior to his martyrdom, around AD 65.",
+          "Some scholars favor the reign of Nero, 54–68 AD (Mowczko, 2018).",
+        ]
+      },
+      {
+        id: 24,
+        title: "Epistle of Barnabas",
+        date: "96–132 CE",
+        era: "80–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.2 Homilies and Exhortations",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#4a3b2a",
+        notes: [
+          "Can be dated anywhere from the mid-90s CE to the 130s CE (Carleton-Paget, 2005).",
+          "Some internal comments suggest a date around 130 CE (Ehrman blog).",
+          "Before 132 CE (Hvalvik, 2021).",
+          "Most scholars favor 100–130 AD (Connor, 2026).",
+          "Must have been composed after 70 CE due to the reference to the Jewish-Roman War in Barnabas 16:4.",
+          "Secure date range: 70–200 CE (Foster, 2022).",
+        ]
+      },
+      {
+        id: 25,
+        title: "Gospel of Luke",
+        date: "80–100 CE",
+        era: "80–130",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#1a3a2a",
+        notes: [
+          "Earliest possible date: around 62 AD — the time of Paul's Roman imprisonment (Armstrong, 2021).",
+          "Most scholars date it to 80–90 AD, given its knowledge of Mark and the destruction of Jerusalem (Charlesworth, 2008).",
+          "The latest tenable dates are around the early 2nd century (Campbell, 2008; Pervo, 2006 dates Acts to 110–120).",
+        ]
+      },
+      {
+        id: 26,
+        title: "Acts of the Apostles",
+        date: "80–120 CE",
+        era: "80–130",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.2 Apostolic Narratives",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#1a3a2a",
+        notes: [
+          "Bruce (1988) believes Acts was written in the mid-60s, noting the absence of Paul's death or Nero's 64 CE persecution.",
+          "O'Neill (1961) dates it to be 115–130 CE).",
+          "Pervo (2006) dates Acts to 110–120 CE, arguing dependence on Josephus, the Pastoral Epistles, and Polycarp.",
+        ]
+      },
+      {
+        id: 28,
+        title: "Gospel of the Hebrews",
+        date: "60–150 CE",
+        era: "80–150",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Fragmentary",
+        confidence: "Moderate",
+        color: "#2a4a3b",
+        notes: [
+          "Peter Walker (1994) concludes before AD 70, likely AD 60–69.",
+          "Some place composition preceding the destruction of the Jerusalem Temple in AD 70.",
+        ]
+      },
+      {
+        id: 29,
+        title: "1 Clement",
+        date: "90–100 CE",
+        era: "80–140",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#4a3b2a",
+        notes: [
+          "No later than AD 140 (Welborn, in Breytenbach & Welborn, p. 201).",
+          "Most commonly dated to the end of Domitian's reign, c. AD 96 (Oxford Dictionary of the Christian Church).",
+          "Some believe it was written around the same time as Revelation, c. AD 95–97 (van Unnik, 2004).",
+          "More than one scholar has concluded it can only date to the 60s; majority position favors the 90s (Carrier, 2014).",
+          "Nielsen (2007): 95–96 CE, broad range 70–140 CE.",
+        ]
+      },
+      {
+        id: 30,
+        title: "2 Thessalonians",
+        date: "51–110 CE",
+        era: "80–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "If authentic and written with 1 Thessalonians: late 50 CE to spring 51 CE (Wanamaker, 1990; Barclay, 1993).",
+          "Wrede (1903), using Polycarp's letter as terminus, dates it to about 110 CE.",
+          "Bailey (1979): 90–99 CE — pseudonymous, copied 1 Thess., different eschatology.",
+          "Wrede (1903): post-Paul, likely 70–100 CE.",
+          "Weima (2014) and Edwards (2019) defend Pauline authorship and a date of 51 CE.",
+        ]
+      },
+      {
+        id: 31,
+        title: "Ephesians",
+        date: "60–90 CE",
+        era: "80–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Scholars disputing Pauline authorship date it between 70 and 80 AD (M. Barth, 1974).",
+          "Scholten (1870): AD 80; Mitton (1951): c. AD 90 or later (pseudepigraphal).",
+          "Hoehner (2002) and Malick (2013) hold that Paul wrote it during Roman house arrest, AD 60–62.",
+          "M. Barth (1974, Anchor Bible) retains Pauline authorship in the early 60s.",
+        ]
+      },
+      {
+        id: 32,
+        title: "2 John",
+        date: "90–100 CE",
+        era: "90–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Written by the apostle John about AD 90 (Theopedia).",
+          "No later than 175 AD (Bernier, Rethinking the Dates of the New Testament, 2022).",
+          "Submitted circa 90 CE (Eternal Doctrine, 2018, p. 244).",
+          "A date before 100 CE, perhaps in the mid-90s, is possible (Coogan, Oxford Encyclopedia, 2011, p. 472).",
+        ]
+      },
+      {
+        id: 33,
+        title: "3 John",
+        date: "90–110 CE",
+        era: "90–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Majority opinion: around 100 CE, based on the dating of the Fourth Gospel (Coogan, Oxford Encyclopedia, p. 472).",
+          "No later than 100 CE, given the probable lifespan of the authors (Eternal Doctrine, 2018, p. 244).",
+          "Marshall suggests a date of between the 60s and 90s (Marshall, 1978).",
+          "Dodd argues for a date between 96 and 110 AD (Dodd, 1946).",
+        ]
+      },
+      {
+        id: 34,
+        title: "Epistle of Jude",
+        date: "65–130 CE",
+        era: "90–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Conservative/authentic view: ~65–80 CE, written by Jude before Domitian's reign.",
+          "Higher critical consensus: ~90–175 CE, posterior to 2 Peter, pseudonymous.",
+          "Trompf (2010): pseudepigraphical, written 100–150 CE, probably in an Aramaeo-Syriac milieu.",
+          "Trompf's best candidate: the last bishop of Jerusalem named Judas, ca. 127–130 CE.",
+          "Harnack/Pfleiderer/Jülicher place it in the 2nd century as anti-Gnostic.",
+        ]
+      },
+      {
+        id: 35,
+        title: "Gospel of John",
+        date: "85–100 CE",
+        era: "90–120",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#1a3a2a",
+        notes: [
+          "Smith (2010): 90–95 CE, noting weak Johannine echoes in 1 Clement.",
+          "Hengel (1989/2009): roughly 90–100 CE, with John the Elder and Asia Minor school.",
+          "Martyn (1979/2003): c. 90 CE, reading John on two levels relative to the Johannine community.",
+          "Ustinovich (2014) implies post-70 CE, probably the 70s–90s, based on Semitic loan-words.",
+          "Yan Ma (2022) favors post-70 CE; holds the Logos prologue is coherent with the Gospel.",
+        ]
+      },
+      {
+        id: 36,
+        title: "1 John",
+        date: "90–140 CE",
+        era: "90–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.2 Homilies and Exhortations",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Dates range from pre-70 CE (even as early as the late 50s) to around 170 AD — a span of nearly 120 years (Brill, 2016, p. 12).",
+          "Sturdy (2007) dates 1 John around 140 CE (Redrawing the Boundaries).",
+          "Wallace (1990) argues the Gospel of John was written pre-70 CE.",
+        ]
+      },
+      {
+        id: 37,
+        title: "Book of Revelation",
+        date: "90–95 CE",
+        era: "90–95",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.5 Apocalypses and Visions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Commonly dated to about 95 AD, with clues pointing to Domitian's reign (81–96) (Boxall, 2013).",
+          "Irenaeus (c. 130–202 CE) places the vision 'towards the end of Domitian's reign' (Against Heresies V.30).",
+          "Aune (WBC commentary) identifies twelve self-contained textual units composed mainly in the 50s–60s, with later redaction.",
+          "Consensus: John's vision was recorded well after AD 70.",
+        ]
+      },
+      {
+        id: 39,
+        title: "Apocalypse of Peter",
+        date: "100–150 CE",
+        era: "100–150",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.5 Apocalypses and Visions",
+        preservation: "Fragmentary",
+        confidence: "Moderate",
+        color: "#2a3b4a",
+        notes: [
+          "100 AD and 150 AD (Duensing, 1959–1964).",
+          "101 AD to 150 (Britannica Editors, 2026)",
+          "132–135 CE (Bauckham, 1994)",]
+      },
+      {
+        id: 38,
+        title: "Ascension of Isaiah",
+        date: "70–120 CE",
+        era: "90–175",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.5 Apocalypses and Visions",
+        preservation: "Composite/Complete",
+        confidence: "Moderate",
+        color: "#3b2a4a",
+        notes: [
+          "Scholarly estimates range from 70 AD to 175 AD (Hurtado, Lord Jesus Christ, 2005, pp. 588, 595–602).",
+          "By substantial consent compiled sometime in the period 70–120 CE; written in Syria (Knight, 2016, p. 46).",
+          "Bauckham (1998): c. 70–80 CE — argues for unity and early Christian relevance.",
+          "Ascensio Isaiae commentary (1995): chs. 6–11 late/end of 1st century; chs. 1–5 early 2nd century.",
+          "Knight (2012): chs. 7–11 are 1st century; final expanded form is early 2nd century, possibly linked to the Pliny/Trajan crisis.",
+          "NASSCAL e-Clavis (2023) generally classifies it as a 2nd-century early Christian apocalypse.",
+        ]
+      },
+      {
+        id: 41,
+        title: "Gospel of the Ebionites",
+        date: "100–160 CE",
+        era: "100–160",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Fragmentary",
+        confidence: "Moderate",
+        color: "#2a4a3b",
+        notes: [
+          "Howard (1988): 100–175 CE — reflects the canonical Gospels.",
+          "Smith (2010): c. 100–150 CE — Greek and canon-dependent.",
+          "Bertrand (1980): before c. 170 CE — pre-Diatessaron Synoptic harmony.",
+          "Bovon (1988): pre-180 CE.",
+          "Koester, Elliott, Ehrman, Lührmann, Throckmorton: likely 2nd century, Synoptic harmony.",
+          "Gregory (2005, 2017): after Luke, likely 2nd century.",
+          "<strong>Summary:</strong> earliest possible 100 CE; safest earliest 120 CE; best date 140 CE; best range 130–150 CE; latest likely 165–175 CE.",
+        ]
+      },
+      {
+        id: 42,
+        title: "Odes of Solomon",
+        date: "90–125 CE",
+        era: "100–200",
+        section: "3. Poetic and Prophetic Texts",
+        subcategory: "3.1 Hymns and Poems",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "Potgieter (2022): end of 1st century / beginning of 2nd century CE; blurred Judaism/Christianity boundary.",
+          "Merrill (1974): 2nd century; Harris (1909) as early as AD 70.",
+          "Charlesworth (1992) long after 100 unlikely; middle of the 2nd century for many.",
+          "ca. 100 CE for McNeil (1977)",
+          "Salvesen citing Lattke (2025): first quarter of the 2nd century CE; originally in Greek before Syriac/Coptic transmission.",
+          "H. J. Drijvers (1978) contends that they are as late as the 3d century",
+          "L. Abramowski (1984) places them in the latter half of the 2d century"
+        ]
+      },
+      {
+        id: 43,
+        title: "The Thunder, Perfect Mind",
+        date: "100–230 CE",
+        era: "100–230",
+        section: "3. Poetic and Prophetic Texts",
+        subcategory: "3.1 Hymns and Poems",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "Broadly dated c. 100–230 CE in early Christian/Gnostic surveys (Mowczko blog).",
+          "Plausible internal range of AD 180–230.",
+          "First or second centuries of the common era (MacRae, 1999)",
+          "No later than about 350 C.E (McGuire, 2000)"
+        ]
+      },
+      {
+        id: 45,
+        title: "2 Peter",
+        date: "65–150 CE",
+        era: "90–175",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#2a3b4a",
+        notes: [
+          "Higher critical circles place it anywhere between AD 90–175 (Trompf, 2010).",
+          "Demarest (1865): 64 or 68 CE, Petrine, written shortly before Peter's death.",
+          "Green (1960): 64–68 CE if genuine; notes the pseudonymous alternative of 125–150 CE.",
+          "Joel Thomas (2022): 65 CE, mid-60s — argues 2 Peter is not true testamentary pseudepigraphy.",
+        ]
+      },
+      {
+        id: 46,
+        title: "The Preaching of Peter",
+        date: "80–125 CE",
+        era: "70–140",
+        section: "1. Discursive Texts",
+        subcategory: "1.2 Homilies and Exhortations",
+        preservation: "Fragmentary",
+        confidence: "Moderate",
+        color: "#4a3b2a",
+        notes: [
+          "Grabe (1700): shortly after Peter's death, roughly AD 70.",
+          "Von Dobschütz (1893): probably later than Barnabas — if Barnabas is c. AD 70–79, fits best after AD 80.",
+          "Geffcken (1907): forerunner of later Christian apologies — earlier than Aristides/Justin-style apologies, so likely before AD 125–140.",
+          "Reagan (1923): the oldest known Christian apology, probably written in Alexandria; hard to date later than AD 100.",
+        ]
+      },
+      {
+        id: 47,
+        title: "Sibylline Oracles, Book 4",
+        date: "c. 80 CE",
+        era: "70–100",
+        section: "Unknown",
+        subcategory: "Apocalypse",
+        preservation: "Unknown",
+        confidence: "Moderate",
+        color: "#3b2a4a",
+        notes: [
+          "Generally dated to c. 80 CE, shortly after the eruption of Vesuvius in 79 CE which it appears to reference (Collins, 1984).",
+          "Jewish in origin with possible later Christian interpolations (Buitenwerf, 2003).",
+        ]
+      },
+      {
+        id: 48,
+        title: "4 Ezra (Main Apocalypse)",
+        date: "c. 90–100 CE",
+        era: "90–100",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.5 Apocalypses and Visions",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "Core apocalypse commonly dated to c. 100 CE, about thirty years after the destruction of the Temple (Stone, 1990).",
+          "The eagle vision is often taken as a reference to the Flavian dynasty, placing composition in the 90s CE (Longenecker, 1995).",
+          "Written in response to the theological crisis of 70 CE; final form likely c. 90–100 CE (Metzger, OTP).",
+        ]
+      },
+      {
+        id: 49,
+        title: "Papias, Exposition of the Dominical Oracles",
+        date: "c. 95–120 CE",
+        era: "90–130",
+        section: "1. Discursive Texts",
+        subcategory: "1.3 Theological Treatises and Expositions",
+        preservation: "Fragmentary",
+        confidence: "High",
+        color: "#4a3b2a",
+        notes: [
+          "Eusebius places Papias in the time of Polycarp and Ignatius, suggesting activity c. 100–130 CE (Hist. Eccl. III.39).",
+          "Bauckham (2006) argues Papias wrote c. 100–110 CE based on his claim to have heard 'the Elder John.'",
+          "Schoedel (1993) dates the work to c. 110–120 CE.",
+        ]
+      },
+      {
+        id: 50,
+        title: "Testaments of the Twelve Patriarchs",
+        date: "c. 100 CE (disputed)",
+        era: "70–200",
+        section: "3. Poetic and Prophetic Texts",
+        subcategory: "3.3 Testamentary Discourses",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#3b2a4a",
+        notes: [
+          "De Jonge (1985) argues for a Christian composition of the 2nd century CE.",
+          "Kee (1978) favors a Jewish original from the 2nd century BCE with Christian interpolations.",
+          "Kugler (2001) sees a core text from the Hellenistic period, reworked into the 1st–2nd centuries CE.",
+        ]
+      },
+      {
+        id: 51,
+        title: "Sibylline Oracles, Book 5",
+        date: "70–130 CE (layered)",
+        era: "70–130",
+        section: "Unknown",
+        subcategory: "Apocalypse",
+        preservation: "Unknown",
+        confidence: "Moderate",
+        color: "#3b2a4a",
+        notes: [
+          "A composite text with material spanning c. 70–130 CE (Collins, 1984).",
+          "Contains references to the destruction of the Jerusalem Temple (70 CE) and the Nero redivivus legend.",
+          "The Egyptian Jewish provenance and references to Hadrian suggest final layers extend to c. 130 CE (Buitenwerf, 2003).",
+          "Strongly anti-Roman and reflects the aftermath of the Jewish-Roman wars.",
+        ]
+      },
+      {
+        id: 52,
+        title: "Gospel of Cerinthus",
+        date: "90–110 CE",
+        era: "90–120",
+        section: "2. Narrative and Revelatory Texts",
+        subcategory: "2.1 Jesus Narratives and Gospel Traditions",
+        preservation: "Title-Only",
+        confidence: "Low",
+        color: "#2a4a3b",
+        notes: [
+          "Attributed to the heresiarch Cerinthus, active in Asia Minor in the late 1st century.",
+          "Epiphanius (Panarion 28) claims Cerinthus used a modified version of the Gospel of Matthew.",
+          "Irenaeus associates Cerinthus with Johannine-era conflicts, placing his activity c. 90–110 CE.",
+        ]
+      },
+      {
+        id: 53,
+        title: "Epistle of Ignatius to the Trallians",
+        date: "98–117 CE",
+        era: "100–120",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Traditionally dated to Trajan's reign, c. 108–117 CE (Lightfoot, Apostolic Fathers, 1889).",
+          "Brent (2006) supports a date in the reign of Trajan, c. 110 CE.",
+          "Barnes (2008) has argued for a date as early as 98 CE.",
+        ]
+      },
+      {
+        id: 55,
+        title: "1 Timothy",
+        date: "62–100 CE",
+        era: "80–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "If by Paul, written c. 62–64 CE during a proposed second Roman imprisonment (Knight, 1992).",
+          "Most critical scholars consider it pseudonymous, dating it to c. 80–100 CE (Collins, 2002).",
+          "Johnson (2001) defends Pauline authorship and a date in the early 60s.",
+          "Towner (2006) allows for Pauline authorship but acknowledges the majority view favoring the 80s–90s CE.",
+          "Linguistic and theological differences from the undisputed Paulines are the primary basis for a later date (Ehrman, 2012).",
+        ]
+      },
+      {
+        id: 56,
+        title: "2 Timothy",
+        date: "64–100 CE",
+        era: "64–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "Paul's final letter, written c. 64–67 CE before execution (Mounce, 2000).",
+          "Pseudonymous, c. 80–100 CE, reflecting a post-Pauline ecclesial setting (Collins, 2002).",
+          "Prior (1989) argues for Pauline authorship and a date in the mid-60s.",
+          "Marshall (1999) likely composed in the last two decades of the 1st century.",
+        ]
+      },
+      {
+        id: 57,
+        title: "Titus",
+        date: "62–100 CE",
+        era: "80–100",
+        section: "1. Discursive Texts",
+        subcategory: "1.1 Letters",
+        preservation: "Complete",
+        confidence: "High",
+        color: "#5b2333",
+        notes: [
+          "If authentic, written c. 62–64 CE between Paul's first and second Roman imprisonments (Knight, 1992).",
+          "Critical consensus dates it to c. 80–100 CE as pseudonymous (Quinn, 1990).",
+          "Quinn (1990, Anchor Bible): c. 80–85 CE, written by a Pauline disciple familiar with Cretan church conditions.",
+          "Closely related in language and theology to 1 Timothy; usually dated to the same period.",
+          "Dibelius & Conzelmann (1972) place all three Pastorals in the early 2nd century.",
+        ]
+      },
+    ];
+
+    const filteredTexts = texts.filter(t => t.id !== 21);
+
+    // Get unique main sections and full subcategories
+    const allSubcats = [...new Set(filteredTexts.map(t => t.subcategory))].sort();
+
+    let activeFilter = 'All'; // Can be 'All' or a subcategory
+
+    function buildFilterBar() {
+      const bar = document.getElementById('filterBar');
+      bar.innerHTML = '';
+
+      ['All', ...allSubcats].forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+        btn.textContent = cat;
+        btn.addEventListener('click', () => {
+          activeFilter = cat;
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderGrid();
+        });
+        bar.appendChild(btn);
+      });
+    }
+
+    function categoryColor(cat) { return '#000'; }
+    function categoryTextColor(cat) { return '#999'; }
+
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      const visible = activeFilter === 'All'
+        ? filteredTexts
+        : filteredTexts.filter(t =>
+          t.subcategory === activeFilter ||
+          (t.crossListed && t.crossListed.includes(activeFilter))
+        );
+
+      if (visible.length === 0) {
+        const msg = document.createElement('div');
+        msg.className = 'no-results';
+        msg.textContent = 'No texts in this category.';
+        grid.appendChild(msg);
+        return;
+      }
+
+      visible.forEach(text => {
+        const wrap = document.createElement('div');
+        wrap.className = 'card-wrap';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', `${text.title} — click to flip`);
+
+        // Front
+        const front = document.createElement('div');
+        front.className = 'face front';
+
+        const blBr = document.createElement('div');
+        blBr.className = 'corner-bl';
+        const brBr = document.createElement('div');
+        brBr.className = 'corner-br';
+
+        const era = document.createElement('div');
+        era.className = 'front-era';
+        era.textContent = text.subcategory;
+
+        const chip = document.createElement('div');
+        chip.className = 'category-chip';
+        chip.style.color = categoryTextColor(text.subcategory);
+        chip.style.borderColor = categoryTextColor(text.subcategory);
+        chip.innerHTML = `<span style="font-size: 11px;">${text.section}</span>`;
+
+        const title = document.createElement('div');
+        title.className = 'front-title';
+        title.textContent = text.title;
+
+        const date = document.createElement('div');
+        date.className = 'front-date';
+        date.textContent = text.date;
+
+        const hint = document.createElement('div');
+        hint.className = 'flip-hint';
+        hint.textContent = '';
+
+        front.appendChild(blBr);
+        front.appendChild(brBr);
+        front.appendChild(chip);
+        front.appendChild(title);
+        front.appendChild(date);
+        front.appendChild(hint);
+
+        // Back
+        const back = document.createElement('div');
+        back.className = 'face back';
+
+        const bh = document.createElement('div');
+        bh.className = 'back-header';
+
+        bh.innerHTML = `
+          <div class="back-title">${text.title}</div>
+          <div class="back-date" style="margin-bottom: 6px;">${text.date}</div>
+        `;
+
+        const bb = document.createElement('div');
+        bb.className = 'back-body';
+
+        const ul = document.createElement('ul');
+        text.notes.forEach(note => {
+          const li = document.createElement('li');
+          li.innerHTML = note;
+          ul.appendChild(li);
+        });
+        bb.appendChild(ul);
+
+        const fade = document.createElement('div');
+        fade.className = 'scroll-fade';
+
+        back.appendChild(bh);
+        back.appendChild(bb);
+        back.appendChild(fade);
+
+        card.appendChild(front);
+        card.appendChild(back);
+
+        card.addEventListener('click', () => card.classList.toggle('flipped'));
+        card.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.classList.toggle('flipped');
+          }
+        });
+
+        wrap.appendChild(card);
+        grid.appendChild(wrap);
+      });
+    }
+
+    buildFilterBar();
+    renderGrid();
+  </script>
+</body>
+
+</html>
