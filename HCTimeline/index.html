@@ -2,487 +2,558 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <title>Headcovering Timeline</title>
 
   <meta
     name="description"
-    content="A timeline of works related to head covering and 1 Corinthians 11:2–16."
+    content="A timeline of historical works and views related to Christian head covering and 1 Corinthians 11:2–16."
   >
 
-  <title>Headcovering Timeline</title>
   <link rel="icon" href="data:,">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  >
 
   <style>
-:root {
-  --background: #f5f3ef;
-  --surface: #ffffff;
-  --surface-soft: #f0edf2;
-  --text: #28242c;
-  --muted: #706a75;
-  --border: #ddd8e0;
-  --accent: #3b2a4a;
-  --accent-soft: #e9e1ed;
-  --success-soft: #e4eee7;
-  --error: #922f2f;
-  --error-soft: #f6e5e5;
-  --shadow: 0 12px 30px rgba(38, 29, 45, 0.07);
-  --radius: 14px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  color-scheme: light;
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background: var(--background);
-  color: var(--text);
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-  line-height: 1.5;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-a {
-  color: var(--accent);
-}
-
-.page {
-  width: min(920px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 52px 0 72px;
-}
-
-.site-header {
-  margin-bottom: 30px;
-}
-
-.eyebrow,
-.section-label {
-  margin: 0;
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-h1 {
-  margin: 6px 0 0;
-  font-size: clamp(34px, 7vw, 54px);
-  line-height: 1.04;
-  letter-spacing: -0.04em;
-}
-
-.intro {
-  max-width: 700px;
-  margin: 14px 0 0;
-  color: var(--muted);
-  font-size: 17px;
-}
-
-.timeline-panel,
-.work-card,
-.message {
-  border: 1px solid var(--border);
-  background: var(--surface);
-}
-
-.timeline-panel {
-  padding: 22px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.timeline-heading,
-.details-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.selected-year {
-  display: block;
-  margin-top: 4px;
-  color: var(--accent);
-  font-size: clamp(30px, 6vw, 42px);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.timeline-status {
-  margin: 3px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-  text-align: right;
-}
-
-.timeline-status.error {
-  color: var(--error);
-}
-
-.slider-wrap {
-  margin-top: 25px;
-}
-
-#yearSlider {
-  width: 100%;
-  margin: 0;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
-
-#yearSlider:disabled {
-  cursor: wait;
-  opacity: 0.55;
-}
-
-.tick-row {
-  position: relative;
-  height: 18px;
-  margin: 3px 8px 0;
-}
-
-.tick {
-  position: absolute;
-  top: 3px;
-  width: 2px;
-  height: 8px;
-  border-radius: 2px;
-  background: #aaa2ad;
-  transform: translateX(-50%);
-}
-
-.tick.major {
-  height: 13px;
-  background: var(--accent);
-}
-
-.timeline-range {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.details {
-  margin-top: 30px;
-}
-
-.details-heading {
-  margin-bottom: 15px;
-}
-
-#yearHeading {
-  margin: 3px 0 0;
-  font-size: 30px;
-  line-height: 1.15;
-}
-
-.details-tools {
-  padding-top: 5px;
-}
-
-.primary-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.primary-filter input {
-  width: 17px;
-  height: 17px;
-  margin: 0;
-  accent-color: var(--accent);
-}
-
-.works {
-  display: grid;
-  gap: 14px;
-}
-
-.work-card {
-  display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 18px;
-  padding: 18px;
-  border-radius: var(--radius);
-  box-shadow: 0 3px 12px rgba(38, 29, 45, 0.03);
-}
-
-.work-card.primary-work {
-  border-left: 4px solid var(--accent);
-  padding-left: 15px;
-}
-
-.work-image-wrap {
-  width: 92px;
-}
-
-.work-image {
-  display: block;
-  width: 92px;
-  height: 118px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface-soft);
-  object-fit: cover;
-}
-
-.work-year {
-  margin: 0 0 3px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.work-author {
-  margin: 0;
-  font-size: 21px;
-  line-height: 1.25;
-}
-
-.work-title {
-  margin: 5px 0 0;
-  color: var(--muted);
-  font-size: 15px;
-}
-
-.work-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 13px;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 4px 9px;
-  border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.badge.primary {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.badge.secondary {
-  background: #ececec;
-  color: #56505a;
-}
-
-.badge.view-material_veil_required {
-  background: #eadfea;
-}
-
-.badge.view-material_veil_expected {
-  background: #e7e2ed;
-}
-
-.badge.view-cultural_symbol {
-  background: #e6ebf2;
-}
-
-.badge.view-hair_only {
-  background: #ece8d9;
-}
-
-.badge.view-no_requirement {
-  background: var(--success-soft);
-}
-
-.work-source {
-  display: inline-block;
-  margin-top: 14px;
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.work-source:hover,
-.work-source:focus-visible {
-  text-decoration: underline;
-}
-
-.message {
-  padding: 28px 20px;
-  border-style: dashed;
-  border-radius: var(--radius);
-  color: var(--muted);
-  text-align: center;
-}
-
-.message.error {
-  border-color: #d8b3b3;
-  background: var(--error-soft);
-  color: var(--error);
-}
-
-.retry-button {
-  margin-top: 14px;
-  padding: 10px 15px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #ffffff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.retry-button:hover,
-.retry-button:focus-visible {
-  filter: brightness(1.08);
-}
-
-.retry-button[hidden] {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .page {
-    width: min(100% - 22px, 920px);
-    padding: 30px 0 52px;
-  }
-
-  .timeline-panel {
-    padding: 18px;
-  }
-
-  .timeline-heading,
-  .details-heading {
-    display: block;
-  }
-
-  .timeline-status {
-    margin-top: 7px;
-    text-align: left;
-  }
-
-  .details-tools {
-    margin-top: 12px;
-  }
-
-  .work-card {
-    grid-template-columns: 65px minmax(0, 1fr);
-    gap: 12px;
-    padding: 14px;
-  }
-
-  .work-card.primary-work {
-    padding-left: 11px;
-  }
-
-  .work-image-wrap,
-  .work-image {
-    width: 65px;
-  }
-
-  .work-image {
-    height: 86px;
-  }
-
-  .work-author {
-    font-size: 18px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #171519;
-    --surface: #211e23;
-    --surface-soft: #2c2730;
-    --text: #f1edf3;
-    --muted: #b8b0bb;
-    --border: #3d3740;
-    --accent: #d1b4df;
-    --accent-soft: #3d2f45;
-    --success-soft: #29392e;
-    --error: #f1a4a4;
-    --error-soft: #3c2727;
-    --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-  }
-
-  html {
-    color-scheme: dark;
-  }
-
-  .badge.secondary {
-    background: #343036;
-    color: #d4ced7;
-  }
-
-  .badge.view-material_veil_required,
-  .badge.view-material_veil_expected,
-  .badge.view-cultural_symbol,
-  .badge.view-hair_only {
-    background: #332d38;
-  }
-}
-
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-soft: #f7f7f7;
+      --border: #000000;
+      --border-light: #d7d7d7;
+      --text: #000000;
+      --muted: #555555;
+      --faint: #999999;
+      --error: #8a1f1f;
+      --max-width: 980px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      color-scheme: light;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 48px 24px 64px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .eyebrow,
+    .section-label {
+      color: var(--faint);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-header h1 {
+      margin-top: 6px;
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    .intro {
+      max-width: 660px;
+      margin: 8px auto 0;
+      color: var(--faint);
+      font-size: 0.84rem;
+      line-height: 1.65;
+    }
+
+    .site-header::after {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 1px;
+      margin: 16px auto 0;
+      background: var(--border);
+    }
+
+    .timeline-panel {
+      padding: 22px 24px 18px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .timeline-heading,
+    .details-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .selected-year {
+      display: block;
+      margin-top: 4px;
+      font-size: clamp(1.7rem, 5vw, 2.35rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    .timeline-status {
+      margin-top: 2px;
+      color: var(--faint);
+      font-size: 0.74rem;
+      text-align: right;
+    }
+
+    .timeline-status.error {
+      color: var(--error);
+    }
+
+    .slider-wrap {
+      margin-top: 24px;
+    }
+
+    #yearSlider {
+      width: 100%;
+      height: 20px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    #yearSlider:focus {
+      outline: none;
+    }
+
+    #yearSlider:disabled {
+      cursor: wait;
+      opacity: 0.45;
+    }
+
+    #yearSlider::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+    }
+
+    #yearSlider::-webkit-slider-thumb {
+      width: 14px;
+      height: 14px;
+      margin-top: -6px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    #yearSlider::-moz-range-track {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+    }
+
+    #yearSlider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    #yearSlider:focus-visible::-webkit-slider-thumb {
+      outline: 2px solid var(--border);
+      outline-offset: 3px;
+    }
+
+    #yearSlider:focus-visible::-moz-range-thumb {
+      outline: 2px solid var(--border);
+      outline-offset: 3px;
+    }
+
+    .tick-row {
+      position: relative;
+      height: 16px;
+      margin: 2px 7px 0;
+    }
+
+    .tick {
+      position: absolute;
+      top: 2px;
+      width: 1px;
+      height: 6px;
+      background: var(--border-light);
+      transform: translateX(-50%);
+    }
+
+    .tick.major {
+      height: 10px;
+      background: var(--border);
+    }
+
+    .timeline-range {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+      color: var(--faint);
+      font-size: 0.68rem;
+    }
+
+    .details {
+      margin-top: 36px;
+    }
+
+    .details-heading {
+      align-items: end;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #yearHeading {
+      margin-top: 3px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .details-tools {
+      padding-bottom: 2px;
+    }
+
+    .core-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .core-filter input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: var(--text);
+    }
+
+    .works {
+      display: grid;
+      gap: 12px;
+    }
+
+    .work-card {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-light);
+      background: var(--surface);
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .work-card:hover {
+      border-color: var(--border);
+      background: var(--surface-soft);
+    }
+
+    .work-card.core-entry {
+      border-color: var(--border);
+    }
+
+    .work-image-wrap {
+      position: relative;
+      width: 88px;
+      min-height: 112px;
+    }
+
+    .work-image {
+      display: block;
+      width: 88px;
+      height: 112px;
+      border: 1px solid var(--border-light);
+      background: var(--surface-soft);
+      object-fit: cover;
+      filter: grayscale(100%);
+    }
+
+    .image-fallback {
+      display: none;
+      width: 88px;
+      height: 112px;
+      place-items: center;
+      border: 1px solid var(--border-light);
+      background: var(--surface-soft);
+      color: var(--faint);
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .work-year {
+      margin-bottom: 3px;
+      color: var(--faint);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .work-author {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .work-title {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .work-excerpt {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-left: 2px solid var(--border);
+      background: var(--surface-soft);
+      color: #333333;
+      font-size: 0.79rem;
+      line-height: 1.65;
+    }
+
+    .work-excerpt::before {
+      content: "“";
+    }
+
+    .work-excerpt::after {
+      content: "”";
+    }
+
+    .work-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      padding: 3px 8px;
+      border: 1px solid var(--border-light);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.64rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .badge.core {
+      border-color: var(--border);
+      background: var(--text);
+      color: #ffffff;
+    }
+
+    .work-source {
+      display: inline-block;
+      margin-top: 13px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .work-source:hover,
+    .work-source:focus-visible {
+      color: var(--muted);
+    }
+
+    .work-source:focus-visible {
+      outline: 1px solid var(--border);
+      outline-offset: 4px;
+    }
+
+    .message {
+      padding: 28px 20px;
+      border: 1px solid var(--border-light);
+      background: var(--surface-soft);
+      color: var(--faint);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .message.error {
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    .retry-button {
+      margin-top: 14px;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .retry-button:hover,
+    .retry-button:focus-visible {
+      background: var(--text);
+      color: #ffffff;
+    }
+
+    .retry-button[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 32px 14px 48px;
+      }
+
+      .site-header {
+        margin-bottom: 30px;
+      }
+
+      .timeline-panel {
+        padding: 18px 16px 15px;
+      }
+
+      .timeline-heading,
+      .details-heading {
+        display: block;
+      }
+
+      .timeline-status {
+        margin-top: 7px;
+        text-align: left;
+      }
+
+      .details-tools {
+        margin-top: 10px;
+      }
+
+      .work-card {
+        grid-template-columns: 62px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .work-image-wrap,
+      .work-image,
+      .image-fallback {
+        width: 62px;
+      }
+
+      .work-image,
+      .image-fallback {
+        height: 82px;
+      }
+
+      .work-author {
+        font-size: 0.92rem;
+      }
+
+      .work-title,
+      .work-excerpt {
+        font-size: 0.76rem;
+      }
+    }
   </style>
 </head>
 
 <body>
   <main
+    class="page"
     id="timelineApp"
     data-json="./data.json"
   >
-    <div id="page">
-      <header class="site-header">
-        <p class="eyebrow">1 Corinthians 11:2–16</p>
+    <header class="site-header">
+      <p class="eyebrow">1 Corinthians 11:2–16</p>
+      <h1>Headcovering Timeline</h1>
 
-        <h1 class="site-title">
-          Head Covering Timeline
-        </h1>
+      <p class="intro">
+        Select a dated point to view writers, church texts, laws,
+        commentaries, and later studies on Christian head covering.
+      </p>
+    </header>
 
-        <p class="intro">
-          Move through the timeline to view works linked to each year.
-        </p>
-      </header>
+    <section
+      class="timeline-panel"
+      aria-labelledby="timelineTitle"
+    >
+      <div class="timeline-heading">
+        <div>
+          <p class="section-label" id="timelineTitle">
+            Timeline
+          </p>
 
-      <section
-        class="timeline"
-        aria-labelledby="timelineHeading"
-      >
-        <div class="banner" id="timelineHeading">
-          Select a year
+          <output
+            class="selected-year"
+            id="selectedYear"
+            for="yearSlider"
+          >
+            —
+          </output>
         </div>
 
-        <output
-          class="year-output"
-          id="yearOutput"
-          for="yearSlider"
+        <p
+          class="timeline-status"
+          id="timelineStatus"
+          aria-live="polite"
         >
-          —
-        </output>
+          Loading data…
+        </p>
+      </div>
 
+      <div class="slider-wrap">
         <input
           type="range"
           id="yearSlider"
@@ -490,495 +561,671 @@ h1 {
           max="0"
           value="0"
           step="1"
-          aria-label="Selected year"
+          aria-label="Select a timeline year"
           disabled
         >
 
-        <div class="range-labels">
-          <span id="rangeStart">—</span>
-          <span id="rangeEnd">—</span>
-        </div>
-      </section>
+        <div
+          class="tick-row"
+          id="tickRow"
+          aria-hidden="true"
+        ></div>
+      </div>
 
-      <section
-        class="details"
+      <div class="timeline-range">
+        <span id="firstYear">—</span>
+        <span id="lastYear">—</span>
+      </div>
+    </section>
+
+    <section
+      class="details"
+      aria-labelledby="yearHeading"
+    >
+      <div class="details-heading">
+        <div>
+          <p class="section-label">Selected year</p>
+          <h2 id="yearHeading">Loading</h2>
+        </div>
+
+        <div class="details-tools">
+          <label class="core-filter" for="coreOnly">
+            <input
+              type="checkbox"
+              id="coreOnly"
+            >
+            Core entries only
+          </label>
+        </div>
+      </div>
+
+      <div
+        id="works"
+        class="works"
         aria-live="polite"
       >
-        <div class="details-header">
-          <h2 id="yearHeading">Loading</h2>
-          <p class="status" id="status">Loading data…</p>
-        </div>
+        <p class="message">Loading timeline data…</p>
+      </div>
 
-        <div id="works">
-          <p class="empty">Loading data…</p>
-        </div>
-
-        <button
-          type="button"
-          id="retryButton"
-          hidden
-        >
-          Try again
-        </button>
-      </section>
-    </div>
+      <button
+        class="retry-button"
+        id="retryButton"
+        type="button"
+        hidden
+      >
+        Try again
+      </button>
+    </section>
   </main>
 
   <script>
     (() => {
       "use strict";
 
-      const app = document.getElementById("timelineApp");
-      const yearSlider = document.getElementById("yearSlider");
-      const yearOutput = document.getElementById("yearOutput");
-      const rangeStart = document.getElementById("rangeStart");
-      const rangeEnd = document.getElementById("rangeEnd");
-      const yearHeading = document.getElementById("yearHeading");
-      const works = document.getElementById("works");
-      const status = document.getElementById("status");
-      const retryButton = document.getElementById("retryButton");
+      const app =
+        document.getElementById("timelineApp");
+
+      const yearSlider =
+        document.getElementById("yearSlider");
+
+      const selectedYear =
+        document.getElementById("selectedYear");
+
+      const firstYear =
+        document.getElementById("firstYear");
+
+      const lastYear =
+        document.getElementById("lastYear");
+
+      const tickRow =
+        document.getElementById("tickRow");
+
+      const timelineStatus =
+        document.getElementById("timelineStatus");
+
+      const yearHeading =
+        document.getElementById("yearHeading");
+
+      const worksContainer =
+        document.getElementById("works");
+
+      const coreOnly =
+        document.getElementById("coreOnly");
+
+      const retryButton =
+        document.getElementById("retryButton");
+
+      const viewLabels = {
+        material_veil_required: "Material veil required",
+        material_veil_expected: "Material veil expected",
+        cultural_symbol: "Cultural symbol",
+        hair_only: "Hair only",
+        no_requirement: "No requirement",
+        indirect_witness: "Indirect witness",
+        related_dress_evidence: "Related dress evidence"
+      };
 
       let years = [];
-      let recordsByYear = new Map();
+      let itemsByYear = new Map();
+      let selectedIndex = 0;
 
       function setStatus(message, type = "") {
-        status.textContent = message;
-        status.className = `status ${type}`.trim();
+        timelineStatus.textContent = message;
+        timelineStatus.className =
+          `timeline-status ${type}`.trim();
       }
 
-      function unique(values) {
-        return [...new Set(values.filter(Boolean))];
-      }
-
-      function buildCandidateUrls(path) {
-        const suppliedPath = path || "./data.json";
-
-        const urls = [
-          new URL(suppliedPath, document.baseURI).href
-        ];
-
-        const pathParts = location.pathname
-          .split("/")
-          .filter(Boolean);
-
-        /*
-         * GitHub Pages project fallback:
-         * /CoolBibleTools/data.json
-         */
-        if (pathParts.length > 0) {
-          urls.push(
-            new URL(
-              `/${pathParts[0]}/data.json`,
-              location.origin
-            ).href
-          );
-        }
-
-        /*
-         * Root-site fallback:
-         * /data.json
-         */
-        urls.push(
-          new URL("/data.json", location.origin).href
-        );
-
-        return unique(urls);
-      }
-
-      async function fetchJson(path) {
-        const errors = [];
-
-        for (const url of buildCandidateUrls(path)) {
-          try {
-            const response = await fetch(url, {
-              cache: "no-store",
-              headers: {
-                Accept: "application/json"
-              }
-            });
-
-            if (!response.ok) {
-              throw new Error(
-                `${response.status} ${response.statusText}`
-              );
-            }
-
-            const text = await response.text();
-
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new Error(
-                "The fetched file is not valid JSON"
-              );
-            }
-          } catch (error) {
-            errors.push(`${url}: ${error.message}`);
-          }
-        }
-
-        throw new Error(errors.join(" | "));
-      }
-
-      function normalizePayload(payload) {
-        if (Array.isArray(payload)) {
-          return payload;
-        }
-
-        if (!payload || typeof payload !== "object") {
-          throw new Error(
-            "data.json must contain an array or object."
-          );
-        }
-
-        const arrayNames = [
-          "works",
-          "items",
-          "data",
-          "records",
-          "entries"
-        ];
-
-        for (const name of arrayNames) {
-          if (Array.isArray(payload[name])) {
-            return payload[name];
-          }
-        }
-
-        const entries = Object.entries(payload);
-
-        const groupedArrays = entries.filter(
-          ([, value]) => Array.isArray(value)
-        );
-
-        /*
-         * Supports this shape:
-         *
-         * {
-         *   "150": [{ ... }],
-         *   "200": [{ ... }]
-         * }
-         */
-        if (
-          groupedArrays.length > 0 &&
-          groupedArrays.length === entries.length
-        ) {
-          return groupedArrays.flatMap(
-            ([groupYear, items]) =>
-              items.map(item => ({
-                ...item,
-                year: item.year ?? groupYear
-              }))
-          );
-        }
-
-        throw new Error(
-          "No record list was found in data.json."
+      function formatView(view) {
+        return (
+          viewLabels[view] ||
+          String(view || "Unknown")
+            .replace(/[_-]+/g, " ")
+            .replace(
+              /\b\w/g,
+              letter => letter.toUpperCase()
+            )
         );
       }
 
-      function extractYear(record) {
-        const possibleValues = [
-          record.year,
-          record.sortYear,
-          record.startYear,
-          record.date,
-          record.dating,
-          record.dateRange
-        ];
+      function getDataUrl() {
+        const path =
+          app.dataset.json?.trim() ||
+          "./data.json";
 
-        for (const value of possibleValues) {
-          if (
-            value !== null &&
-            value !== "" &&
-            Number.isFinite(Number(value))
-          ) {
-            return Number(value);
-          }
-
-          if (typeof value !== "string") {
-            continue;
-          }
-
-          /*
-           * Reads years from values such as:
-           * "150 CE"
-           * "c. 150 CE"
-           * "150–175 CE"
-           */
-          const match = value.match(/\b(\d{1,4})\b/);
-
-          if (match) {
-            return Number(match[1]);
-          }
-        }
-
-        return null;
+        return new URL(
+          path,
+          document.baseURI
+        ).href;
       }
 
-      function prepareRecords(records) {
-        recordsByYear = new Map();
+      async function loadJson() {
+        const url = getDataUrl();
 
-        records.forEach((record, index) => {
-          if (
-            !record ||
-            typeof record !== "object" ||
-            Array.isArray(record)
-          ) {
-            return;
+        const response = await fetch(url, {
+          cache: "no-store",
+          headers: {
+            Accept: "application/json"
           }
-
-          const year = extractYear(record);
-
-          if (year === null) {
-            console.warn(
-              `Record ${index + 1} has no usable year:`,
-              record
-            );
-
-            return;
-          }
-
-          if (!recordsByYear.has(year)) {
-            recordsByYear.set(year, []);
-          }
-
-          recordsByYear.get(year).push(record);
         });
 
-        years = [...recordsByYear.keys()]
-          .sort((a, b) => a - b);
+        if (!response.ok) {
+          throw new Error(
+            `Could not load data.json: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const text =
+          await response.text();
+
+        let payload;
+
+        try {
+          payload = JSON.parse(text);
+        } catch {
+          throw new Error(
+            "data.json is not valid JSON"
+          );
+        }
+
+        if (
+          !payload ||
+          !Array.isArray(payload.items)
+        ) {
+          throw new Error(
+            'data.json must contain an "items" array'
+          );
+        }
+
+        return payload.items;
+      }
+
+      function normalizeItem(item) {
+        const year =
+          Number(item?.year);
+
+        if (
+          !item ||
+          typeof item !== "object" ||
+          !Number.isFinite(year)
+        ) {
+          return null;
+        }
+
+        return {
+          year,
+          author:
+            String(
+              item.author ||
+              "Unknown author"
+            ),
+          work:
+            String(
+              item.work ||
+              "Untitled work"
+            ),
+          view:
+            String(
+              item.view ||
+              "unknown"
+            ),
+          note:
+            String(
+              item.note ||
+              ""
+            ),
+          url:
+            String(
+              item.url ||
+              ""
+            ),
+          image:
+            String(
+              item.image ||
+              ""
+            ),
+          primary:
+            item.primary === true,
+          excerpt:
+            String(
+              item.excerpt ||
+              ""
+            )
+        };
+      }
+
+      function prepareItems(items) {
+        const cleanItems = items
+          .map(normalizeItem)
+          .filter(Boolean)
+          .sort((a, b) => {
+            if (a.year !== b.year) {
+              return a.year - b.year;
+            }
+
+            return a.author.localeCompare(
+              b.author,
+              undefined,
+              { sensitivity: "base" }
+            );
+          });
+
+        itemsByYear = new Map();
+
+        cleanItems.forEach(item => {
+          if (!itemsByYear.has(item.year)) {
+            itemsByYear.set(item.year, []);
+          }
+
+          itemsByYear
+            .get(item.year)
+            .push(item);
+        });
+
+        years = [
+          ...itemsByYear.keys()
+        ].sort((a, b) => a - b);
 
         if (years.length === 0) {
           throw new Error(
-            "No records contain a usable year."
+            "No valid dated items were found"
           );
         }
       }
 
-      function titleCase(value) {
-        return String(value)
-          .replace(/[_-]+/g, " ")
-          .replace(
-            /\b\w/g,
-            letter => letter.toUpperCase()
-          );
+      function createBadge(
+        text,
+        className = ""
+      ) {
+        const badge =
+          document.createElement("span");
+
+        badge.className =
+          `badge ${className}`.trim();
+
+        badge.textContent = text;
+
+        return badge;
       }
 
-      function appendValue(container, value) {
-        if (Array.isArray(value)) {
-          const list = document.createElement("ul");
+      function createImage(item) {
+        const wrap =
+          document.createElement("div");
 
-          value.forEach(item => {
-            const listItem = document.createElement("li");
+        wrap.className =
+          "work-image-wrap";
 
-            listItem.textContent =
-              item && typeof item === "object"
-                ? JSON.stringify(item)
-                : String(item);
+        const image =
+          document.createElement("img");
 
-            list.appendChild(listItem);
-          });
+        image.className =
+          "work-image";
 
-          container.appendChild(list);
-          return;
+        image.alt =
+          item.author
+            ? `Image for ${item.author}`
+            : "";
+
+        image.loading = "lazy";
+        image.decoding = "async";
+
+        const fallback =
+          document.createElement("div");
+
+        fallback.className =
+          "image-fallback";
+
+        fallback.textContent =
+          "No image";
+
+        function showFallback() {
+          image.style.display = "none";
+          fallback.style.display = "grid";
         }
 
-        if (value && typeof value === "object") {
-          const pre = document.createElement("pre");
-          pre.textContent = JSON.stringify(value, null, 2);
-          container.appendChild(pre);
-          return;
-        }
-
-        container.append(String(value));
-      }
-
-      function createWorkCard(record) {
-        const article = document.createElement("article");
-        article.className = "work-card";
-
-        const title = document.createElement("h3");
-
-        title.textContent =
-          record.title ||
-          record.name ||
-          record.work ||
-          "Untitled work";
-
-        article.appendChild(title);
-
-        const summary =
-          record.description ||
-          record.summary ||
-          record.excerpt;
-
-        if (summary) {
-          const paragraph = document.createElement("p");
-          paragraph.className = "summary";
-          paragraph.textContent = summary;
-          article.appendChild(paragraph);
-        }
-
-        const hiddenKeys = new Set([
-          "id",
-          "title",
-          "name",
-          "work",
-          "year",
-          "sortYear",
-          "startYear",
-          "description",
-          "summary",
-          "excerpt"
-        ]);
-
-        const details = document.createElement("dl");
-
-        Object.entries(record).forEach(
-          ([key, value]) => {
-            if (
-              hiddenKeys.has(key) ||
-              value === null ||
-              value === undefined ||
-              value === ""
-            ) {
-              return;
-            }
-
-            const term = document.createElement("dt");
-            term.textContent = titleCase(key);
-
-            const description =
-              document.createElement("dd");
-
-            const isLink =
-              /^(url|link|sourceUrl)$/i.test(key) &&
-              typeof value === "string";
-
-            if (isLink) {
-              const anchor =
-                document.createElement("a");
-
-              anchor.href = value;
-              anchor.target = "_blank";
-              anchor.rel = "noopener noreferrer";
-              anchor.textContent = "Open source";
-
-              description.appendChild(anchor);
-            } else {
-              appendValue(description, value);
-            }
-
-            details.append(term, description);
-          }
+        image.addEventListener(
+          "error",
+          showFallback
         );
 
-        if (details.children.length > 0) {
-          article.appendChild(details);
+        if (item.image) {
+          image.src = item.image;
+        } else {
+          showFallback();
         }
+
+        wrap.append(
+          image,
+          fallback
+        );
+
+        return wrap;
+      }
+
+      function createWorkCard(item) {
+        const article =
+          document.createElement("article");
+
+        article.className =
+          "work-card";
+
+        if (item.primary) {
+          article.classList.add(
+            "core-entry"
+          );
+        }
+
+        const content =
+          document.createElement("div");
+
+        const year =
+          document.createElement("p");
+
+        year.className =
+          "work-year";
+
+        year.textContent =
+          `${item.year} CE`;
+
+        const author =
+          document.createElement("h3");
+
+        author.className =
+          "work-author";
+
+        author.textContent =
+          item.author;
+
+        const work =
+          document.createElement("p");
+
+        work.className =
+          "work-title";
+
+        work.textContent =
+          item.work;
+
+        content.append(
+          year,
+          author,
+          work
+        );
+
+        if (item.excerpt) {
+          const excerpt =
+            document.createElement("blockquote");
+
+          excerpt.className =
+            "work-excerpt";
+
+          excerpt.textContent =
+            item.excerpt;
+
+          content.appendChild(excerpt);
+        }
+
+        const badges =
+          document.createElement("div");
+
+        badges.className =
+          "work-badges";
+
+        badges.appendChild(
+          createBadge(
+            formatView(item.view)
+          )
+        );
+
+        if (item.note) {
+          badges.appendChild(
+            createBadge(item.note)
+          );
+        }
+
+        if (item.primary) {
+          badges.appendChild(
+            createBadge(
+              "Core entry",
+              "core"
+            )
+          );
+        }
+
+        content.appendChild(badges);
+
+        if (item.url) {
+          const link =
+            document.createElement("a");
+
+          link.className =
+            "work-source";
+
+          link.href = item.url;
+          link.target = "_blank";
+          link.rel =
+            "noopener noreferrer";
+
+          link.textContent =
+            "Open source";
+
+          content.appendChild(link);
+        }
+
+        article.append(
+          createImage(item),
+          content
+        );
 
         return article;
       }
 
-      function renderYearByIndex(index) {
-        const safeIndex = Math.max(
-          0,
-          Math.min(index, years.length - 1)
+      function getVisibleItems(year) {
+        const items =
+          itemsByYear.get(year) || [];
+
+        if (!coreOnly.checked) {
+          return items;
+        }
+
+        return items.filter(
+          item => item.primary
         );
+      }
 
-        const year = years[safeIndex];
-        const records = recordsByYear.get(year) || [];
+      function renderSelectedYear() {
+        const year =
+          years[selectedIndex];
 
-        yearSlider.value = String(safeIndex);
-        yearOutput.textContent = `${year} CE`;
-        yearHeading.textContent = `${year} CE`;
+        if (year === undefined) {
+          return;
+        }
 
-        works.replaceChildren(
-          ...records.map(createWorkCard)
-        );
+        const allItems =
+          itemsByYear.get(year) || [];
+
+        const visibleItems =
+          getVisibleItems(year);
+
+        yearSlider.value =
+          String(selectedIndex);
+
+        selectedYear.textContent =
+          `${year} CE`;
+
+        yearHeading.textContent =
+          `${year} CE`;
 
         setStatus(
-          `${records.length} ${
-            records.length === 1 ? "work" : "works"
+          `${allItems.length} ${
+            allItems.length === 1
+              ? "work"
+              : "works"
           }`
         );
+
+        worksContainer.replaceChildren();
+
+        if (visibleItems.length === 0) {
+          const message =
+            document.createElement("p");
+
+          message.className =
+            "message";
+
+          message.textContent =
+            coreOnly.checked
+              ? "No core entries are marked for this year."
+              : "No works are listed for this year.";
+
+          worksContainer.appendChild(
+            message
+          );
+
+          return;
+        }
+
+        const fragment =
+          document.createDocumentFragment();
+
+        visibleItems.forEach(item => {
+          fragment.appendChild(
+            createWorkCard(item)
+          );
+        });
+
+        worksContainer.appendChild(
+          fragment
+        );
+      }
+
+      function buildTicks() {
+        tickRow.replaceChildren();
+
+        const denominator =
+          Math.max(years.length - 1, 1);
+
+        years.forEach((year, index) => {
+          const tick =
+            document.createElement("span");
+
+          const percentage =
+            (index / denominator) * 100;
+
+          tick.className = "tick";
+
+          if (
+            index === 0 ||
+            index === years.length - 1 ||
+            index % 5 === 0
+          ) {
+            tick.classList.add("major");
+          }
+
+          tick.style.left =
+            `${percentage}%`;
+
+          tick.title =
+            `${year} CE`;
+
+          tickRow.appendChild(tick);
+        });
       }
 
       function setupTimeline() {
+        selectedIndex = 0;
+
         yearSlider.min = "0";
-        yearSlider.max = String(years.length - 1);
+        yearSlider.max =
+          String(years.length - 1);
         yearSlider.step = "1";
+        yearSlider.value = "0";
         yearSlider.disabled = false;
 
-        rangeStart.textContent = `${years[0]} CE`;
+        firstYear.textContent =
+          `${years[0]} CE`;
 
-        rangeEnd.textContent =
+        lastYear.textContent =
           `${years[years.length - 1]} CE`;
 
-        renderYearByIndex(0);
+        buildTicks();
+        renderSelectedYear();
       }
 
-      async function loadData() {
+      function showError(error) {
+        console.error(error);
+
+        yearSlider.disabled = true;
+        selectedYear.textContent = "—";
+        yearHeading.textContent =
+          "Data could not be loaded";
+
+        setStatus(
+          "Timeline unavailable",
+          "error"
+        );
+
+        worksContainer.replaceChildren();
+
+        const message =
+          document.createElement("p");
+
+        message.className =
+          "message error";
+
+        message.textContent =
+          `${error.message}. Keep data.json in the same folder as this HTML file.`;
+
+        worksContainer.appendChild(
+          message
+        );
+
+        retryButton.hidden = false;
+      }
+
+      async function initialize() {
         retryButton.hidden = true;
         yearSlider.disabled = true;
+        selectedYear.textContent = "—";
         yearHeading.textContent = "Loading";
-        works.innerHTML =
-          '<p class="empty">Loading data…</p>';
+        firstYear.textContent = "—";
+        lastYear.textContent = "—";
 
         setStatus("Loading data…");
 
+        worksContainer.innerHTML =
+          '<p class="message">Loading timeline data…</p>';
+
         try {
-          /*
-           * One file:
-           * data-json="./data.json"
-           *
-           * Several files:
-           * data-json="./data1.json, ./data2.json"
-           */
-          const configuredPaths =
-            (app.dataset.json || "./data.json")
-              .split(",")
-              .map(value => value.trim())
-              .filter(Boolean);
+          const items =
+            await loadJson();
 
-          const payloads = await Promise.all(
-            configuredPaths.map(fetchJson)
-          );
-
-          const records = payloads.flatMap(
-            normalizePayload
-          );
-
-          prepareRecords(records);
+          prepareItems(items);
           setupTimeline();
         } catch (error) {
-          console.error(error);
-
-          yearHeading.textContent =
-            "Data could not be loaded";
-
-          works.innerHTML = "";
-          setStatus(error.message, "error");
-          retryButton.hidden = false;
+          showError(error);
         }
       }
 
       yearSlider.addEventListener(
         "input",
         event => {
-          renderYearByIndex(
-            Number(event.target.value)
-          );
+          selectedIndex =
+            Number(event.target.value);
+
+          renderSelectedYear();
         }
+      );
+
+      coreOnly.addEventListener(
+        "change",
+        renderSelectedYear
       );
 
       retryButton.addEventListener(
         "click",
-        loadData
+        initialize
       );
 
-      loadData();
+      initialize();
     })();
   </script>
 </body>
