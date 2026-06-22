@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     const occupationList = Array.from(allOccupations).sort();
-    occupationSelect.innerHTML = '<option value="all">All</option>' + 
+    occupationSelect.innerHTML = '<option value="all">All</option>' +
         occupationList.map(occ => `<option value="${occ}">${occ}</option>`).join('');
 
     function displayFigures(items, container) {
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('modal-scripture').textContent = item.scripture_references ? `Scripture: ${item.scripture_references.join(', ')}` : '';
         document.getElementById('modal-context').textContent = item.historical_context ? `Historical Context: ${item.historical_context}` : '';
         document.getElementById('modal-significance').textContent = item.significance ? `Significance: ${item.significance}` : '';
-        
+
         if (item.category === "figures") {
             document.getElementById('modal-gender').textContent = item.gender ? `Gender: ${item.gender}` : '';
             document.getElementById('modal-tribe').textContent = item.tribe ? `Tribe: ${item.tribe}` : '';
@@ -139,9 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const occupation = occupationSelect.value.toLowerCase();
                 if (occupation !== 'all') {
-                    filtered = filtered.filter(item => 
-                        item.occupation && (Array.isArray(item.occupation) ? 
-                            item.occupation.some(occ => occ.toLowerCase() === occupation) : 
+                    filtered = filtered.filter(item =>
+                        item.occupation && (Array.isArray(item.occupation) ?
+                            item.occupation.some(occ => occ.toLowerCase() === occupation) :
                             item.occupation.toLowerCase() === occupation)
                     );
                 }
