@@ -3,14 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Headcovering Timeline</title>
-
   <link rel="icon" href="data:,">
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-  >
 
   <style>
     :root {
@@ -26,25 +20,18 @@
       --max-width: 980px;
     }
 
-    *,
-    *::before,
-    *::after {
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html {
-      color-scheme: light;
-      scroll-behavior: smooth;
-    }
-
     body {
       min-height: 100vh;
-      padding: 48px 24px 64px;
+      padding: 42px 24px 64px;
       background: var(--bg);
       color: var(--text);
-      font-family: "Inter", Arial, sans-serif;
+      font-family: Arial, sans-serif;
       line-height: 1.5;
     }
 
@@ -64,39 +51,20 @@
     }
 
     .site-header {
-      margin-bottom: 40px;
+      margin-bottom: 28px;
       text-align: center;
     }
 
-    .eyebrow,
-    .section-label {
-      color: var(--faint);
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
     .site-header h1 {
-      margin-top: 6px;
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-size: clamp(1.6rem, 4vw, 2.35rem);
       font-weight: 600;
-      letter-spacing: -0.025em;
       line-height: 1.2;
-    }
-
-    .intro {
-      max-width: 660px;
-      margin: 8px auto 0;
-      color: var(--faint);
-      font-size: 0.84rem;
-      line-height: 1.65;
     }
 
     .site-header::after {
       content: "";
       display: block;
-      width: 40px;
+      width: 42px;
       height: 1px;
       margin: 16px auto 0;
       background: var(--border);
@@ -108,36 +76,15 @@
       background: var(--surface);
     }
 
-    .timeline-heading,
-    .details-heading {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .selected-year {
-      display: block;
-      margin-top: 4px;
-      font-size: clamp(1.7rem, 5vw, 2.35rem);
-      font-weight: 600;
-      letter-spacing: -0.035em;
-      line-height: 1;
-    }
-
     .timeline-status {
-      margin-top: 2px;
+      margin-bottom: 18px;
       color: var(--faint);
-      font-size: 0.74rem;
+      font-size: 0.78rem;
       text-align: right;
     }
 
     .timeline-status.error {
       color: var(--error);
-    }
-
-    .slider-wrap {
-      margin-top: 24px;
     }
 
     #yearSlider {
@@ -191,16 +138,6 @@
       cursor: pointer;
     }
 
-    #yearSlider:focus-visible::-webkit-slider-thumb {
-      outline: 2px solid var(--border);
-      outline-offset: 3px;
-    }
-
-    #yearSlider:focus-visible::-moz-range-thumb {
-      outline: 2px solid var(--border);
-      outline-offset: 3px;
-    }
-
     .tick-row {
       position: relative;
       height: 16px;
@@ -230,42 +167,15 @@
     }
 
     .details {
-      margin-top: 36px;
-    }
-
-    .details-heading {
-      align-items: end;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
+      margin-top: 34px;
     }
 
     #yearHeading {
-      margin-top: 3px;
-      font-size: 1.3rem;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.35rem;
       font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .details-tools {
-      padding-bottom: 2px;
-    }
-
-    .core-filter {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 0.72rem;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .core-filter input {
-      width: 14px;
-      height: 14px;
-      margin: 0;
-      accent-color: var(--text);
     }
 
     .works {
@@ -280,9 +190,6 @@
       padding: 18px;
       border: 1px solid var(--border-light);
       background: var(--surface);
-      transition:
-        border-color 0.15s ease,
-        background 0.15s ease;
     }
 
     .work-card:hover {
@@ -295,7 +202,6 @@
     }
 
     .work-image-wrap {
-      position: relative;
       width: 88px;
       min-height: 112px;
     }
@@ -319,17 +225,7 @@
       background: var(--surface-soft);
       color: var(--faint);
       font-size: 0.62rem;
-      letter-spacing: 0.05em;
       text-align: center;
-      text-transform: uppercase;
-    }
-
-    .work-year {
-      margin-bottom: 3px;
-      color: var(--faint);
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
@@ -342,7 +238,7 @@
     .work-title {
       margin-top: 4px;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       line-height: 1.5;
     }
 
@@ -352,7 +248,7 @@
       border-left: 2px solid var(--border);
       background: var(--surface-soft);
       color: #333333;
-      font-size: 0.79rem;
+      font-size: 0.8rem;
       line-height: 1.65;
     }
 
@@ -377,11 +273,9 @@
       min-height: 23px;
       padding: 3px 8px;
       border: 1px solid var(--border-light);
-      background: transparent;
       color: var(--muted);
       font-size: 0.64rem;
       font-weight: 500;
-      letter-spacing: 0.02em;
     }
 
     .badge.core {
@@ -398,16 +292,6 @@
       font-size: 0.72rem;
       font-weight: 500;
       text-decoration: none;
-    }
-
-    .work-source:hover,
-    .work-source:focus-visible {
-      color: var(--muted);
-    }
-
-    .work-source:focus-visible {
-      outline: 1px solid var(--border);
-      outline-offset: 4px;
     }
 
     .message {
@@ -433,13 +317,9 @@
       font-size: 0.72rem;
       font-weight: 500;
       cursor: pointer;
-      transition:
-        background 0.15s ease,
-        color 0.15s ease;
     }
 
-    .retry-button:hover,
-    .retry-button:focus-visible {
+    .retry-button:hover {
       background: var(--text);
       color: #ffffff;
     }
@@ -453,26 +333,12 @@
         padding: 32px 14px 48px;
       }
 
-      .site-header {
-        margin-bottom: 30px;
-      }
-
       .timeline-panel {
         padding: 18px 16px 15px;
       }
 
-      .timeline-heading,
-      .details-heading {
-        display: block;
-      }
-
       .timeline-status {
-        margin-top: 7px;
         text-align: left;
-      }
-
-      .details-tools {
-        margin-top: 10px;
       }
 
       .work-card {
@@ -505,67 +371,26 @@
 </head>
 
 <body>
-  <main
-    class="page"
-    id="timelineApp"
-    data-json="./data.json"
-  >
+  <main class="page" id="timelineApp" data-json="./data.json">
     <header class="site-header">
-      <p class="eyebrow">1 Corinthians 11:2–16</p>
       <h1>Headcovering Timeline</h1>
-
-      <p class="intro">
-        Select a dated point to view writers, church texts, laws,
-        commentaries, and later studies on Christian head covering.
-      </p>
     </header>
 
-    <section
-      class="timeline-panel"
-      aria-labelledby="timelineTitle"
-    >
-      <div class="timeline-heading">
-        <div>
-          <p class="section-label" id="timelineTitle">
-            Timeline
-          </p>
+    <section class="timeline-panel">
+      <p class="timeline-status" id="timelineStatus">Loading data…</p>
 
-          <output
-            class="selected-year"
-            id="selectedYear"
-            for="yearSlider"
-          >
-            —
-          </output>
-        </div>
+      <input
+        type="range"
+        id="yearSlider"
+        min="0"
+        max="0"
+        value="0"
+        step="1"
+        aria-label="Select a timeline year"
+        disabled
+      >
 
-        <p
-          class="timeline-status"
-          id="timelineStatus"
-          aria-live="polite"
-        >
-          Loading data…
-        </p>
-      </div>
-
-      <div class="slider-wrap">
-        <input
-          type="range"
-          id="yearSlider"
-          min="0"
-          max="0"
-          value="0"
-          step="1"
-          aria-label="Select a timeline year"
-          disabled
-        >
-
-        <div
-          class="tick-row"
-          id="tickRow"
-          aria-hidden="true"
-        ></div>
-      </div>
+      <div class="tick-row" id="tickRow" aria-hidden="true"></div>
 
       <div class="timeline-range">
         <span id="firstYear">—</span>
@@ -573,73 +398,34 @@
       </div>
     </section>
 
-    <section
-      class="details"
-      aria-labelledby="yearHeading"
-    >
-      <div class="details-heading">
-        <div>
-          <p class="section-label">Selected year</p>
-          <h2 id="yearHeading">Loading</h2>
-        </div>
+    <section class="details">
+      <h2 id="yearHeading">Loading</h2>
 
-      <div
-        id="works"
-        class="works"
-        aria-live="polite"
-      >
+      <div id="works" class="works" aria-live="polite">
         <p class="message">Loading timeline data…</p>
       </div>
 
-      <button
-        class="retry-button"
-        id="retryButton"
-        type="button"
-        hidden
-      >
+      <button class="retry-button" id="retryButton" type="button" hidden>
         Try again
       </button>
     </section>
   </main>
 
   <script>
-    (() => {
+    (function () {
       "use strict";
 
-      const app =
-        document.getElementById("timelineApp");
+      var app = document.getElementById("timelineApp");
+      var yearSlider = document.getElementById("yearSlider");
+      var firstYear = document.getElementById("firstYear");
+      var lastYear = document.getElementById("lastYear");
+      var tickRow = document.getElementById("tickRow");
+      var timelineStatus = document.getElementById("timelineStatus");
+      var yearHeading = document.getElementById("yearHeading");
+      var worksContainer = document.getElementById("works");
+      var retryButton = document.getElementById("retryButton");
 
-      const yearSlider =
-        document.getElementById("yearSlider");
-
-      const selectedYear =
-        document.getElementById("selectedYear");
-
-      const firstYear =
-        document.getElementById("firstYear");
-
-      const lastYear =
-        document.getElementById("lastYear");
-
-      const tickRow =
-        document.getElementById("tickRow");
-
-      const timelineStatus =
-        document.getElementById("timelineStatus");
-
-      const yearHeading =
-        document.getElementById("yearHeading");
-
-      const worksContainer =
-        document.getElementById("works");
-
-      const coreOnly =
-        document.getElementById("coreOnly");
-
-      const retryButton =
-        document.getElementById("retryButton");
-
-      const viewLabels = {
+      var viewLabels = {
         material_veil_required: "Material veil required",
         material_veil_expected: "Material veil expected",
         cultural_symbol: "Cultural symbol",
@@ -649,227 +435,150 @@
         related_dress_evidence: "Related dress evidence"
       };
 
-      let years = [];
-      let itemsByYear = new Map();
-      let selectedIndex = 0;
+      var years = [];
+      var itemsByYear = {};
+      var selectedIndex = 0;
 
-      function setStatus(message, type = "") {
+      function setStatus(message, type) {
         timelineStatus.textContent = message;
-        timelineStatus.className =
-          `timeline-status ${type}`.trim();
+        timelineStatus.className = type
+          ? "timeline-status " + type
+          : "timeline-status";
       }
 
       function formatView(view) {
-        return (
-          viewLabels[view] ||
-          String(view || "Unknown")
-            .replace(/[_-]+/g, " ")
-            .replace(
-              /\b\w/g,
-              letter => letter.toUpperCase()
-            )
-        );
+        if (viewLabels[view]) {
+          return viewLabels[view];
+        }
+
+        return String(view || "Unknown")
+          .replace(/[_-]+/g, " ")
+          .replace(/\b\w/g, function (letter) {
+            return letter.toUpperCase();
+          });
       }
 
       function getDataUrl() {
-        const path =
-          app.dataset.json?.trim() ||
-          "./data.json";
-
-        return new URL(
-          path,
-          document.baseURI
-        ).href;
+        var path = app.getAttribute("data-json") || "./data.json";
+        return new URL(path, document.baseURI).href;
       }
 
-      async function loadJson() {
-        const url = getDataUrl();
-
-        const response = await fetch(url, {
+      function loadJson() {
+        return fetch(getDataUrl(), {
           cache: "no-store",
           headers: {
             Accept: "application/json"
           }
-        });
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error(
+                "Could not load data.json: " +
+                  response.status +
+                  " " +
+                  response.statusText
+              );
+            }
 
-        if (!response.ok) {
-          throw new Error(
-            `Could not load data.json: ${response.status} ${response.statusText}`
-          );
-        }
+            return response.text();
+          })
+          .then(function (text) {
+            var payload;
 
-        const text =
-          await response.text();
+            try {
+              payload = JSON.parse(text);
+            } catch (error) {
+              throw new Error("data.json is not valid JSON");
+            }
 
-        let payload;
+            if (!payload || !Array.isArray(payload.items)) {
+              throw new Error('data.json must contain an "items" array');
+            }
 
-        try {
-          payload = JSON.parse(text);
-        } catch {
-          throw new Error(
-            "data.json is not valid JSON"
-          );
-        }
-
-        if (
-          !payload ||
-          !Array.isArray(payload.items)
-        ) {
-          throw new Error(
-            'data.json must contain an "items" array'
-          );
-        }
-
-        return payload.items;
+            return payload.items;
+          });
       }
 
       function normalizeItem(item) {
-        const year =
-          Number(item?.year);
+        var year = Number(item && item.year);
 
-        if (
-          !item ||
-          typeof item !== "object" ||
-          !Number.isFinite(year)
-        ) {
+        if (!item || typeof item !== "object" || !Number.isFinite(year)) {
           return null;
         }
 
         return {
-          year,
-          author:
-            String(
-              item.author ||
-              "Unknown author"
-            ),
-          work:
-            String(
-              item.work ||
-              "Untitled work"
-            ),
-          view:
-            String(
-              item.view ||
-              "unknown"
-            ),
-          note:
-            String(
-              item.note ||
-              ""
-            ),
-          url:
-            String(
-              item.url ||
-              ""
-            ),
-          image:
-            String(
-              item.image ||
-              ""
-            ),
-          primary:
-            item.primary === true,
-          excerpt:
-            String(
-              item.excerpt ||
-              ""
-            )
+          year: year,
+          author: String(item.author || "Unknown author"),
+          work: String(item.work || "Untitled work"),
+          view: String(item.view || "unknown"),
+          note: String(item.note || ""),
+          url: String(item.url || ""),
+          image: String(item.image || ""),
+          primary: item.primary === true,
+          excerpt: String(item.excerpt || "")
         };
       }
 
       function prepareItems(items) {
-        const cleanItems = items
+        var cleanItems = items
           .map(normalizeItem)
           .filter(Boolean)
-          .sort((a, b) => {
+          .sort(function (a, b) {
             if (a.year !== b.year) {
               return a.year - b.year;
             }
 
-            return a.author.localeCompare(
-              b.author,
-              undefined,
-              { sensitivity: "base" }
-            );
+            return a.author.localeCompare(b.author);
           });
 
-        itemsByYear = new Map();
+        itemsByYear = {};
 
-        cleanItems.forEach(item => {
-          if (!itemsByYear.has(item.year)) {
-            itemsByYear.set(item.year, []);
+        cleanItems.forEach(function (item) {
+          if (!itemsByYear[item.year]) {
+            itemsByYear[item.year] = [];
           }
 
-          itemsByYear
-            .get(item.year)
-            .push(item);
+          itemsByYear[item.year].push(item);
         });
 
-        years = [
-          ...itemsByYear.keys()
-        ].sort((a, b) => a - b);
+        years = Object.keys(itemsByYear)
+          .map(Number)
+          .sort(function (a, b) {
+            return a - b;
+          });
 
         if (years.length === 0) {
-          throw new Error(
-            "No valid dated items were found"
-          );
+          throw new Error("No valid dated items were found");
         }
       }
 
-      function createBadge(
-        text,
-        className = ""
-      ) {
-        const badge =
-          document.createElement("span");
-
-        badge.className =
-          `badge ${className}`.trim();
-
+      function createBadge(text, className) {
+        var badge = document.createElement("span");
+        badge.className = className ? "badge " + className : "badge";
         badge.textContent = text;
-
         return badge;
       }
 
       function createImage(item) {
-        const wrap =
-          document.createElement("div");
+        var wrap = document.createElement("div");
+        var image = document.createElement("img");
+        var fallback = document.createElement("div");
 
-        wrap.className =
-          "work-image-wrap";
+        wrap.className = "work-image-wrap";
 
-        const image =
-          document.createElement("img");
-
-        image.className =
-          "work-image";
-
-        image.alt =
-          item.author
-            ? `Image for ${item.author}`
-            : "";
-
+        image.className = "work-image";
+        image.alt = item.author ? "Image for " + item.author : "";
         image.loading = "lazy";
-        image.decoding = "async";
 
-        const fallback =
-          document.createElement("div");
-
-        fallback.className =
-          "image-fallback";
-
-        fallback.textContent =
-          "No image";
+        fallback.className = "image-fallback";
+        fallback.textContent = "No image";
 
         function showFallback() {
           image.style.display = "none";
           fallback.style.display = "grid";
         }
 
-        image.addEventListener(
-          "error",
-          showFallback
-        );
+        image.addEventListener("error", showFallback);
 
         if (item.image) {
           image.src = item.image;
@@ -877,222 +586,108 @@
           showFallback();
         }
 
-        wrap.append(
-          image,
-          fallback
-        );
+        wrap.appendChild(image);
+        wrap.appendChild(fallback);
 
         return wrap;
       }
 
       function createWorkCard(item) {
-        const article =
-          document.createElement("article");
+        var article = document.createElement("article");
+        var content = document.createElement("div");
+        var author = document.createElement("h3");
+        var work = document.createElement("p");
+        var badges = document.createElement("div");
 
-        article.className =
-          "work-card";
+        article.className = item.primary
+          ? "work-card core-entry"
+          : "work-card";
 
-        if (item.primary) {
-          article.classList.add(
-            "core-entry"
-          );
-        }
+        author.className = "work-author";
+        author.textContent = item.author;
 
-        const content =
-          document.createElement("div");
+        work.className = "work-title";
+        work.textContent = item.work;
 
-        const year =
-          document.createElement("p");
-
-        year.className =
-          "work-year";
-
-        year.textContent =
-          `${item.year} CE`;
-
-        const author =
-          document.createElement("h3");
-
-        author.className =
-          "work-author";
-
-        author.textContent =
-          item.author;
-
-        const work =
-          document.createElement("p");
-
-        work.className =
-          "work-title";
-
-        work.textContent =
-          item.work;
-
-        content.append(
-          year,
-          author,
-          work
-        );
+        content.appendChild(author);
+        content.appendChild(work);
 
         if (item.excerpt) {
-          const excerpt =
-            document.createElement("blockquote");
-
-          excerpt.className =
-            "work-excerpt";
-
-          excerpt.textContent =
-            item.excerpt;
-
+          var excerpt = document.createElement("blockquote");
+          excerpt.className = "work-excerpt";
+          excerpt.textContent = item.excerpt;
           content.appendChild(excerpt);
         }
 
-        const badges =
-          document.createElement("div");
-
-        badges.className =
-          "work-badges";
-
-        badges.appendChild(
-          createBadge(
-            formatView(item.view)
-          )
-        );
+        badges.className = "work-badges";
+        badges.appendChild(createBadge(formatView(item.view)));
 
         if (item.note) {
-          badges.appendChild(
-            createBadge(item.note)
-          );
+          badges.appendChild(createBadge(item.note));
         }
 
         if (item.primary) {
-          badges.appendChild(
-            createBadge(
-              "Core entry",
-              "core"
-            )
-          );
+          badges.appendChild(createBadge("Core entry", "core"));
         }
 
         content.appendChild(badges);
 
         if (item.url) {
-          const link =
-            document.createElement("a");
-
-          link.className =
-            "work-source";
-
+          var link = document.createElement("a");
+          link.className = "work-source";
           link.href = item.url;
           link.target = "_blank";
-          link.rel =
-            "noopener noreferrer";
-
-          link.textContent =
-            "Open source";
-
+          link.rel = "noopener noreferrer";
+          link.textContent = "Open source";
           content.appendChild(link);
         }
 
-        article.append(
-          createImage(item),
-          content
-        );
+        article.appendChild(createImage(item));
+        article.appendChild(content);
 
         return article;
       }
 
-      function getVisibleItems(year) {
-        const items =
-          itemsByYear.get(year) || [];
-
-        if (!coreOnly.checked) {
-          return items;
-        }
-
-        return items.filter(
-          item => item.primary
-        );
-      }
-
       function renderSelectedYear() {
-        const year =
-          years[selectedIndex];
+        var year = years[selectedIndex];
+        var items = itemsByYear[year] || [];
 
         if (year === undefined) {
           return;
         }
 
-        const allItems =
-          itemsByYear.get(year) || [];
-
-        const visibleItems =
-          getVisibleItems(year);
-
-        yearSlider.value =
-          String(selectedIndex);
-
-        selectedYear.textContent =
-          `${year} CE`;
-
-        yearHeading.textContent =
-          `${year} CE`;
+        yearSlider.value = String(selectedIndex);
+        yearHeading.textContent = year + " CE";
 
         setStatus(
-          `${allItems.length} ${
-            allItems.length === 1
-              ? "work"
-              : "works"
-          }`
+          items.length +
+            " " +
+            (items.length === 1 ? "entry" : "entries")
         );
 
-        worksContainer.replaceChildren();
+        worksContainer.innerHTML = "";
 
-        if (visibleItems.length === 0) {
-          const message =
-            document.createElement("p");
-
-          message.className =
-            "message";
-
-          message.textContent =
-            coreOnly.checked
-              ? "No core entries are marked for this year."
-              : "No works are listed for this year.";
-
-          worksContainer.appendChild(
-            message
-          );
-
+        if (items.length === 0) {
+          var message = document.createElement("p");
+          message.className = "message";
+          message.textContent = "No entries are listed for this year.";
+          worksContainer.appendChild(message);
           return;
         }
 
-        const fragment =
-          document.createDocumentFragment();
-
-        visibleItems.forEach(item => {
-          fragment.appendChild(
-            createWorkCard(item)
-          );
+        items.forEach(function (item) {
+          worksContainer.appendChild(createWorkCard(item));
         });
-
-        worksContainer.appendChild(
-          fragment
-        );
       }
 
       function buildTicks() {
-        tickRow.replaceChildren();
+        tickRow.innerHTML = "";
 
-        const denominator =
-          Math.max(years.length - 1, 1);
+        var denominator = Math.max(years.length - 1, 1);
 
-        years.forEach((year, index) => {
-          const tick =
-            document.createElement("span");
-
-          const percentage =
-            (index / denominator) * 100;
+        years.forEach(function (year, index) {
+          var tick = document.createElement("span");
+          var percentage = (index / denominator) * 100;
 
           tick.className = "tick";
 
@@ -1101,14 +696,11 @@
             index === years.length - 1 ||
             index % 5 === 0
           ) {
-            tick.classList.add("major");
+            tick.className += " major";
           }
 
-          tick.style.left =
-            `${percentage}%`;
-
-          tick.title =
-            `${year} CE`;
+          tick.style.left = percentage + "%";
+          tick.title = year + " CE";
 
           tickRow.appendChild(tick);
         });
@@ -1118,17 +710,13 @@
         selectedIndex = 0;
 
         yearSlider.min = "0";
-        yearSlider.max =
-          String(years.length - 1);
+        yearSlider.max = String(years.length - 1);
         yearSlider.step = "1";
         yearSlider.value = "0";
         yearSlider.disabled = false;
 
-        firstYear.textContent =
-          `${years[0]} CE`;
-
-        lastYear.textContent =
-          `${years[years.length - 1]} CE`;
+        firstYear.textContent = years[0] + " CE";
+        lastYear.textContent = years[years.length - 1] + " CE";
 
         buildTicks();
         renderSelectedYear();
@@ -1138,37 +726,25 @@
         console.error(error);
 
         yearSlider.disabled = true;
-        selectedYear.textContent = "—";
-        yearHeading.textContent =
-          "Data could not be loaded";
+        yearHeading.textContent = "Data could not be loaded";
 
-        setStatus(
-          "Timeline unavailable",
-          "error"
-        );
+        setStatus("Timeline unavailable", "error");
 
-        worksContainer.replaceChildren();
+        worksContainer.innerHTML = "";
 
-        const message =
-          document.createElement("p");
-
-        message.className =
-          "message error";
-
+        var message = document.createElement("p");
+        message.className = "message error";
         message.textContent =
-          `${error.message}. Keep data.json in the same folder as this HTML file.`;
+          error.message +
+          ". Keep data.json in the same folder as this HTML file.";
 
-        worksContainer.appendChild(
-          message
-        );
-
+        worksContainer.appendChild(message);
         retryButton.hidden = false;
       }
 
-      async function initialize() {
+      function initialize() {
         retryButton.hidden = true;
         yearSlider.disabled = true;
-        selectedYear.textContent = "—";
         yearHeading.textContent = "Loading";
         firstYear.textContent = "—";
         lastYear.textContent = "—";
@@ -1178,36 +754,20 @@
         worksContainer.innerHTML =
           '<p class="message">Loading timeline data…</p>';
 
-        try {
-          const items =
-            await loadJson();
-
-          prepareItems(items);
-          setupTimeline();
-        } catch (error) {
-          showError(error);
-        }
+        loadJson()
+          .then(function (items) {
+            prepareItems(items);
+            setupTimeline();
+          })
+          .catch(showError);
       }
 
-      yearSlider.addEventListener(
-        "input",
-        event => {
-          selectedIndex =
-            Number(event.target.value);
+      yearSlider.addEventListener("input", function (event) {
+        selectedIndex = Number(event.target.value);
+        renderSelectedYear();
+      });
 
-          renderSelectedYear();
-        }
-      );
-
-      coreOnly.addEventListener(
-        "change",
-        renderSelectedYear
-      );
-
-      retryButton.addEventListener(
-        "click",
-        initialize
-      );
+      retryButton.addEventListener("click", initialize);
 
       initialize();
     })();
